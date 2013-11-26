@@ -2,6 +2,8 @@ package io.thera.zen.core;
 
 /**
  * Created by marcostagni on 26/11/13.
+ *
+ * Copyright © 2013. Thera Technologies.
  */
 public class ZenLog {
 

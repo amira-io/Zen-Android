@@ -11,6 +11,7 @@ import java.util.*;
 
 import android.app.*;
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.Window;
@@ -44,7 +45,7 @@ public class ZenAppManager {
 
     }
 
-	/*
+	/**
 	 * CONNECTION FLAG.
 	 */
 
@@ -60,7 +61,7 @@ public class ZenAppManager {
 
     }
 
-	/*
+	/**
 	 * GENERAL VARIABLES
 	 */
 
@@ -85,7 +86,7 @@ public class ZenAppManager {
         activity = a;
     }
 
-	/*
+	/**
 	 * METHODS FOR HANDLING ACTIVITY.
 	 */
 
@@ -98,7 +99,7 @@ public class ZenAppManager {
 
     public static synchronized void moveDrawer(boolean flag) {
         try {
-            ZenLog.l("PRIMA "+drawerFlag);
+            ZenLog.l("PRIMA " + drawerFlag);
             if (flag) {
                 activity.getClass().getMethod("closeDrawer", null).invoke(activity, null);
             }
@@ -123,19 +124,19 @@ public class ZenAppManager {
 
     }
 
-	/*
+	/**
 	 * SETTING UP APP VARIABLE.
 	 */
 
     public static synchronized boolean start(Activity a , int type) {
 
-		/*
+		/**
 		 * SET CURRENT ACTIVITY
 		 */
 
         setActivity(a);
 
-		/*
+		/**
 		 * CHECKING FOR CONNECTION.
 		 */
         ConnectivityManager connMgr = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -143,14 +144,14 @@ public class ZenAppManager {
 
         setConnected(networkInfo != null && networkInfo.isConnected());
 
-	    /*
+	    /**
 	     * BUILDING RESOURCE CLASS NAME
 	     */
 
         String pack = a.getClass().getPackage().getName();
         resourceClass = pack + ".R";
 
-	    /*
+	    /**
 	     * DIFFERENT BEHAVIOUR FOR DIFFERENT LAYOUT.
 	     */
 
@@ -170,16 +171,20 @@ public class ZenAppManager {
         return true;
     }
 
-	/*
+	/**
 	 * METHOD FOR DRAWWERLAYOUT
 	 */
 
-    private static synchronized void setUpDrawer() {
-		/*
+    private static synchronized void setUpDrawer()
+
+		/**
 		 * LOAD VIEW ARRAY FROM RESOURCES.
 		 */
-        layoutTitles 	= activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
-        layoutNames 	= activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
+
+        Resources r = activity.getResources();
+        Integer arrayId = ZenResManager.getArrayId("items");
+        layoutTitles = r.getStringArray(arrayId);
+        layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
 
         if (layoutTitles.length == layoutNames.length) {
 
@@ -187,8 +192,8 @@ public class ZenAppManager {
 
             for (int i = 0; i < layoutTitles.length; i++) {
 
-                Integer  id = ZenResManager.getLayoutId(layoutNames[i]);
-                layoutIds[i] = id;
+                Integer  id     = ZenResManager.getLayoutId(layoutNames[i]);
+                layoutIds[i]    = id;
                 layouts.put(layoutTitles[i], id);
                 layoutsString.put(layoutTitles[i], layoutNames[i]);
 
