@@ -29,7 +29,6 @@ public class ZenAppManager {
     static int layoutIndex = 0;
 
     public static Integer[] getLayoutIds() {
-
         return layoutIds;
     }
 
@@ -128,7 +127,7 @@ public class ZenAppManager {
 	 * SETTING UP APP VARIABLE.
 	 */
 
-    public static synchronized boolean start(Activity a , int type) {
+    public static synchronized boolean start (Activity a , int type) {
 
 		/**
 		 * SET CURRENT ACTIVITY
@@ -175,15 +174,13 @@ public class ZenAppManager {
 	 * METHOD FOR DRAWWERLAYOUT
 	 */
 
-    private static synchronized void setUpDrawer()
+    private static synchronized void setUpDrawer() {
 
 		/**
 		 * LOAD VIEW ARRAY FROM RESOURCES.
 		 */
 
-        Resources r = activity.getResources();
-        Integer arrayId = ZenResManager.getArrayId("items");
-        layoutTitles = r.getStringArray(arrayId);
+        layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
         layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
 
         if (layoutTitles.length == layoutNames.length) {
@@ -206,3 +203,4 @@ public class ZenAppManager {
         activity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
     }
 }
+
