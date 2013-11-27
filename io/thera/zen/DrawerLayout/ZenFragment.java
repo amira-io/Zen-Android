@@ -1,4 +1,4 @@
-package io.thera.zen.DrawerLayout;
+package io.thera.zen.drawerlayout;
 
 /**
  * Created by marcostagni on 26/11/13.
@@ -7,7 +7,6 @@ package io.thera.zen.DrawerLayout;
  */
 
         import io.thera.zen.core.ZenAppManager;
-        import io.thera.zen.core.ZenResManager;
         import io.thera.zen.core.ZenLog;
 
 
@@ -16,14 +15,11 @@ package io.thera.zen.DrawerLayout;
         import android.annotation.TargetApi;
         import android.app.Fragment;
         import android.app.Activity;
-        import android.content.Context;
         import android.os.Build;
         import android.os.Bundle;
-        import android.util.AttributeSet;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class ZenFragment extends Fragment {
