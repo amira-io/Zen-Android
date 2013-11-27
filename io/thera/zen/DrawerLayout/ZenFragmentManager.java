@@ -75,10 +75,10 @@ public class ZenFragmentManager {
                     //String toCallClass = title.replace("_", "");
                     ZenLog.l("create new fragment");
                     long p = System.nanoTime();
-                    String toCallClass = ZenResManager.getLayoutsString().get(title);
+                    String toCallClass = ZenAppManager.getLayoutsString().get(title);
                     toCallClass = Character.toUpperCase(toCallClass.charAt(0)) + toCallClass.substring(1);
                     Class toCall = Class.forName("io.thera.Controllers."+toCallClass+"Controller");
-                    ATLLog.l("io.thera.Controllers."+toCallClass+"Controller");
+                    ZenLog.l("io.thera.Controllers."+toCallClass+"Controller");
                     try {
                         Object controller = toCall.newInstance();
                         if (controller.getClass().getSuperclass().getCanonicalName().equals("io.thera.atl.layout.ATLFragment")) {
@@ -94,16 +94,16 @@ public class ZenFragmentManager {
                             //paramTypes[3] 		= DrawerLayout.class;
                             //paramTypes[4] 		= ListView.class;
 
-                            Integer layoutId = ATLAppManager.getLayoutIds()[position];
+                            Integer layoutId = ZenAppManager.getLayoutIds()[position];
 
                             toCall.getMethod("setVariables", paramTypes).invoke(controller, createParameters(activity, title, layoutId ));
 
-                            int content_frame_id = ATLResourceManager.getResourceId("content_frame");
+                            int content_frame_id = ZenResManager.getResourceId("content_frame");
                             FragmentManager fragmentManager = activity.getFragmentManager();
                             fragmentManager.beginTransaction().replace(content_frame_id, (android.app.Fragment) controller ).commit();
                             availableFragments.put(title, controller);
                             long d = System.nanoTime();
-                            ATLLog.l("TIME to create new fragment " + (d-p));
+                            ZenLog.l("TIME to create new fragment " + (d-p));
 
                         }
                     } catch (InstantiationException e) {
