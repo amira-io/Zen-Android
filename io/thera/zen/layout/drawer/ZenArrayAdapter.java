@@ -1,11 +1,11 @@
-package io.thera.zen.drawerlayout;
+package io.thera.zen.layout.drawer;
 
 /**
  * Created by marcostagni on 27/11/13.
  */
 
-        import android.content.Context;
-        import android.widget.ArrayAdapter;
+import android.content.Context;
+import android.widget.ArrayAdapter;
 
 public class ZenArrayAdapter extends ArrayAdapter<String> {
 

@@ -113,4 +113,37 @@ public class ZenResManager {
 
     }
 
+    /*
+	 * METHOD FOR GETTING ANIMATIONS
+	 */
+
+    public static synchronized Integer getAnimId (String array) {
+        try {
+            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+
+            for (int i = 0; i < set.length ; i++) {
+                if (set[i].getCanonicalName().endsWith("anim")) {
+                    return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return null;
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return null;
+
+
+
+    }
+
 }

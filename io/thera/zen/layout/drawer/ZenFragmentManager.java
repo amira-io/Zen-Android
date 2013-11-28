@@ -1,28 +1,24 @@
-package io.thera.zen.drawerlayout;
+package io.thera.zen.layout.drawer;
 
 /**
  * Created by marcostagni on 26/11/13.
+ *
+ * Copyright © 2013. Thera Technologies.
  */
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.*;
-import android.support.v4.widget.*;
+import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
-import android.support.v4.widget.*;
-import android.widget.*;
-import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenResManager;
-import io.thera.zen.drawerlayout.*;
-import io.thera.zen.core.*;
 
 public class ZenFragmentManager {
 

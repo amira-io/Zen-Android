@@ -1,4 +1,4 @@
-package io.thera.zen.drawerlayout;
+package io.thera.zen.layout.drawer;
 
 /**
  * Created by marcostagni on 26/11/13.
@@ -6,20 +6,19 @@ package io.thera.zen.drawerlayout;
  * Copyright © 2013. Thera Technologies.
  */
 
-        import io.thera.zen.core.ZenAppManager;
-        import io.thera.zen.core.ZenLog;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Fragment;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenLog;
 
 //import com.marcostagni.androidtestapp.R;
-
-        import android.annotation.TargetApi;
-        import android.app.Fragment;
-        import android.app.Activity;
-        import android.os.Build;
-        import android.os.Bundle;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class ZenFragment extends Fragment {
