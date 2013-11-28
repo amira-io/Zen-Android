@@ -83,7 +83,7 @@ public abstract class ZenFragment extends Fragment {
 	    	TextView jsonText = (TextView) rootView.findViewById(R.id.jsonText);
 	    	String tmpUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=44,16&sensor=true";
 
-	    	JsonManager.parseJson(tmpUrl, jsonText);
+	    	ZenJsonManager.parseJson(tmpUrl, jsonText);
 	    }
 	    if (this.title.equals("5")) {
 	    	rootView = inflater.inflate(R.layout.json_example ,container, false);
@@ -91,7 +91,7 @@ public abstract class ZenFragment extends Fragment {
 	    	//String tmpUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=44,16&sensor=true";
 	    	ZenGeoManager geo = new ZenGeoManager(currentActivity.getSystemService(Context.LOCATION_SERVICE), currentActivity);
 	    	geo.setListenerStatus(true);
-	    	//JsonManager.parseJson(tmpUrl, jsonText);
+	    	//ZenJsonManager.parseJson(tmpUrl, jsonText);
 	    }
 	    else {
 	    	rootView = inflater.inflate(R.layout.myfragment, container, false);
