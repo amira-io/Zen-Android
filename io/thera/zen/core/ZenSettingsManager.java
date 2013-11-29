@@ -19,17 +19,61 @@ public class ZenSettingsManager {
 
    static Class settings;
 
-   static String[] DrawerMenuTitles;
-   static String[] DrawerMenuLayouts;
+   static String[]                  DrawerMenuTitles;
+   static String[]                  DrawerMenuLayouts;
+   static Map<String , Integer>     DrawerLayoutMap;
+   static Map<String , String>      DrawerLayoutString;
+   static Integer[]                 DrawerLayoutIds;
 
-   static String drawerButtonAnimation;
+
+    public static String[] getDrawerMenuTitles() {
+        return DrawerMenuTitles;
+    }
+
+    public static void setDrawerMenuTitles(String[] drawerMenuTitles) {
+        DrawerMenuTitles = drawerMenuTitles;
+    }
+
+    public static String[] getDrawerMenuLayouts() {
+        return DrawerMenuLayouts;
+    }
+
+    public static void setDrawerMenuLayouts(String[] drawerMenuLayouts) {
+        DrawerMenuLayouts = drawerMenuLayouts;
+    }
+
+    public static Map<String, Integer> getDrawerLayoutMap() {
+        return DrawerLayoutMap;
+    }
+
+    public static void setDrawerLayoutMap(Map<String, Integer> drawerLayoutMap) {
+        DrawerLayoutMap = drawerLayoutMap;
+    }
+
+    public static Map<String, String> getDrawerLayoutString() {
+        return DrawerLayoutString;
+    }
+
+    public static void setDrawerLayoutString(Map<String, String> drawerLayoutString) {
+        DrawerLayoutString = drawerLayoutString;
+    }
+
+    public static Integer[] getDrawerLayoutIds() {
+        return DrawerLayoutIds;
+    }
+
+    public static void setDrawerLayoutIds(Integer[] drawerLayoutIds) {
+        DrawerLayoutIds = drawerLayoutIds;
+    }
+
+    static String drawerButtonAnimation;
 
    static Integer layoutType;
 
    public static Integer getLayoutType() {
 
        return layoutType;
-       
+
    }
 
    public static String getDrawerButtonAnimation() {
@@ -92,6 +136,12 @@ public class ZenSettingsManager {
                }
 
            }
+
+           DrawerMenuLayouts    = layouts;
+           DrawerMenuTitles     = titles;
+           DrawerLayoutMap      = layoutMap;
+           DrawerLayoutString   = layoutString;
+           DrawerLayoutIds      = ids;
 
        }
        catch (Exception e) {
