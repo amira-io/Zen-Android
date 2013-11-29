@@ -194,7 +194,7 @@ public class ZenAppManager {
 		 */
 
         ZenSettingsManager.parseDrawerMenuLayout(layoutTitles,layoutNames,layouts,layoutsString,layoutIds);
-        
+
         /*layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
         layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
 

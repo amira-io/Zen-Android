@@ -22,12 +22,45 @@ public class ZenSettingsManager {
    static String[] DrawerMenuTitles;
    static String[] DrawerMenuLayouts;
 
+   static String homeButtonAnimation;
 
+   public static String getHomeButtonAnimation() {
+
+       return homeButtonAnimation;
+
+   }
+
+
+   public static synchronized void start() {
+       /*
+            GETTING GENERAL VARIABLES
+        */
+       try {
+           settings = Class.forName("app.settings.Settings");
+           /*
+                GET HOME BUTTON ANIMATION IF AVAILABLE
+           */
+           homeButtonAnimation = (String) settings.getField("homeButtonAnimation").get(settings);
+
+       } catch (ClassNotFoundException e) {
+           e.printStackTrace();
+
+       } catch (NoSuchFieldException e) {
+           e.printStackTrace();
+
+       } catch (IllegalAccessException e) {
+           e.printStackTrace();
+       }
+
+
+
+
+
+   }
 
    public static synchronized void parseDrawerMenuLayout(String[] titles, String[] layouts, Map<String,Integer> layoutMap, Map<String, String> layoutString ,  Integer[] ids) {
 
        try {
-           settings = Class.forName("app.settings.Settings");
 
           // DrawerMenuTitles    = (String[]) settings.getField("MENU_TITLES").get(settings);
           // DrawerMenuLayouts   = (String[]) settings.getField("MENU_LAYOUT").get(settings);

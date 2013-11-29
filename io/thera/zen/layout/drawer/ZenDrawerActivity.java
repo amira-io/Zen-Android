@@ -154,8 +154,26 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 
     public void addListeners () {
 
-        icon_menu.setOnTouchListener(new ZenTouchListener((View)icon_menu,this));
+        final Animation menuAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId(ZenSettingsManager.getHomeButtonAnimation()));
 
+
+        icon_menu.setOnTouchListener(
+                new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        icon_menu.startAnimation(menuAnimation);
+                        if (drawerLayout.isDrawerOpen(drawerListView)) {
+                            drawerLayout.closeDrawer(drawerListView);
+                            return true;
+                        }
+                        else {
+                            drawerLayout.openDrawer(drawerListView);
+                            return true;
+                        }
+                    }
+                }
+        );
         drawerLayout.setDrawerListener(new ZenDrawerListener());
 
         drawerListView.setOnItemClickListener(new OnItemClickListener() {

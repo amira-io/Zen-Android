@@ -15,6 +15,10 @@ public class ZenSettingsExample {
 
        public static int layoutType = 1;
 
+       /*
+            DRAWER LAYOUT SETTINGS
+        */
+
        public String[] MENU_TITLE = {
                 "Home",
                 "Profile",
@@ -29,6 +33,8 @@ public class ZenSettingsExample {
                "tua_mamma_layout"
 
        };
+
+       public static String homeButtonAnimation = "hyperspace_jump";
 
 
 }
