@@ -18,6 +18,19 @@ import android.view.Window;
 
 public class ZenAppManager {
 
+    static Object current;
+    //used to store current activity/fragment.
+
+    public static synchronized void setCurrentPosition(Object o) {
+        current = o;
+    }
+
+    public static synchronized Object getCurrentPosition ( ) {
+        return current;
+    }
+
+    Stack<Object> currentStack;
+
     static String[] layoutNames;
     static String[] layoutTitles;
 

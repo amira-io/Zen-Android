@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import io.thera.zen.core.ZenAppManager;
+
 public class ZenClickListener implements OnItemClickListener {
 
 
@@ -19,13 +21,15 @@ public class ZenClickListener implements OnItemClickListener {
     Object 	caller;
     String 	type; //so we know which type of event is handled.
 
-    public ZenClickListener (View v, String methodName, String className, Object caller) {
+    public ZenClickListener (View v, String methodName) {
         System.out.println("Initializing ATLItemClickListener");
+
+
         this.view 		= v;
         this.methodName = methodName;
         this.view_id 	= v.getId();
-        this.className 	= className;
-        this.caller	 	= caller;
+        this.className 	= ZenAppManager.getCurrentPosition().getClass().getCanonicalName();
+        this.caller	 	= ZenAppManager.getCurrentPosition();
 
         Class[] paramTypes = new Class[2];
         paramTypes[0] = View.class;

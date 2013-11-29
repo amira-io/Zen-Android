@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import java.lang.reflect.*;
 
+import io.thera.zen.core.ZenAppManager;
+
 public class ZenTouchListener implements OnTouchListener {
 
     int 	view_id;
@@ -23,11 +25,11 @@ public class ZenTouchListener implements OnTouchListener {
     Object 	caller;
     String 	type; //so we know which type of event is handled.
 
-    public ZenTouchListener (View v, Object caller) {
+    public ZenTouchListener (View v, String methodName) {
         System.out.println("Initializing ATLTouchListener");
         this.view 		= v;
         this.view_id 	= v.getId();
-        this.caller	 	= caller;
+        this.caller	 	= ZenAppManager.getCurrentPosition();
 
         Class[] paramTypes = new Class[2];
         paramTypes[0] = View.class;
@@ -35,7 +37,7 @@ public class ZenTouchListener implements OnTouchListener {
 
         try {
             System.out.println("Trying to load "+ caller.getClass().getCanonicalName());
-            this.callback = Class.forName(caller.getClass().getCanonicalName()).getMethod("handleMenuTouch", paramTypes);
+            this.callback = Class.forName(caller.getClass().getCanonicalName()).getMethod(methodName, paramTypes);
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
