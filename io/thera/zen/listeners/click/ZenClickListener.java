@@ -31,9 +31,11 @@ public class ZenClickListener implements OnItemClickListener {
         this.className 	= ZenAppManager.getCurrentPosition().getClass().getCanonicalName();
         this.caller	 	= ZenAppManager.getCurrentPosition();
 
-        Class[] paramTypes = new Class[2];
+        Class[] paramTypes = new Class[3];
         paramTypes[0] = View.class;
-        paramTypes[1] = MotionEvent.class;
+        paramTypes[1] = Integer.class;
+        paramTypes[2] = Long.class;
+        //paramTypes[1] = MotionEvent.class;
 
         try {
             System.out.println("Trying to load "+ className);

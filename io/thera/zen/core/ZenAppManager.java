@@ -193,7 +193,9 @@ public class ZenAppManager {
 		 * LOAD VIEW ARRAY FROM RESOURCES.
 		 */
 
-        layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
+        ZenSettingsManager.parseDrawerMenuLayout(layoutTitles,layoutNames,layouts,layoutsString,layoutIds);
+        
+        /*layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
         layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
 
         if (layoutTitles.length == layoutNames.length) {
@@ -209,7 +211,7 @@ public class ZenAppManager {
 
             }
 
-        }
+        }*/
 
         activity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         activity.setContentView(ZenResManager.getLayoutId("activity_android_test_app"));
