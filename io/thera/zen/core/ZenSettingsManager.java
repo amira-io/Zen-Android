@@ -22,11 +22,19 @@ public class ZenSettingsManager {
    static String[] DrawerMenuTitles;
    static String[] DrawerMenuLayouts;
 
-   static String homeButtonAnimation;
+   static String drawerButtonAnimation;
 
-   public static String getHomeButtonAnimation() {
+   static Integer layoutType;
 
-       return homeButtonAnimation;
+   public static Integer getLayoutType() {
+
+       return layoutType;
+       
+   }
+
+   public static String getDrawerButtonAnimation() {
+
+       return drawerButtonAnimation;
 
    }
 
@@ -40,7 +48,9 @@ public class ZenSettingsManager {
            /*
                 GET HOME BUTTON ANIMATION IF AVAILABLE
            */
-           homeButtonAnimation = (String) settings.getField("homeButtonAnimation").get(settings);
+           drawerButtonAnimation = (String) settings.getField("DRAWER_BUTTON_ANIMATION").get(settings);
+
+           layoutType = (Integer) settings.getField("LAYOUT_TYPE").get(settings);
 
        } catch (ClassNotFoundException e) {
            e.printStackTrace();

@@ -13,28 +13,32 @@ public class ZenSettingsExample {
                 1. DRAWER LAYOUT
        */
 
-       public static int layoutType = 1;
+       public static String         DRAWER_LAYOUT_NAME = "main_layout";
+
+       public static int            LAYOUT_TYPE = 1;
 
        /*
             DRAWER LAYOUT SETTINGS
         */
 
-       public String[] MENU_TITLE = {
-                "Home",
-                "Profile",
-                "Tua mamma",
-                "pinco pallino"
+       public String[]              MENU_TITLE = {
 
-       };
+                                        "Home",
+                                        "Profile",
+                                        "Tua mamma",
+                                        "pinco pallino"
 
-       public String[] MENU_LAYOUT = {
-            "home_layout",
-               "profile_layout",
-               "tua_mamma_layout"
+                                    };
 
-       };
+       public String[]               MENU_LAYOUT = {
 
-       public static String homeButtonAnimation = "hyperspace_jump";
+                                        "home_layout",
+                                        "profile_layout",
+                                        "tua_mamma_layout"
+
+                                    };
+
+       public static String         HOME_BUTTON_ANIMATION = "hyperspace_jump";
 
 
 }

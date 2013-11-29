@@ -47,7 +47,7 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 
     private SeekBar 		bar;
     private GestureDetector gDetector;
-    private ImageView 		icon_menu;
+    private ImageView 		drawerButton;
 
     private TextView		title;
 
@@ -125,7 +125,7 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 
         this.drawerListViewItems 	= this.getResources().getStringArray(ZenResManager.getArrayId("items"));
         this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
-        this.icon_menu 				= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
+        this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
         this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
         this.drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), drawerListViewItems));
 
@@ -142,7 +142,7 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 
         Animation menuAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId("hyperspace_jump"));
 
-        icon_menu.startAnimation(menuAnimation);
+        drawerButton.startAnimation(menuAnimation);
         if (drawerLayout.isDrawerOpen(drawerListView)) {
             drawerLayout.closeDrawer(drawerListView);
         }
@@ -154,15 +154,15 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 
     public void addListeners () {
 
-        final Animation menuAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId(ZenSettingsManager.getHomeButtonAnimation()));
+        final Animation drawerButtonAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId(ZenSettingsManager.getDrawerButtonAnimation()));
 
 
-        icon_menu.setOnTouchListener(
+        drawerButton.setOnTouchListener(
                 new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
 
-                        icon_menu.startAnimation(menuAnimation);
+                        drawerButton.startAnimation(drawerButtonAnimation);
                         if (drawerLayout.isDrawerOpen(drawerListView)) {
                             drawerLayout.closeDrawer(drawerListView);
                             return true;
