@@ -88,11 +88,20 @@ public class ZenSettingsManager {
             GETTING GENERAL VARIABLES
         */
        try {
+
            settings = Class.forName("app.settings.Settings");
            /*
                 GET HOME BUTTON ANIMATION IF AVAILABLE
            */
            drawerButtonAnimation = (String) settings.getField("DRAWER_BUTTON_ANIMATION").get(settings);
+
+           if (drawerButtonAnimation == null) {
+               /*
+                    NO ANIMATION FOR MENU PROVIDED, SET TO DEFAULT.
+                */
+
+               drawerButtonAnimation = "default";
+           }
 
            layoutType = (Integer) settings.getField("LAYOUT_TYPE").get(settings);
 
