@@ -77,7 +77,7 @@ public class ZenFragmentManager {
                     ZenLog.l("io.thera.Controllers."+toCallClass+"Controller");
                     try {
                         Object controller = toCall.newInstance();
-                        if (controller.getClass().getSuperclass().getCanonicalName().equals("io.thera.atl.layout.ATLFragment")) {
+                        if (controller.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {
 							/*
 							 * QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
 							 */

@@ -65,7 +65,7 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
     @Override
     protected 	void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ZenAppManager.start(this,1);
+        ZenAppManager.start(this);
         setUp();
     }
 
@@ -123,7 +123,7 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
 		 */
         //this.context 				= this.getApplicationContext();
 
-        this.drawerListViewItems 	= this.getResources().getStringArray(ZenResManager.getArrayId("items"));
+        this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
         this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
         this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
         this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));

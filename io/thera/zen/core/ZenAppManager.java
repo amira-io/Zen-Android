@@ -8,7 +8,6 @@ package io.thera.zen.core;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 import android.app.*;
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,7 +28,7 @@ public class ZenAppManager {
         return current;
     }
 
-    Stack<Object> currentStack;
+    static Stack<Object> currentStack;
 
     static String[] layoutNames;
     static String[] layoutTitles;
@@ -42,18 +41,18 @@ public class ZenAppManager {
     static int layoutIndex = 0;
 
     public static Integer[] getLayoutIds() {
-        return layoutIds;
+        return ZenSettingsManager.getDrawerLayoutIds();
     }
 
     public static Map<String,Integer> getLayouts() {
 
-        return layouts;
+        return ZenSettingsManager.getDrawerLayoutMap();
 
     }
 
     public static Map<String,String> getLayoutsString() {
 
-        return layoutsString;
+        return ZenSettingsManager.getDrawerLayoutString();
 
     }
 
@@ -140,13 +139,21 @@ public class ZenAppManager {
 	 * SETTING UP APP VARIABLE.
 	 */
 
-    public static synchronized boolean start (Activity a , int type) {
+    public static synchronized boolean start (Activity a) {
+        /**
+         *  GETTING INITIAL VALUES FROM SETTINGS FILE
+         */
+
+        ZenSettingsManager.start();
 
 		/**
 		 * SET CURRENT ACTIVITY
 		 */
 
         setActivity(a);
+        setCurrentPosition(a);
+        currentStack = new Stack();
+        currentStack.push(a);
 
 		/**
 		 * CHECKING FOR CONNECTION.
@@ -167,7 +174,7 @@ public class ZenAppManager {
 	     * DIFFERENT BEHAVIOUR FOR DIFFERENT LAYOUT.
 	     */
 
-        switch(type) {
+        switch(ZenSettingsManager.getLayoutType()) {
 
             case 1: {
                 //drawer layout
@@ -184,7 +191,7 @@ public class ZenAppManager {
     }
 
 	/**
-	 * METHOD FOR DRAWWERLAYOUT
+	 * METHOD FOR DRAWERLAYOUT
 	 */
 
     private static synchronized void setUpDrawer() {
@@ -192,10 +199,18 @@ public class ZenAppManager {
 		/**
 		 * LOAD VIEW ARRAY FROM RESOURCES.
 		 */
+        System.out.println("sono prima di parsedrawer");
+        ZenSettingsManager.parseDrawerMenuLayout();
+        layoutTitles    = ZenSettingsManager.getDrawerMenuTitles();
+        layoutNames     = ZenSettingsManager.getDrawerMenuLayouts();
+        layouts         = ZenSettingsManager.getDrawerLayoutMap();
+        layoutsString   = ZenSettingsManager.getDrawerLayoutString();
+        layoutIds       = ZenSettingsManager.getDrawerLayoutIds();
+        ZenLog.l("printing length");
+        ZenLog.l(layoutTitles.length);
 
-        ZenSettingsManager.parseDrawerMenuLayout(layoutTitles,layoutNames,layouts,layoutsString,layoutIds);
-
-        /*layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
+        /*
+        layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
         layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
 
         if (layoutTitles.length == layoutNames.length) {
@@ -211,7 +226,8 @@ public class ZenAppManager {
 
             }
 
-        }*/
+        }
+        */
 
         activity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         activity.setContentView(ZenResManager.getLayoutId("activity_android_test_app"));

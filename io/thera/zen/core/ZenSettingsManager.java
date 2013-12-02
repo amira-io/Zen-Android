@@ -96,6 +96,8 @@ public class ZenSettingsManager {
 
            layoutType = (Integer) settings.getField("LAYOUT_TYPE").get(settings);
 
+           System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
+
        } catch (ClassNotFoundException e) {
            e.printStackTrace();
 
@@ -112,36 +114,45 @@ public class ZenSettingsManager {
 
    }
 
-   public static synchronized void parseDrawerMenuLayout(String[] titles, String[] layouts, Map<String,Integer> layoutMap, Map<String, String> layoutString ,  Integer[] ids) {
+   public static synchronized void parseDrawerMenuLayout() {
 
        try {
 
           // DrawerMenuTitles    = (String[]) settings.getField("MENU_TITLES").get(settings);
           // DrawerMenuLayouts   = (String[]) settings.getField("MENU_LAYOUT").get(settings);
 
-           titles = (String[]) settings.getField("MENU_TITLES").get(settings);
-           layouts = (String[]) settings.getField("MENU_LAYOUT").get(settings);
+           DrawerMenuTitles   = (String[]) settings.getField("MENU_TITLES").get(settings);
+           DrawerMenuLayouts  = (String[]) settings.getField("MENU_LAYOUTS").get(settings);
 
-           if (titles.length == layouts.length) {
+           DrawerLayoutString = new HashMap<String,String>();
+           DrawerLayoutMap = new HashMap<String, Integer>();
 
-               ids = new Integer[titles.length];
+           if (DrawerMenuTitles.length == DrawerMenuLayouts.length) {
 
-               for (int i = 0; i < titles.length; i++) {
+               DrawerLayoutIds = new Integer[DrawerMenuTitles.length];
 
-                   Integer  id     = ZenResManager.getLayoutId(layouts[i]);
-                   ids[i]    = id;
-                   layoutMap.put(titles[i], id);
-                   layoutString.put(titles[i], layouts[i]);
+               for (int i = 0; i < DrawerMenuTitles.length; i++) {
+
+                   Integer  id                  = ZenResManager.getLayoutId(DrawerMenuLayouts[i]);
+                   DrawerLayoutIds[i]           = id;
+                   DrawerLayoutMap.put(DrawerMenuTitles[i], id);
+                   DrawerLayoutString.put(DrawerMenuTitles[i], DrawerMenuLayouts[i]);
 
                }
 
            }
 
-           DrawerMenuLayouts    = layouts;
-           DrawerMenuTitles     = titles;
-           DrawerLayoutMap      = layoutMap;
-           DrawerLayoutString   = layoutString;
-           DrawerLayoutIds      = ids;
+           ZenLog.l("lunghezza drawermenutitles"+DrawerMenuTitles.length + "__ ");
+           ZenLog.l("lunghezza drawerlayoutids"+DrawerLayoutIds.length + "__ ");
+           ZenLog.l("lunghezza drawerlayoutstring"+DrawerLayoutString.size() + "__ ");
+           ZenLog.l("lunghezza drawermenulayouts"+DrawerMenuLayouts.length + "__ ");
+
+
+           //DrawerMenuLayouts    = layouts;
+           //DrawerMenuTitles     = titles;
+           //DrawerLayoutMap      = layoutMap;
+           //DrawerLayoutString   = layoutString;
+           //DrawerLayoutIds      = ids;
 
        }
        catch (Exception e) {
