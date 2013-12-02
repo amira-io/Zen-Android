@@ -73,8 +73,8 @@ public class ZenFragmentManager {
                     long p = System.nanoTime();
                     String toCallClass = ZenAppManager.getLayoutsString().get(title);
                     toCallClass = Character.toUpperCase(toCallClass.charAt(0)) + toCallClass.substring(1);
-                    Class toCall = Class.forName("io.thera.Controllers."+toCallClass+"Controller");
-                    ZenLog.l("io.thera.Controllers."+toCallClass+"Controller");
+                    Class toCall = Class.forName("app.Controllers."+toCallClass+"Controller");
+                    ZenLog.l("app.Controllers."+toCallClass+"Controller");
                     try {
                         Object controller = toCall.newInstance();
                         if (controller.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {

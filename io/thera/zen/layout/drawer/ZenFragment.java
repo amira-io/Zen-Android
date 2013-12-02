@@ -115,7 +115,7 @@ public abstract class ZenFragment extends Fragment {
          */
         ZenAppManager.moveDrawer(true);
         getElements();
-        setElements();
+        buildElements();
         return rootView;
     }
 
@@ -132,7 +132,7 @@ public abstract class ZenFragment extends Fragment {
     public abstract void getElements();
 
 
-    public abstract void setElements();
+    public abstract void buildElements();
 
 	/*
 	 * HANDLER METHODS.
