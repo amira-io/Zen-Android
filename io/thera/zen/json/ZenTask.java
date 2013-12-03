@@ -20,18 +20,23 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.lang.reflect.*;
+
 public class ZenTask extends AsyncTask<String, Void, String> {
 	
 	private String type;
 	private TextView container;
+    private String method;
 	private List<String> permittedTypes;
+    private Object caller;
 
-	public ZenTask(String type, TextView container, TextView second) {
+	public ZenTask(String type, String method, Object caller) {
 		this.type = type;
 		if (ZenJsonUtil.isTesting) {
 			//container.setText("Selected type : " + this.type );
 		}
-		this.container = container;
+        this.caller = caller;
+		this.method = method;
 		this.permittedTypes = new ArrayList<String>();
 		permittedTypes.add("json");
 		permittedTypes.add("xml");
@@ -74,14 +79,23 @@ public class ZenTask extends AsyncTask<String, Void, String> {
 				case 0: {
 					//return this.getJson(params[0], this.container);
 					try {
+
+
+                        Class[] params = new Class[1];
+                        params[0] = String.class;
+                        Object[] values = new Object[1];
+                        values[0] = result;
+                        this.caller.getClass().getMethod(this.method, params).invoke(this.caller, values);
+
+
 					  //JSONArray jsonArray = new JSONArray(result);
 				      //Log.i(ZenJsonManager.class.getName(),"Number of entries " + jsonArray.length());
 				      //JSONArray o = (JSONArray) jsonArray.get(0);
 				      //JSONObject obj = o.getJSONObject(1);
 				      //container.append(obj.getString("formatted_address"));
-					  JSONObject obj = new JSONObject(result);
-					  JSONArray array = obj.getJSONArray("data");
-					  process(array);
+					  //JSONObject obj = new JSONObject(result);
+					  //JSONArray array = obj.getJSONArray("data");
+					  //process(array);
 					  //JSONObject o = array.getJSONObject(0);
 					  //container.setText(o.getString("formatted_address"));
 					}
@@ -92,7 +106,6 @@ public class ZenTask extends AsyncTask<String, Void, String> {
 					}
 				}
 				case 1: {
-					
 					return;
 				}
 			}

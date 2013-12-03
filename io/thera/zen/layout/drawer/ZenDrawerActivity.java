@@ -71,7 +71,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
     @Override
     public void getElements() {
-        
+
     }
 
     @Override

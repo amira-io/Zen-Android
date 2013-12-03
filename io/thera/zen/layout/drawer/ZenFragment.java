@@ -32,6 +32,8 @@ public abstract class ZenFragment extends Fragment {
 
     private int layoutId;
 
+    private View rootView;
+
     public ZenFragment () {
 
 		/*
@@ -46,6 +48,11 @@ public abstract class ZenFragment extends Fragment {
         this.layoutId 			= layoutId;
     }
 
+    public Object findViewById(int id) {
+        return rootView.findViewById(id);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -59,7 +66,7 @@ public abstract class ZenFragment extends Fragment {
 	    /*
 	     * 	RETRIEVING VIEW.
 	     */
-        View rootView; //= new View(currentActivity);
+         //= new View(currentActivity);
         try{
 
             //String layoutName = ATLAppManager.getLayouts().get(title);

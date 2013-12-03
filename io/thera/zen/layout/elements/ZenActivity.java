@@ -46,11 +46,11 @@ public abstract class ZenActivity extends Activity{
 
     public abstract void buildElements();
 
-    public void goTo (ZenActivity activity) {
+    public void goTo (Class activity) {
 
-        final ZenActivity a = activity;
+        final Class a = activity;
 
-        Intent i = new Intent(ZenActivity.this, a.getClass());
+        Intent i = new Intent(ZenActivity.this, activity);
         startActivity(i);
 
         // close this activity
@@ -58,16 +58,16 @@ public abstract class ZenActivity extends Activity{
 
     }
 
-    public void goToOnTimeout(ZenActivity activity, int timeout) {
+    public void goToOnTimeout(Class activity, int timeout) {
 
-        final ZenActivity a = activity;
+        final Class a = activity;
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(ZenActivity.this, a.getClass());
+                Intent i = new Intent(ZenActivity.this, a);
                 startActivity(i);
 
                 // close this activity
