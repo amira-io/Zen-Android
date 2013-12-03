@@ -1,11 +1,11 @@
 package io.thera.zen.core;
 
 /**
- * Created by marcostagni on 29/11/13.
+ * Created by marcostagni on 01/12/13.
  */
-public class ZenSettingsExample {
 
-      /*
+public class ZenSettingsExample {
+/*
        TIPO di layout
 
        see http://thera.io for examples.
@@ -13,32 +13,29 @@ public class ZenSettingsExample {
                 1. DRAWER LAYOUT
        */
 
-       public static String         DRAWER_LAYOUT_NAME = "main_layout";
+    public static String         DRAWER_LAYOUT_NAME = "main_layout";
 
-       public static int            LAYOUT_TYPE = 1;
+    public static Integer        LAYOUT_TYPE = 1;
 
        /*
             DRAWER LAYOUT SETTINGS
         */
 
-       public String[]              MENU_TITLE = {
+    public static String[]              MENU_TITLES = {
 
-                                        "Home",
-                                        "Profile",
-                                        "Tua mamma",
-                                        "pinco pallino"
+            "Home",
+            "Profile",
+            "Tua mamma",
 
-                                    };
+    };
 
-       public String[]               MENU_LAYOUT = {
+    public static String[]               MENU_LAYOUTS = {
 
-                                        "home_layout",
-                                        "profile_layout",
-                                        "tua_mamma_layout"
+            "splashscreen",
+            "profile_creation",
+            "myfragment"
 
-                                    };
+    };
 
-       public static String         HOME_BUTTON_ANIMATION = "hyperspace_jump";
-
-
+    public static String         DRAWER_BUTTON_ANIMATION = "hyperspace_jump";
 }

@@ -170,4 +170,34 @@ public class ZenSettingsManager {
 
 
     }
+
+
+    public static synchronized String getFont (int id) {
+
+        String fontName;
+
+        try {
+             fontName = (String) settings.getField(id+"_font").get(settings);
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchFieldException e) {
+
+            e.printStackTrace();
+            try {
+            fontName = (String) settings.getField("DEFAULT_FONT").get(settings);
+            }
+            catch (IllegalAccessException ex) {
+                e.printStackTrace();
+                return null;
+
+            } catch (NoSuchFieldException ex) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return fontName;
+    }
 }
