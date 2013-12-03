@@ -9,8 +9,8 @@ import android.app.Activity;
 import java.security.InvalidParameterException;
 
 import io.thera.zen.core.*;
-import io.thera.zen.layout.drawer.ZenFragmentManager;
-import io.thera.zen.layout.elements.ZenTextView;
+import io.thera.zen.layout.drawer.*;
+import io.thera.zen.layout.elements.*;
 import io.thera.zen.listeners.touch.*;
 import io.thera.zen.listeners.drawer.*;
 import android.net.ConnectivityManager;
@@ -41,7 +41,7 @@ import android.support.v4.widget.*;
 import android.app.Fragment;
 import android.app.FragmentManager;
 
-public class ZenDrawerActivity extends Activity {//implements OnGestureListener, OnTouchListener {
+public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
 
 
@@ -67,6 +67,16 @@ public class ZenDrawerActivity extends Activity {//implements OnGestureListener,
         super.onCreate(savedInstanceState);
         ZenAppManager.start(this);
         setUp();
+    }
+
+    @Override
+    public void getElements() {
+        
+    }
+
+    @Override
+    public void buildElements() {
+
     }
 
     @Override
