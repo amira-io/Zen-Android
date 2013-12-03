@@ -1,5 +1,6 @@
 package io.thera.zen.geo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import android.location.Criteria;
@@ -14,8 +15,13 @@ import android.annotation.TargetApi;
 import android.app.*;
 import android.content.Context;
 
+import io.thera.zen.core.ZenAppManager;
+
+
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-public class ZenGeoManager implements LocationListener{
+public class ZenGeoManager{
+
+
 
 	private double latitude;
 	private double longitude;
@@ -23,28 +29,64 @@ public class ZenGeoManager implements LocationListener{
 	private double speed;
 	private double altitude;
 	
-	private LocationManager locationManager;
+	private static LocationManager locationManager;
 	private Context context;
+
+    private static String callback;
+    private static Object caller;
 		
 	private static boolean isListenerSet = false;
-	
-	
-	public ZenGeoManager(Object lm, Activity a) {
+
+
+    private static ZenLocationListener locationListener;
+	/*
+	public ZenGeoManager ( String callback, Object caller) {
 		try {
-			this.locationManager  = (LocationManager) lm;
-			this.context = a.getApplicationContext();
+            this.callback   = callback;
+            this.caller     =
+   			//this.locationManager    = (LocationManager) lm;
+			//this.context            = a.getApplicationContext();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
+	}*/
+
+    public static synchronized void getPosition (String callback_name , Object caller_name) {
+
+        if (!isListenerSet) {
+
+            isListenerSet      = true;
+            callback           = callback_name;
+            caller             = caller_name;
+
+            locationListener   = new ZenLocationListener(callback,caller);
+
+
+
+            Criteria c          =   new Criteria();
+            long minTime        =   1000;
+            float minDistance   =   1;
+            locationManager    = (LocationManager) ZenAppManager.getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(minTime, minDistance, c, locationListener , null);
+        }
+
+    }
+
+
+    public synchronized void stopListenPosition () {
+
+            isListenerSet = false;
+            locationManager.removeUpdates(locationListener);
+
+    }
+	/*
 	public synchronized void setListenerStatus(boolean status) {
 		if (status!=isListenerSet) {
 			if (status) {
-				Criteria c = new Criteria();
-				long minTime = 1000;
-				float minDistance =1;
+				Criteria c          =   new Criteria();
+				long minTime        =   1000;
+				float minDistance   =   1;
 				locationManager.requestLocationUpdates(minTime, minDistance, c, this, null);
 			}
 			else {
@@ -56,37 +98,8 @@ public class ZenGeoManager implements LocationListener{
 			//se status e il flag sono uguali, abbiamo gi� fatto il setup
 			//dovrei mostrare un messaggio di errore.
 		}
-	}
+	}*/
 	
-	@Override
-	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		latitude = location.getLatitude();
-		longitude = location.getLongitude();
-		bearing = location.getBearing();
-		speed = location.getSpeed();
-		altitude = location.getAltitude();
-		CharSequence c = latitude + "-" + longitude;
-		Toast.makeText(context , c , Toast.LENGTH_LONG).show();
 
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
