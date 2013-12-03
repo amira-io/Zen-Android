@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import java.lang.reflect.*;
 
+import io.thera.zen.core.ZenLog;
+
 public class ZenTask extends AsyncTask<String, Void, String> {
 	
 	private String type;
@@ -61,11 +63,13 @@ public class ZenTask extends AsyncTask<String, Void, String> {
 			}
 		}
 		catch (IOException ioe) {
-			this.container.setText("IOException : " + ioe.getMessage());
+			//this.container.setText("IOException : " + ioe.getMessage());
+            ioe.printStackTrace();
 			return null;
 		}
 		catch (Exception e) {
-			this.container.setText("Exception : " + e.getMessage());
+			//this.container.setText("Exception : " + e.getMessage());
+            e.printStackTrace();
 			return null;
 		}
 		return null;
@@ -85,7 +89,15 @@ public class ZenTask extends AsyncTask<String, Void, String> {
                         params[0] = String.class;
                         Object[] values = new Object[1];
                         values[0] = result;
-                        this.caller.getClass().getMethod(this.method, params).invoke(this.caller, values);
+                        if (this.caller instanceof Class) {
+                            ZenLog.l("PROVO A CHIAMARE"+((Class) this.caller).getCanonicalName());
+                            ((Class) this.caller).getMethod(this.method, params).invoke(this.caller,values);
+                        }
+                        else {
+                            ZenLog.l("NON CLASSE PROVO A CHIAMARE"+this.caller.getClass().getCanonicalName());
+
+                            this.caller.getClass().getMethod(this.method, params).invoke(this.caller, values);
+                        }
 
 
 					  //JSONArray jsonArray = new JSONArray(result);

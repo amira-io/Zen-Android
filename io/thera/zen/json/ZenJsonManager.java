@@ -20,7 +20,7 @@ public class ZenJsonManager {
 		    }
 	}
 	
-	public static void getJsonFromUrl(String url , String method , Object caller) {
+	private static void getJsonFromUrl(String url , String method , Object caller) {
 	    
 	    try {
 	    	if (ZenAppManager.isConnected()) {
