@@ -26,6 +26,13 @@ public class ZenSettingsManager {
    static Integer[]                 DrawerLayoutIds;
 
 
+   static boolean                   hasExpandableMenu;
+
+    public static Boolean hasExpandableMenu() {
+        return hasExpandableMenu;
+    }
+
+
     public static String[] getDrawerMenuTitles() {
         return DrawerMenuTitles;
     }
@@ -104,6 +111,12 @@ public class ZenSettingsManager {
            }
 
            layoutType = (Integer) settings.getField("LAYOUT_TYPE").get(settings);
+
+           /*
+                CHECK IF OUR APP HAS A COLLAPSIBLE MENU
+            */
+
+            hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
            System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
 
