@@ -26,7 +26,15 @@ public abstract class ZenFragment extends Fragment {
 
     public static final String ARG_PLANET_NUMBER = "myFragment String";
 
-    private String title;
+    private  String title;
+
+    public   String getTitle () {
+
+        return title;
+
+    }
+
+
 
     private Activity currentActivity;
 
@@ -42,7 +50,13 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
+    public ZenFragment ( String cazzo) {
+        ZenLog.l(cazzo);
+    }
+
     public void setVariables ( Activity a , String title, Integer layoutId) {
+
+        ZenLog.l("SETTING VARIABLES " + title + " - " + this.getClass().getCanonicalName())  ;
         this.currentActivity 	= a;
         this.title 				= title;
         this.layoutId 			= layoutId;

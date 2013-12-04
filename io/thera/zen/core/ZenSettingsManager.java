@@ -200,4 +200,18 @@ public class ZenSettingsManager {
 
         return fontName;
     }
+
+    public static synchronized String getStorageFile () {
+        String storageFile;
+        try {
+            storageFile = (String) settings.getField("STORAGE_FILE").get(settings);
+            return storageFile;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return "io.thera.default.storage";
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return "io.thera.default.storage";
+        }
+    }
 }

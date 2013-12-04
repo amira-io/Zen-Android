@@ -43,7 +43,7 @@ public class ZenGeoUtil {
         callback = callback_name;
         caller = caller_name;
 
-        String url          = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true";
+        String url  = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true";
 
         ZenJsonManager.parseJson(url, "getAddress", ZenGeoUtil.class);
 

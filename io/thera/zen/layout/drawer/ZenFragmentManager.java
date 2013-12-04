@@ -18,6 +18,7 @@ import java.util.Map;
 
 import io.thera.zen.core.ZenAppManager;
 import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenNavigationManager;
 import io.thera.zen.core.ZenResManager;
 
 public class ZenFragmentManager {
@@ -25,8 +26,9 @@ public class ZenFragmentManager {
     static Map<String,Object> availableFragments = new HashMap<String,Object>();
 
 
-    public static void setZenFragment (String title, int position , Activity activity, DrawerLayout drawer , ListView drawerList) {
+    public static void setZenFragment (String title , Activity activity) {
 
+        ZenLog.l("SETZENFRAGMENT " + title + " - " + activity.getClass().getCanonicalName());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 
@@ -35,6 +37,7 @@ public class ZenFragmentManager {
 			 * API LEVEL GREATER OR EQUAL TO HONEYCOMB.
 			 */
 
+            ZenLog.l("AVAILABLEFRAGMENTS ARE: "+availableFragments);
             if (availableFragments.containsKey(title)) {
 				/*
 				 * IF WE HAVE ALREADY CREATED AN ATLFRAGMENT,
@@ -45,6 +48,21 @@ public class ZenFragmentManager {
                     ZenLog.l("old fragment");
                     int content_frame_id = ZenResManager.getResourceId("content_frame");
                     FragmentManager fragmentManager = activity.getFragmentManager();
+
+                    //TEST
+                    try {
+                        ZenLog.l("ABOUT TO PUSH" + (String) availableFragments.get(title).getClass().getMethod("getTitle",null).invoke(availableFragments.get(title),null));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    ZenNavigationManager.push(availableFragments.get(title));
+                    //TEST
+
                     fragmentManager.beginTransaction().replace(content_frame_id, (android.app.Fragment) availableFragments.get(title)).commit();
                     long d = System.nanoTime();
                     ZenAppManager.moveDrawer(true);
@@ -72,15 +90,23 @@ public class ZenFragmentManager {
                     ZenLog.l("create new fragment");
                     long p = System.nanoTime();
                     String toCallClass = ZenAppManager.getLayoutsString().get(title);
+
+                    //TENTATIVO
+                    int pos = ZenAppManager.getLayouts().get(title); //prima non esisteva.
+                    //TENTATIVO
+
                     toCallClass = Character.toUpperCase(toCallClass.charAt(0)) + toCallClass.substring(1);
                     Class toCall = Class.forName("app.Controllers."+toCallClass+"Controller");
                     ZenLog.l("app.Controllers."+toCallClass+"Controller");
                     try {
+                        /*
+
                         Object controller = toCall.newInstance();
+                        //Object controller = toCall.cast("ciaociaociaociaociaociaociaociaociao");
                         if (controller.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {
-							/*
-							 * QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
-							 */
+							//
+							// QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
+							//
                             Class[] paramTypes 	= new Class[3]; //prima era new class[2]
                             paramTypes[0] 		= Activity.class;
                             paramTypes[1] 		= String.class;
@@ -90,19 +116,116 @@ public class ZenFragmentManager {
                             //paramTypes[3] 		= DrawerLayout.class;
                             //paramTypes[4] 		= ListView.class;
 
-                            Integer layoutId = ZenAppManager.getLayoutIds()[position];
+                            //TENTATIVO
+                            //Integer layoutId = ZenAppManager.getLayoutIds()[pos]; // prima era position
+                             Integer layoutId = ZenAppManager.getLayouts().get(title);
+                            //TENTATIVO
 
                             toCall.getMethod("setVariables", paramTypes).invoke(controller, createParameters(activity, title, layoutId ));
 
+                            try {
+                                ZenLog.l("ALREADY SET" + (String) controller.getClass().getMethod("getTitle", null).invoke(controller, null));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+
                             int content_frame_id = ZenResManager.getResourceId("content_frame");
                             FragmentManager fragmentManager = activity.getFragmentManager();
+
+                            //TEST
+                            ZenNavigationManager.push(controller);
+                            //TEST
+
                             fragmentManager.beginTransaction().replace(content_frame_id, (android.app.Fragment) controller ).commit();
+                            ZenLog.l("SAVING " + title + " - " + controller.getClass().getCanonicalName());
                             availableFragments.put(title, controller);
+                            //TEST
+                            try {
+                                for (int i =0 ; i < availableFragments.keySet().size() ; i ++ ) {
+                                   String key = (String) availableFragments.keySet().toArray()[i];
+                                   ZenLog.l("MAP element " + (String) availableFragments.get(key).getClass().getMethod("getTitle", null).invoke(availableFragments.get(key), null));
+                                }
+                            } catch (IllegalAccessException eX) {
+                                eX.printStackTrace();
+                            } catch (InvocationTargetException eX) {
+                                eX.printStackTrace();
+                            } catch (NoSuchMethodException eX) {
+                                eX.printStackTrace();
+                            }
+                            //TEST
                             long d = System.nanoTime();
                             ZenLog.l("TIME to create new fragment " + (d-p));
 
                         }
-                    } catch (InstantiationException e) {
+                        */
+
+
+                        availableFragments.put(title, toCall.newInstance());
+
+                        if (availableFragments.get(title).getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {
+                            //
+                            // QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
+                            //
+                            Class[] paramTypes 	= new Class[3]; //prima era new class[2]
+                            paramTypes[0] 		= Activity.class;
+                            paramTypes[1] 		= String.class;
+
+                            paramTypes[2] 		= Integer.class;
+
+                            //paramTypes[3] 		= DrawerLayout.class;
+                            //paramTypes[4] 		= ListView.class;
+
+                            //TENTATIVO
+                            //Integer layoutId = ZenAppManager.getLayoutIds()[pos]; // prima era position
+                            Integer layoutId = ZenAppManager.getLayouts().get(title);
+                            //TENTATIVO
+
+                            toCall.getMethod("setVariables", paramTypes).invoke(availableFragments.get(title), createParameters(activity, title, layoutId ));
+
+                            try {
+                                ZenLog.l("ALREADY SET" + (String) availableFragments.get(title).getClass().getMethod("getTitle", null).invoke(availableFragments.get(title), null));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+
+                            int content_frame_id = ZenResManager.getResourceId("content_frame");
+                            FragmentManager fragmentManager = activity.getFragmentManager();
+
+                            //TEST
+                            ZenNavigationManager.push(availableFragments.get(title));
+                            //TEST
+
+                            fragmentManager.beginTransaction().replace(content_frame_id, (android.app.Fragment) availableFragments.get(title) ).commit();
+                            ZenLog.l("SAVING " + title + " - " + availableFragments.get(title).getClass().getCanonicalName());
+                            //TEST
+                            try {
+                                for (int i =0 ; i < availableFragments.keySet().size() ; i ++ ) {
+                                    String key = (String) availableFragments.keySet().toArray()[i];
+                                    ZenLog.l("MAP element " + (String) availableFragments.get(key).getClass().getMethod("getTitle", null).invoke(availableFragments.get(key), null));
+                                }
+                            } catch (IllegalAccessException eX) {
+                                eX.printStackTrace();
+                            } catch (InvocationTargetException eX) {
+                                eX.printStackTrace();
+                            } catch (NoSuchMethodException eX) {
+                                eX.printStackTrace();
+                            }
+                            //TEST
+                            long d = System.nanoTime();
+                            ZenLog.l("TIME to create new fragment " + (d-p));
+
+                        }
+                    }
+
+                     catch (InstantiationException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {

@@ -74,7 +74,7 @@ public class ZenGeoManager{
     }
 
 
-    public synchronized void stopListenPosition () {
+    public static synchronized void stopListenPosition () {
 
             isListenerSet = false;
             locationManager.removeUpdates(locationListener);

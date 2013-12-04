@@ -107,6 +107,11 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected	void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -215,7 +220,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                 ZenLog.l(""+view.getId());
                 long prima = System.nanoTime();
                 ZenLog.l("POSITION "+ position + " - ID  " + id);
-                ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), position, ZenAppManager.getActivity(), drawerLayout, drawerListView);
+                ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity());
                 long dopo = System.nanoTime();
                 ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
                 //updateLayout(((TextView) view).getText());

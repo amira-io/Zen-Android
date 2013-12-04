@@ -39,7 +39,8 @@ public class ZenLocationListener implements LocationListener {
                 ZenLog.l("NON CLASSE PROVO A CHIAMARE"+this.caller.getClass().getCanonicalName());
 
                 this.caller.getClass().getMethod(this.callback, params).invoke(this.caller, values);
-            }        } catch (IllegalAccessException e) {
+            }
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();

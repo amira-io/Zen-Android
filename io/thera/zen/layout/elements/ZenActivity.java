@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
 
+import io.thera.zen.core.ZenNavigationManager;
+
 /**
  * Created by marcostagni on 03/12/13.
  */
@@ -42,6 +44,11 @@ public abstract class ZenActivity extends Activity{
         buildElements();
     }
 
+    @Override
+    public  void onBackPressed() {
+        ZenNavigationManager.back();
+    }
+
     public abstract void getElements();
 
     public abstract void buildElements();
@@ -54,6 +61,7 @@ public abstract class ZenActivity extends Activity{
         startActivity(i);
 
         // close this activity
+        ZenNavigationManager.push(this);
         finish();
 
     }
@@ -71,6 +79,8 @@ public abstract class ZenActivity extends Activity{
                 startActivity(i);
 
                 // close this activity
+                ZenNavigationManager.push(this);
+
                 finish();
             }
         }, timeout);
