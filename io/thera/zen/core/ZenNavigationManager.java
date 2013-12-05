@@ -1,6 +1,8 @@
 package io.thera.zen.core;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import io.thera.zen.layout.drawer.ZenFragment;
@@ -10,6 +12,30 @@ import io.thera.zen.layout.drawer.ZenFragmentManager;
  * Created by marcostagni on 04/12/13.
  */
 public class ZenNavigationManager  {
+
+    /*
+        THIS WILL HELP US HANDLING PARAMETERS BETWEEN VIEWS.
+
+        MAP <STRING, MAP <CLASS, OBJECT>>
+
+        STRING  MEANS THE PARAMETER NAME
+        CLASS   IS PARAMETER'S CLASS
+        OBJECT  IS THE ACTUAL PARAMETER
+     */
+
+    static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+
+    public static synchronized  void setParameters( Map<String,Map<Class,Object>> params) {
+        parameters = params;
+    }
+
+    public static synchronized Map<String,Map<Class,Object>> getParameters () {
+        return parameters;
+    }
+
+    /*
+           STACK FOR BACK NAVIGATION
+     */
 
     private static Stack<Object> navigationStack = new Stack();
 
