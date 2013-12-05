@@ -1,8 +1,8 @@
 package io.thera.zen.geo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
+import android.support.v4.app.FragmentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +15,7 @@ public class ZenGeoUtil {
 	static String callback;
     static Object caller;
 
-	public static synchronized void setLocationManager(Activity a) {
+	public static synchronized void setLocationManager(FragmentActivity a) {
 		
 		//locationManager = (LocationManager) a.getSystemService(Context.LOCATION_SERVICE);
 		

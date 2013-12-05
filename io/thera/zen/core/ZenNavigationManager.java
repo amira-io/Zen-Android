@@ -32,8 +32,8 @@ public class ZenNavigationManager  {
     }
 
     public static synchronized Map<String,Map<Class,Object>> getParameters () {
-        Map<String,Map<Class,Object>> copy =  new HashMap<String, Map<Class, Object>>();
-        copy = parameters;
+        Map<String,Map<Class,Object>> copy =  new HashMap<String, Map<Class, Object>>(parameters);
+        //copy = parameters;
         parameters.clear();
 
         if (copy.isEmpty()) {
@@ -90,7 +90,13 @@ public class ZenNavigationManager  {
                         ZenLog.l("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
                         ZenLog.l("FRAGMENT TITLE: " + title);
-                        ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity());
+                        ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),false);
+                    }
+                    if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenDetailFragment")) {
+                        ZenLog.l("ISFRAGMENT");
+                        String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
+                        ZenLog.l("FRAGMENT TITLE: " + title);
+                        ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),true);
                     }
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
                         ZenLog.l("ISACTIVITY");

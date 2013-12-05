@@ -21,8 +21,7 @@ import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenNavigationManager;
 
 
-public abstract class ZenFragment extends Fragment {
-
+public abstract class ZenDetailFragment extends Fragment {
 
 
     public static final String ARG_PLANET_NUMBER = "myFragment String";
@@ -31,7 +30,7 @@ public abstract class ZenFragment extends Fragment {
         NAVIGATION PARAMETERS.
      */
 
-    //private  Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+    //private static Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
     private  String title;
 
@@ -49,7 +48,7 @@ public abstract class ZenFragment extends Fragment {
 
     private View rootView;
 
-    public ZenFragment () {
+    public ZenDetailFragment () {
 
 		/*
 		 * EMPTY CONSTRUCTOR
@@ -57,7 +56,7 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-    public ZenFragment ( String cazzo) {
+    public ZenDetailFragment ( String cazzo) {
         ZenLog.l(cazzo);
     }
 
@@ -87,7 +86,7 @@ public abstract class ZenFragment extends Fragment {
 	    /*
 	     * 	RETRIEVING VIEW.
 	     */
-         //= new View(currentActivity);
+        //= new View(currentActivity);
         try{
 
             //String layoutName = ATLAppManager.getLayouts().get(title);

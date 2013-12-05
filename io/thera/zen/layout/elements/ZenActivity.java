@@ -1,6 +1,6 @@
 package io.thera.zen.layout.elements;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
@@ -13,7 +13,7 @@ import io.thera.zen.core.ZenNavigationManager;
 /**
  * Created by marcostagni on 03/12/13.
  */
-public abstract class ZenActivity extends Activity{
+public abstract class ZenActivity extends FragmentActivity{
 
     /*
         NAVIGATION PARAMETERS.

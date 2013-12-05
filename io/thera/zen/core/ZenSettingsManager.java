@@ -89,6 +89,23 @@ public class ZenSettingsManager {
 
    }
 
+   static String ExpandableMenuLayout;
+
+   static String NotExpandableMenuLayout;
+
+   public static String getExpandableMenuLayout() {
+       return ExpandableMenuLayout;
+   }
+
+   public static String getNotExpandableMenuLayout() {
+       return NotExpandableMenuLayout;
+   }
+
+   static Map<String,String> detailMap;
+
+   public static Map<String,String> getDetailMap() {
+       return detailMap;
+   }
 
    public static synchronized void start() {
        /*
@@ -118,6 +135,10 @@ public class ZenSettingsManager {
 
             hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
+           NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
+
+           ExpandableMenuLayout     = (String) settings.getField("EXPANDABLE_MENU_LAYOUT").get(settings);
+
            System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
 
        } catch (ClassNotFoundException e) {
@@ -129,10 +150,6 @@ public class ZenSettingsManager {
        } catch (IllegalAccessException e) {
            e.printStackTrace();
        }
-
-
-
-
 
    }
 
@@ -164,6 +181,9 @@ public class ZenSettingsManager {
 
            }
 
+           detailMap = new HashMap<String,String>();
+           detailMap = (HashMap<String,String>) settings.getField("DETAIL_LAYOUTS").get(settings);
+
            ZenLog.l("lunghezza drawermenutitles"+DrawerMenuTitles.length + "__ ");
            ZenLog.l("lunghezza drawerlayoutids"+DrawerLayoutIds.length + "__ ");
            ZenLog.l("lunghezza drawerlayoutstring"+DrawerLayoutString.size() + "__ ");
@@ -183,7 +203,6 @@ public class ZenSettingsManager {
 
 
     }
-
 
     public static synchronized String getFont (int id) {
 

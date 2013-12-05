@@ -1,6 +1,5 @@
 package io.thera.zen.storage;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 

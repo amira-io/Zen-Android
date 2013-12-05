@@ -8,12 +8,12 @@ package io.thera.zen.core;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import android.app.*;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.Window;
+import android.support.v4.app.FragmentActivity;
 
 public class ZenAppManager {
 
@@ -38,6 +38,8 @@ public class ZenAppManager {
 
     static Integer[] layoutIds;
 
+    static Map<String,String> detailLayouts;
+
     static int layoutIndex = 0;
 
     public static Integer[] getLayoutIds() {
@@ -54,6 +56,10 @@ public class ZenAppManager {
 
         return ZenSettingsManager.getDrawerLayoutString();
 
+    }
+
+    public static Map<String,String> getDetailLayouts() {
+        return detailLayouts;
     }
 
 	/**
@@ -84,15 +90,15 @@ public class ZenAppManager {
 
     }
 
-    static Activity activity;
+    static FragmentActivity activity;
 
-    public static synchronized Activity getActivity() {
+    public static synchronized FragmentActivity getActivity() {
 
         return activity;
 
     }
 
-    public static synchronized void setActivity( Activity a) {
+    public static synchronized void setActivity( FragmentActivity a) {
 
         activity = a;
     }
@@ -139,7 +145,7 @@ public class ZenAppManager {
 	 * SETTING UP APP VARIABLE.
 	 */
 
-    public static synchronized boolean start (Activity a) {
+    public static synchronized boolean start (FragmentActivity a) {
         /**
          *  GETTING INITIAL VALUES FROM SETTINGS FILE
          */
@@ -206,6 +212,9 @@ public class ZenAppManager {
         layouts         = ZenSettingsManager.getDrawerLayoutMap();
         layoutsString   = ZenSettingsManager.getDrawerLayoutString();
         layoutIds       = ZenSettingsManager.getDrawerLayoutIds();
+
+        detailLayouts   = new HashMap<String,String>();
+        detailLayouts   = ZenSettingsManager.getDetailMap();
         ZenLog.l("printing length");
         ZenLog.l(layoutTitles.length);
 

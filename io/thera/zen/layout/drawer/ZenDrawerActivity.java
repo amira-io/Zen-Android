@@ -1,48 +1,31 @@
 package io.thera.zen.layout.drawer;
 
-import android.app.Activity;
 
 /**
  * Created by marcostagni on 28/11/13.
  */
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import io.thera.zen.core.*;
-import io.thera.zen.layout.drawer.*;
 import io.thera.zen.layout.elements.*;
-import io.thera.zen.listeners.touch.*;
 import io.thera.zen.listeners.drawer.*;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.app.*;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnKeyListener;
-import android.view.View.OnLayoutChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.SeekBar.*;
-import android.support.v4.app.*;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.*;
-import android.app.Fragment;
-import android.app.FragmentManager;
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
@@ -153,7 +136,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         if (ZenSettingsManager.hasExpandableMenu()) {
             //adding general view.
-            setContentView(ZenResManager.getLayoutId("activity_android_test_app")); //must be changed if we have a different menu
+            setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getExpandableMenuLayout())); //must be changed if we have a different menu
             prepareListData();
             listAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));
@@ -162,7 +145,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         }
         else {
             //adding general view.
-            setContentView(ZenResManager.getLayoutId("activity_android_test_app_noext")); //must be changed if we have a different menu
+            setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getNotExpandableMenuLayout())); //must be changed if we have a different menu
             this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
             this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             this.drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), drawerListViewItems));
@@ -304,7 +287,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     ZenLog.l(""+view.getId());
                     long prima = System.nanoTime();
                     ZenLog.l("POSITION "+ position + " - ID  " + id);
-                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity());
+                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity(),false);
                     long dopo = System.nanoTime();
                     ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
                     //updateLayout(((TextView) view).getText());
