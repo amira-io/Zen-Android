@@ -253,13 +253,22 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                 }
         );
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ZenLog.l("BACK BUTTON PRESSED");
+                ZenNavigationManager.back();
+            }
+        });
+        /*
         backButton.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ZenLog.l("BACK BUTTON PRESSED");
                 ZenNavigationManager.back();
                 return true;
             }
-        });
+        });*/
 
         if (!ZenSettingsManager.hasExpandableMenu()) {
 
