@@ -5,12 +5,22 @@ import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.thera.zen.core.ZenNavigationManager;
 
 /**
  * Created by marcostagni on 03/12/13.
  */
 public abstract class ZenActivity extends Activity{
+
+    /*
+        NAVIGATION PARAMETERS.
+     */
+
+    private static Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+
 
     /**
      * Called when the activity is starting.  This is where most initialization
@@ -40,6 +50,7 @@ public abstract class ZenActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        parameters = ZenNavigationManager.getParameters();
         getElements();
         buildElements();
     }

@@ -51,6 +51,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     private SeekBar 		bar;
     private GestureDetector gDetector;
     private ImageView 		drawerButton;
+    private ImageView       backButton;
 
     private TextView		title;
 
@@ -161,16 +162,16 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         }
         else {
             //adding general view.
-            setContentView(ZenResManager.getLayoutId("activity_android_test_app")); //must be changed if we have a different menu
+            setContentView(ZenResManager.getLayoutId("activity_android_test_app_noext")); //must be changed if we have a different menu
+            this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
             this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             this.drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), drawerListViewItems));
         }
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
 
-        this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
         this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
         this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
-
+        this.backButton             = (ImageView) findViewById(ZenResManager.getResourceId("ic_back"));
 
 
         /*
@@ -268,6 +269,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     }
                 }
         );
+
+        backButton.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ZenNavigationManager.back();
+                return true;
+            }
+        });
 
         if (!ZenSettingsManager.hasExpandableMenu()) {
 

@@ -21,6 +21,8 @@ public class ZenNavigationManager  {
         STRING  MEANS THE PARAMETER NAME
         CLASS   IS PARAMETER'S CLASS
         OBJECT  IS THE ACTUAL PARAMETER
+
+        AFTER GETTING PARAMETERS, THESE ARE DESTROYED.
      */
 
     static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
@@ -30,7 +32,15 @@ public class ZenNavigationManager  {
     }
 
     public static synchronized Map<String,Map<Class,Object>> getParameters () {
-        return parameters;
+        Map<String,Map<Class,Object>> copy =  new HashMap<String, Map<Class, Object>>();
+        copy = parameters;
+        parameters.clear();
+
+        if (copy.isEmpty()) {
+            return null;
+        }
+
+        return copy;
     }
 
     /*

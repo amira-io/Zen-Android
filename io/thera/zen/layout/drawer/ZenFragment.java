@@ -15,8 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.thera.zen.core.ZenAppManager;
 import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenNavigationManager;
 
 //import com.marcostagni.androidtestapp.R;
 
@@ -25,6 +29,12 @@ public abstract class ZenFragment extends Fragment {
 
 
     public static final String ARG_PLANET_NUMBER = "myFragment String";
+
+    /*
+        NAVIGATION PARAMETERS.
+     */
+
+    private static Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
     private  String title;
 
@@ -135,6 +145,7 @@ public abstract class ZenFragment extends Fragment {
          *  TO GETELEMENTS AND SETUPELEMENTS,
          */
         ZenAppManager.moveDrawer(true);
+        parameters = ZenNavigationManager.getParameters();
         getElements();
         buildElements();
         return rootView;
