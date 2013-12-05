@@ -3,6 +3,7 @@ package io.thera.zen.layout.drawer;
 /**
  * Created by marcostagni on 04/12/13.
  */
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenResManager;
 
 public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
@@ -24,9 +26,15 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> _listDataChild;
 
     public ZenExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
+
+        ZenLog.l("listDataHeader" +(listDataHeader == null));
         this._context = context;
+        this._listDataHeader = new ArrayList<String>();
         this._listDataHeader = listDataHeader;
+
+        this._listDataChild = new HashMap<String, List<String>>();
         this._listDataChild = listChildData;
+        ZenLog.l("SIZE " + this._listDataHeader.size());
     }
 
     @Override
@@ -47,10 +55,10 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(ZenResManager.getLayoutId("drawer_list_item"), null);
+            convertView = infalInflater.inflate(ZenResManager.getLayoutId("drawer_listview_item"), null);
         }
 
-        TextView txtListChild = (TextView) convertView.findViewById(ZenResManager.getResourceId("text1"));
+        TextView txtListChild = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_item"));
 
         txtListChild.setText(childText);
         return convertView;
@@ -82,7 +90,7 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(ZenResManager.getLayoutId("list_group"), null);
+            convertView = infalInflater.inflate(ZenResManager.getLayoutId("drawer_listview_group"), null);
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_header"));

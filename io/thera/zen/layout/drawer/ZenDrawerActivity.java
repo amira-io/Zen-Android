@@ -140,25 +140,37 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
     public void setUpElements () {
 
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
 		/*
 		 * RETRIEVING LAYOUT ELEMENTS.
 		 */
         //this.context 				= this.getApplicationContext();
 
-        this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
-        this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
-        this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
-        this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
+
+
 
         if (ZenSettingsManager.hasExpandableMenu()) {
+            //adding general view.
+            setContentView(ZenResManager.getLayoutId("activity_android_test_app")); //must be changed if we have a different menu
+            prepareListData();
             listAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
-            expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));    
+            expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             expListView.setAdapter(listAdapter);
 
         }
         else {
+            //adding general view.
+            setContentView(ZenResManager.getLayoutId("activity_android_test_app")); //must be changed if we have a different menu
+            this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             this.drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), drawerListViewItems));
         }
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
+
+        this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
+        this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
+        this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
+
 
 
         /*
@@ -209,21 +221,6 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         listDataChild.put(listDataHeader.get(2), comingSoon);
     }
 
-    public void handleMenuTouch(View v, MotionEvent e) {
-
-        //Toast.makeText(AndroidTestApp.this, "touch handled", Toast.LENGTH_LONG).show();
-
-        Animation menuAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId("hyperspace_jump"));
-
-        drawerButton.startAnimation(menuAnimation);
-        if (drawerLayout.isDrawerOpen(drawerListView)) {
-            drawerLayout.closeDrawer(drawerListView);
-        }
-        else {
-            drawerLayout.openDrawer(drawerListView);
-        }
-        //ATLAppManager.moveDrawer();
-    }
 
     public void addListeners () {
 
@@ -235,59 +232,84 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             drawerButtonAnimation = null;
         }
 
+        drawerLayout.setDrawerListener(new ZenDrawerListener());
+
         drawerButton.setOnTouchListener(
                 new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-
-                        if (drawerButtonAnimation != null) {
-                            drawerButton.startAnimation(drawerButtonAnimation);
-                        }
-                        if (drawerLayout.isDrawerOpen(drawerListView)) {
-                            drawerLayout.closeDrawer(drawerListView);
-                            return true;
+                        if (!ZenSettingsManager.hasExpandableMenu()) {
+                            if (drawerButtonAnimation != null) {
+                                drawerButton.startAnimation(drawerButtonAnimation);
+                            }
+                            if (drawerLayout.isDrawerOpen(drawerListView)) {
+                                drawerLayout.closeDrawer(drawerListView);
+                                return true;
+                            }
+                            else {
+                                drawerLayout.openDrawer(drawerListView);
+                                return true;
+                            }
                         }
                         else {
-                            drawerLayout.openDrawer(drawerListView);
-                            return true;
+                            if (drawerButtonAnimation != null) {
+                                drawerButton.startAnimation(drawerButtonAnimation);
+                            }
+                            if (drawerLayout.isDrawerOpen(expListView)) {
+                                drawerLayout.closeDrawer(expListView);
+                                return true;
+                            }
+                            else {
+                                drawerLayout.openDrawer(expListView);
+                                return true;
+                            }
                         }
+
                     }
                 }
         );
-        drawerLayout.setDrawerListener(new ZenDrawerListener());
 
-        drawerListView.setOnItemClickListener(new OnItemClickListener() {
+        if (!ZenSettingsManager.hasExpandableMenu()) {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
 
-                //Toast.makeText(AndroidTestApp.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
-				/*
-				 * CREATE A NEW FRAGMENT WITH OUR ATLFragmentManager.
-				 *
-				 * inside res/values/strings.xml
-				 * there's a String array named fragmentNameList.
-				 * Each value MUST be the exact id of the
-				 * layout to load.
-				 */
 
-                //drawerLayout.closeDrawer(drawerListView);
-                //drawerLayout.
-                ZenLog.l("inside itemclicklistener");
-                ZenLog.l(""+view.getId());
-                long prima = System.nanoTime();
-                ZenLog.l("POSITION "+ position + " - ID  " + id);
-                ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity());
-                long dopo = System.nanoTime();
-                ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
-                //updateLayout(((TextView) view).getText());
-            }
+            drawerListView.setOnItemClickListener(new OnItemClickListener() {
 
-        });
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                        long id) {
 
-        //gDetector = new GestureDetector(context, this);
+                    //Toast.makeText(AndroidTestApp.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
+                    /*
+                     * CREATE A NEW FRAGMENT WITH OUR ATLFragmentManager.
+                     *
+                     * inside res/values/strings.xml
+                     * there's a String array named fragmentNameList.
+                     * Each value MUST be the exact id of the
+                     * layout to load.
+                     */
 
+                    //drawerLayout.closeDrawer(drawerListView);
+                    //drawerLayout.
+                    ZenLog.l("inside itemclicklistener");
+                    ZenLog.l(""+view.getId());
+                    long prima = System.nanoTime();
+                    ZenLog.l("POSITION "+ position + " - ID  " + id);
+                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity());
+                    long dopo = System.nanoTime();
+                    ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
+                    //updateLayout(((TextView) view).getText());
+                }
+
+            });
+
+            //gDetector = new GestureDetector(context, this);
+        }
+        else {
+            /*
+                   settings for extendable menu.
+             */
+        }
 
     }
 

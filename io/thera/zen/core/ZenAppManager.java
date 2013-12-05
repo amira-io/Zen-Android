@@ -229,9 +229,7 @@ public class ZenAppManager {
         }
         */
 
-        activity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        activity.setContentView(ZenResManager.getLayoutId("activity_android_test_app"));
-        activity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
+
     }
 }
 
