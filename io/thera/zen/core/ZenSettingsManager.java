@@ -107,6 +107,25 @@ public class ZenSettingsManager {
        return detailMap;
    }
 
+   static List<String> expandableMenuGroups;
+
+    public static List<String> getExpandableMenuGroups () {
+        return expandableMenuGroups;
+    }
+
+    static Map<String,List<String>> expandableMenuMap;
+
+    public static Map<String,List<String>> getExpandableMenuMap() {
+         return expandableMenuMap;
+    }
+
+    static Map<String,String> expandableMenuLayoutsMap;
+
+    public static Map<String,String> getExpandableMenuLayoutsMap() {
+        return expandableMenuLayoutsMap;
+    }
+
+
    public static synchronized void start() {
        /*
             GETTING GENERAL VARIABLES
@@ -140,6 +159,33 @@ public class ZenSettingsManager {
            ExpandableMenuLayout     = (String) settings.getField("EXPANDABLE_MENU_LAYOUT").get(settings);
 
            System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
+
+           if (hasExpandableMenu) {
+
+               expandableMenuGroups = new ArrayList<String>();
+               expandableMenuLayoutsMap = new HashMap<String, String>();
+               expandableMenuMap = new HashMap<String, List<String>>();
+
+               String[] groups = (String[]) settings.getField("GROUPS").get(settings);
+               for (int i = 0; i < groups.length ; i++ ) {
+
+                   expandableMenuGroups.add(groups[i]);
+
+                   String[] group_names     = (String[]) settings.getField(groups[i]+"_NAMES").get(settings);
+                   String[] group_layouts   = (String[]) settings.getField(groups[i]+"_LAYOUTS").get(settings);
+
+                   List<String> lista = new ArrayList<String>();
+
+                   if (group_layouts.length == group_names.length) {
+                       for (int j =0 ; j < group_names.length ; j++ ) {
+                           expandableMenuLayoutsMap.put(group_names[j], group_layouts[j]);
+                           lista.add(group_names[j]);
+                       }
+
+                       expandableMenuMap.put(groups[i],lista);
+                   }
+               }
+           }
 
        } catch (ClassNotFoundException e) {
            e.printStackTrace();

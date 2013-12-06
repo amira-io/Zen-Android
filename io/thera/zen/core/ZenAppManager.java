@@ -40,6 +40,13 @@ public class ZenAppManager {
 
     static Map<String,String> detailLayouts;
 
+
+    static Map<String,String> expandableMenuLayoutsMap;
+
+    public static Map<String,String> getExpandableMenuLayoutsMap() {
+        return expandableMenuLayoutsMap;
+    }
+
     static int layoutIndex = 0;
 
     public static Integer[] getLayoutIds() {
@@ -217,6 +224,11 @@ public class ZenAppManager {
         detailLayouts   = ZenSettingsManager.getDetailMap();
         ZenLog.l("printing length");
         ZenLog.l(layoutTitles.length);
+
+        if (ZenSettingsManager.hasExpandableMenu()) {
+            expandableMenuLayoutsMap = new HashMap<String, String>();
+            expandableMenuLayoutsMap = ZenSettingsManager.getExpandableMenuLayoutsMap();
+        }
 
         /*
         layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));

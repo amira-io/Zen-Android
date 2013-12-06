@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.*;
 
 import io.thera.zen.layout.drawer.ZenFragment;
 import io.thera.zen.layout.drawer.ZenFragmentManager;
@@ -16,23 +17,21 @@ public class ZenNavigationManager  {
     /*
         THIS WILL HELP US HANDLING PARAMETERS BETWEEN VIEWS.
 
-        MAP <STRING, MAP <CLASS, OBJECT>>
-
-        STRING  MEANS THE PARAMETER NAME
-        CLASS   IS PARAMETER'S CLASS
-        OBJECT  IS THE ACTUAL PARAMETER
+        List<Object> parameters = new ArrayList<Object>();
 
         AFTER GETTING PARAMETERS, THESE ARE DESTROYED.
      */
 
-    static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+    //static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
-    public static synchronized  void setParameters( Map<String,Map<Class,Object>> params) {
+    static List<Object> parameters = new ArrayList<Object>();
+
+    public static synchronized  void setParameters( List<Object> params) {
         parameters = params;
     }
 
-    public static synchronized Map<String,Map<Class,Object>> getParameters () {
-        Map<String,Map<Class,Object>> copy =  new HashMap<String, Map<Class, Object>>(parameters);
+    public static synchronized List<Object> getParameters () {
+        List<Object> copy =  new ArrayList<Object>(parameters);
         //copy = parameters;
         parameters.clear();
 

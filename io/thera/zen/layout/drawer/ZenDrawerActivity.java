@@ -8,6 +8,7 @@ package io.thera.zen.layout.drawer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.thera.zen.core.*;
 import io.thera.zen.layout.elements.*;
@@ -48,7 +49,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    Map<String, List<String>> listDataChild;
 
     /*
      * ACTIVITY METHODS.
@@ -138,6 +139,12 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             //adding general view.
             setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getExpandableMenuLayout())); //must be changed if we have a different menu
             prepareListData();
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<String>>();
+
+            listDataHeader = ZenSettingsManager.getExpandableMenuGroups();
+            listDataChild = ZenSettingsManager.getExpandableMenuMap();
+
             listAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             expListView.setAdapter(listAdapter);
@@ -310,6 +317,24 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             /*
                    settings for extendable menu.
              */
+            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            listDataHeader.get(groupPosition)
+                                    + " : "
+                                    + listDataChild.get(
+                                    listDataHeader.get(groupPosition)).get(
+                                    childPosition), Toast.LENGTH_SHORT)
+                            .show();
+
+                    ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
+
+                    return true;
+                }
+            });
         }
 
     }
@@ -319,12 +344,23 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 	 */
 
     public void closeDrawer() {
-        drawerLayout.closeDrawer(drawerListView);
+        if (ZenSettingsManager.hasExpandableMenu()) {
+            drawerLayout.closeDrawer(expListView);
+        }
+        else {
+            drawerLayout.closeDrawer(drawerListView);
+
+        }
     }
 
     public void openDrawer() {
-        drawerLayout.openDrawer(drawerListView);
-    }
+        if (ZenSettingsManager.hasExpandableMenu()) {
+            drawerLayout.openDrawer(expListView);
+        }
+        else {
+            drawerLayout.openDrawer(drawerListView);
+
+        }    }
 
 }
 

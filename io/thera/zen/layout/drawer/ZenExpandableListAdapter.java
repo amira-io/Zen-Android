@@ -6,6 +6,7 @@ package io.thera.zen.layout.drawer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -23,9 +24,9 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private Map<String, List<String>> _listDataChild;
 
-    public ZenExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
+    public ZenExpandableListAdapter(Context context, List<String> listDataHeader, Map<String, List<String>> listChildData) {
 
         ZenLog.l("listDataHeader" +(listDataHeader == null));
         this._context = context;

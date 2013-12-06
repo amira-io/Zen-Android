@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import io.thera.zen.core.ZenNavigationManager;
 
@@ -19,7 +18,7 @@ public abstract class ZenActivity extends FragmentActivity{
         NAVIGATION PARAMETERS.
      */
 
-    private static Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+    //private static List<Object> parameters = new ArrayList<Object>();
 
 
     /**
@@ -50,7 +49,8 @@ public abstract class ZenActivity extends FragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parameters = ZenNavigationManager.getParameters();
+        //parameters = new ArrayList<Object>();
+        //parameters = ZenNavigationManager.getParameters();
         getElements();
         buildElements();
     }
