@@ -30,6 +30,12 @@ public class ZenNavigationManager  {
         parameters = params;
     }
 
+    public static boolean isBack  = false;
+
+    public static synchronized boolean isBack() {
+        return isBack;
+    }
+
     public static synchronized List<Object> getParameters () {
         List<Object> copy =  new ArrayList<Object>(parameters);
         //copy = parameters;
@@ -89,13 +95,17 @@ public class ZenNavigationManager  {
                         ZenLog.l("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
                         ZenLog.l("FRAGMENT TITLE: " + title);
+                        isBack = true;
                         ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),false);
+                        isBack = false;
                     }
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenDetailFragment")) {
                         ZenLog.l("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
                         ZenLog.l("FRAGMENT TITLE: " + title);
+                        isBack = true;
                         ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),true);
+                        isBack = false;
                     }
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
                         ZenLog.l("ISACTIVITY");

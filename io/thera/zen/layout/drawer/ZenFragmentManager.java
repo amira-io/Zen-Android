@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 
 import android.os.Build;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ListView;
 
@@ -67,7 +68,18 @@ public class ZenFragmentManager {
                     ZenNavigationManager.push(availableFragments.get(title));
                     //TEST
 
-                    fragmentManager.beginTransaction().replace(content_frame_id, (Fragment) availableFragments.get(title)).commit();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                    if (ZenNavigationManager.isBack()){
+
+                        transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+
+                    }
+                    else {
+                        transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
+                    }
+
+                    transaction.replace(content_frame_id, (Fragment) availableFragments.get(title)).commit();
                     long d = System.nanoTime();
                     ZenAppManager.moveDrawer(true);
                     ZenLog.l("TIME to recover old "+(d-p));
@@ -181,7 +193,17 @@ public class ZenFragmentManager {
                         ZenNavigationManager.push(controller);
                         //TEST
 
-                        fragmentManager.beginTransaction().replace(content_frame_id, (Fragment) controller ).commit();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                        if (ZenNavigationManager.isBack()){
+
+                            transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+
+                        }
+                        else {
+                            transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
+                        }
+                        transaction.replace(content_frame_id, (Fragment) controller ).commit();
                         ZenLog.l("SAVING " + title + " - " + controller.getClass().getCanonicalName());
 
                         long d = System.nanoTime();
