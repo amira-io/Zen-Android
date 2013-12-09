@@ -54,14 +54,31 @@ public class ZenNavigationManager  {
 
     private static Stack<Object> navigationStack = new Stack();
 
-    private static Object current;
+    private static String previous = ZenSettingsManager.getFirstView(); //to store previous position
 
 
     public static synchronized void push ( Object object) {
         try {
             ZenLog.l("PUSH" + (String) object.getClass().getMethod("getTitle",null).invoke(object,null));
             ZenLog.l("BEFORE PUSH" + navigationStack.size());
-            navigationStack.push(object);
+
+            if (navigationStack.isEmpty()) {
+                previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                navigationStack.push(object);
+                return;
+            }
+
+
+            if ((!( object.getClass().getMethod("getTitle",null).invoke(object,null).equals(previous)))) {
+
+                /**
+                 *  L'OGGETTO VIENE INSERITO NELLO STACK SOLO SE NON è UGUALE A QUELLO PRECEDENTE.
+                 *  ESEMPIO: POTREI AVER CLICCATO COME UN EBETE SULLA STESSA VOCE DEL MENU
+                 */
+                previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                navigationStack.push(object);
+
+            }
             ZenLog.l("AFTER PUSH" + navigationStack.size());
         }
         catch (Exception e) {
@@ -119,8 +136,11 @@ public class ZenNavigationManager  {
                     }
                 }
             }
+
             else {
-                ZenLog.l("sono vuoto cazzo");
+
+                ZenAppManager.getActivity().finish();
+
             }
 
         }

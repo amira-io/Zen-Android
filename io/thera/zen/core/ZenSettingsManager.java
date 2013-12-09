@@ -8,7 +8,7 @@ import java.util.*;
 
 public class ZenSettingsManager {
 
-   /*
+    /*
         dev MUST provide a valid settings file
         inside app.settings package.
 
@@ -17,20 +17,34 @@ public class ZenSettingsManager {
             app.settings.Settings.java
     */
 
-   static Class settings;
+    /**
+     *  SETTINGS FILE.
+     */
 
-   static String[]                  DrawerMenuTitles;
-   static String[]                  DrawerMenuLayouts;
-   static Map<String , Integer>     DrawerLayoutMap;
-   static Map<String , String>      DrawerLayoutString;
-   static Integer[]                 DrawerLayoutIds;
+    static Class settings;
 
+    /**
+     *  LAYOUT TYPE.
+     */
 
-   static boolean                   hasExpandableMenu;
+    static Integer layoutType;
 
-    public static Boolean hasExpandableMenu() {
-        return hasExpandableMenu;
+    public static Integer getLayoutType() {
+
+        return layoutType;
+
     }
+
+
+    /**
+     *  DRAWER LAYOUT SETTINGS.
+     */
+
+    static String[]                  DrawerMenuTitles;
+    static String[]                  DrawerMenuLayouts;
+    static Map<String , Integer>     DrawerLayoutMap;
+    static Map<String , String>      DrawerLayoutString;
+    static Integer[]                 DrawerLayoutIds;
 
 
     public static String[] getDrawerMenuTitles() {
@@ -75,39 +89,54 @@ public class ZenSettingsManager {
 
     static String drawerButtonAnimation;
 
-   static Integer layoutType;
-
-   public static Integer getLayoutType() {
-
-       return layoutType;
-
-   }
-
-   public static String getDrawerButtonAnimation() {
+    public static String getDrawerButtonAnimation() {
 
        return drawerButtonAnimation;
 
-   }
+    }
 
-   static String ExpandableMenuLayout;
 
-   static String NotExpandableMenuLayout;
 
-   public static String getExpandableMenuLayout() {
-       return ExpandableMenuLayout;
-   }
+    /**
+    *    DETAIL VIEWS.
+    */
 
-   public static String getNotExpandableMenuLayout() {
-       return NotExpandableMenuLayout;
-   }
+    static Map<String,String> detailMap;
 
-   static Map<String,String> detailMap;
-
-   public static Map<String,String> getDetailMap() {
+    public static Map<String,String> getDetailMap() {
        return detailMap;
-   }
+    }
 
-   static List<String> expandableMenuGroups;
+    /**
+     *  EXPANDABLE MENU
+     */
+
+    static boolean  hasExpandableMenu;
+
+    public static Boolean hasExpandableMenu() {
+        return hasExpandableMenu;
+    }
+
+    static boolean onlyOneIsOpen;
+
+    public static Boolean onlyOneIsOpen() {
+        return onlyOneIsOpen;
+    }
+
+    static String NotExpandableMenuLayout;
+
+    static String ExpandableMenuLayout;
+
+
+    public static String getExpandableMenuLayout() {
+        return ExpandableMenuLayout;
+    }
+
+    public static String getNotExpandableMenuLayout() {
+        return NotExpandableMenuLayout;
+    }
+
+    static List<String> expandableMenuGroups;
 
     public static List<String> getExpandableMenuGroups () {
         return expandableMenuGroups;
@@ -125,12 +154,27 @@ public class ZenSettingsManager {
         return expandableMenuLayoutsMap;
     }
 
+    /**
+     *  FIRST VIEW
+     */
 
-   public static synchronized void start() {
+    static String firstView;
+
+    public static String getFirstView() {
+     return firstView;
+    }
+
+
+    /**
+     *  SETTINGS METHODS.
+     */
+
+    public static synchronized void start() {
        /*
             GETTING GENERAL VARIABLES
         */
        try {
+
 
            settings = Class.forName("app.settings.Settings");
            /*
@@ -152,7 +196,7 @@ public class ZenSettingsManager {
                 CHECK IF OUR APP HAS A COLLAPSIBLE MENU
             */
 
-            hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
+           hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
            NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
 
@@ -161,6 +205,8 @@ public class ZenSettingsManager {
            System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
 
            if (hasExpandableMenu) {
+
+               onlyOneIsOpen = (Boolean) settings.getField("ONLY_ONE_IS_OPEN").get(settings);
 
                expandableMenuGroups = new ArrayList<String>();
                expandableMenuLayoutsMap = new HashMap<String, String>();
@@ -175,17 +221,35 @@ public class ZenSettingsManager {
                    String[] group_layouts   = (String[]) settings.getField(groups[i]+"_LAYOUTS").get(settings);
 
                    List<String> lista = new ArrayList<String>();
+                   int gll = group_layouts.length;
+                   int gnl = group_names.length;
 
-                   if (group_layouts.length == group_names.length) {
-                       for (int j =0 ; j < group_names.length ; j++ ) {
-                           expandableMenuLayoutsMap.put(group_names[j], group_layouts[j]);
-                           lista.add(group_names[j]);
+                   if ((gll!=0) && (gnl!=0)) {
+                       if (group_layouts.length == group_names.length) {
+                           for (int j =0 ; j < group_names.length ; j++ ) {
+                               expandableMenuLayoutsMap.put(group_names[j], group_layouts[j]);
+                               lista.add(group_names[j]);
+                           }
+
                        }
-
-                       expandableMenuMap.put(groups[i],lista);
                    }
+                   else {
+                       String single_layout = (String) settings.getField(groups[i]+"_LAYOUT").get(settings);
+                       expandableMenuLayoutsMap.put(groups[i],single_layout);
+                   }
+
+                   expandableMenuMap.put(groups[i],lista);
+
+
                }
            }
+
+           /*
+                GETTING VERY FIRST VIEW.
+
+            */
+
+           firstView = (String) settings.getField("FIRST_VIEW").get(settings);
 
        } catch (ClassNotFoundException e) {
            e.printStackTrace();
@@ -197,9 +261,9 @@ public class ZenSettingsManager {
            e.printStackTrace();
        }
 
-   }
+    }
 
-   public static synchronized void parseDrawerMenuLayout() {
+    public static synchronized void parseDrawerMenuLayout() {
 
        try {
 

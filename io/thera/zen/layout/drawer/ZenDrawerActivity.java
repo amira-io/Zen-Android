@@ -317,18 +317,33 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             /*
                    settings for extendable menu.
              */
+
+            expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    if (ZenSettingsManager.onlyOneIsOpen()) {
+                        for (int i = 0; i < listDataHeader.size() ; i++) {
+                            if (i!=groupPosition) {
+                                expListView.collapseGroup(i);
+                            }
+                        }
+                    }
+                }
+            });
+
+
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            listDataHeader.get(groupPosition)
-                                    + " : "
-                                    + listDataChild.get(
-                                    listDataHeader.get(groupPosition)).get(
-                                    childPosition), Toast.LENGTH_SHORT)
-                            .show();
+                    //Toast.makeText(
+                    //        getApplicationContext(),
+                    //        listDataHeader.get(groupPosition)
+                    //                + " : "
+                    //                + listDataChild.get(
+                    //                listDataHeader.get(groupPosition)).get(
+                    //                childPosition), Toast.LENGTH_SHORT)
+                    //        .show();
 
                     ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
 

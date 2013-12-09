@@ -20,6 +20,9 @@ public abstract class ZenActivity extends FragmentActivity{
 
     //private static List<Object> parameters = new ArrayList<Object>();
 
+    private String title;
+
+
 
     /**
      * Called when the activity is starting.  This is where most initialization
@@ -51,6 +54,8 @@ public abstract class ZenActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         //parameters = new ArrayList<Object>();
         //parameters = ZenNavigationManager.getParameters();
+
+
         getElements();
         buildElements();
     }
@@ -59,7 +64,11 @@ public abstract class ZenActivity extends FragmentActivity{
     public  void onBackPressed() {
         ZenNavigationManager.back();
     }
-
+    /**
+     * BISOGNA ASSOLUTAMENTE CHIAMARE IL METODO .setTitle() per ogni activity.
+     *
+     *      ASSOLUTAMENTE,
+     */
     public abstract void getElements();
 
     public abstract void buildElements();

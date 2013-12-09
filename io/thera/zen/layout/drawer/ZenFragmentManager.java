@@ -115,8 +115,9 @@ public class ZenFragmentManager {
 
                     if (ZenSettingsManager.hasExpandableMenu()) {
 
-                        toCallClass = ZenAppManager.getExpandableMenuLayoutsMap().get(title).replace(" " ,"_") ;
-                        layoutId = ZenResManager.getLayoutId(ZenAppManager.getExpandableMenuLayoutsMap().get(title));   //MUST BE MODIFIED.
+                        toCallClass = ZenAppManager.getExpandableMenuLayoutsMap().get(title).replace(" " ,"_");
+                        layoutId    = ZenResManager.getLayoutId(ZenAppManager.getExpandableMenuLayoutsMap().get(title));   //MUST BE MODIFIED.
+
                     }
                     else {
 

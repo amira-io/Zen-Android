@@ -15,6 +15,8 @@ import android.net.NetworkInfo;
 import android.view.Window;
 import android.support.v4.app.FragmentActivity;
 
+import io.thera.zen.layout.drawer.ZenFragmentManager;
+
 public class ZenAppManager {
 
     static Object current;
@@ -200,6 +202,12 @@ public class ZenAppManager {
 
             }
         }
+
+        /**
+         * SETTING FIRST VIEW
+         */
+        ZenLog.l("FIRST VIEW"+ZenSettingsManager.getFirstView()+"\n\n");
+        ZenFragmentManager.setZenFragment( ZenSettingsManager.getFirstView(),ZenAppManager.getActivity() , false);
         return true;
     }
 
