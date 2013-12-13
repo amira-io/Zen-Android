@@ -28,6 +28,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.widget.*;
 
+
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
 
@@ -166,6 +167,18 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         /*
          * END OF ELEMENT RETRIEVING.
+         */
+
+        /**
+         *  FUCKING TESTING NEW FEATURE
+         */
+           // SlidingMenu menu = new SlidingMenu(this);
+           // menu.setMode(SlidingMenu.LEFT);
+           // menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+           // menu.setFadeDegree(0.35f);
+           // menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        /**
+         *  END OF FUCKING TESTING OF NEW FEATURE
          */
 
     }

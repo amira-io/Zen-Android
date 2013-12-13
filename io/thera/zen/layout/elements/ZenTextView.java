@@ -13,10 +13,17 @@ import io.thera.zen.core.*;
  */
 public class ZenTextView extends TextView {
 
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
+
     public ZenTextView(Context context) {
         super(context);
         ZenLog.l(this.getId());
         this.init();
+
     }
 
     public ZenTextView(Context context, AttributeSet attrs) {

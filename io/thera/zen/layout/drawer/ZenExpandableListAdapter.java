@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import io.thera.zen.core.ZenAppManager;
 import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenResManager;
+import io.thera.zen.core.ZenSettingsManager;
 
 public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -95,7 +97,10 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_header"));
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+
+        String fontName = ZenSettingsManager.getFont(convertView.getId()); //errore
+
+        lblListHeader.setTypeface(Typeface.createFromAsset(ZenAppManager.getActivity().getAssets(), "fonts/" + fontName), 1);
         lblListHeader.setText(headerTitle);
 
         return convertView;

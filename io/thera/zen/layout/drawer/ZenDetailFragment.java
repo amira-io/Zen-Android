@@ -6,9 +6,11 @@ package io.thera.zen.layout.drawer;
  * Copyright © 2013. Thera Technologies.
  */
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +74,15 @@ public abstract class ZenDetailFragment extends Fragment {
         return rootView.findViewById(id);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+
+        ZenLog.l("ATTACH");
+
+        super.onAttach(activity);
+
+        process();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,7 +160,20 @@ public abstract class ZenDetailFragment extends Fragment {
 
 
 
-	/*
+    @Override
+    public void onStart() {
+
+        ZenLog.l("START");
+        super.onStart();
+    }
+
+    @Override
+    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
+        ZenLog.l("INFLATE");
+        super.onInflate(activity, attrs, savedInstanceState);
+    }
+
+    /*
 	 * THESE METHODS MUST BE IMPLEMENTED IN SUBCLASS.
 	 */
 
@@ -161,6 +185,9 @@ public abstract class ZenDetailFragment extends Fragment {
 
 
     public abstract void buildElements();
+
+
+    public abstract void process();
 
 	/*
 	 * HANDLER METHODS.
