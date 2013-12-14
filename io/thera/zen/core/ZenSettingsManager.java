@@ -326,7 +326,7 @@ public class ZenSettingsManager {
             return null;
         } catch (NoSuchFieldException e) {
 
-            e.printStackTrace();
+            //e.printStackTrace();
             try {
             fontName = (String) settings.getField("DEFAULT_FONT").get(settings);
             }

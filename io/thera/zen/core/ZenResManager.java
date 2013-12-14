@@ -1,5 +1,11 @@
 package io.thera.zen.core;
 
+import android.graphics.drawable.Drawable;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import io.thera.zen.R;
+
 /**
  * Created by marcostagni on 26/11/13
  *
@@ -113,10 +119,12 @@ public class ZenResManager {
 
     }
 
-    /*
-	 * METHOD FOR GETTING ANIMATIONS
-	 */
-
+    /**
+     * METHOD FOR GETTING ANIMATION ID
+     *
+     * @param array
+     * @return
+     */
     public static synchronized Integer getAnimId (String array) {
         try {
             Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
@@ -144,6 +152,73 @@ public class ZenResManager {
 
 
 
+    }
+
+    public static synchronized Animation getAnimation( String name ) {
+
+        try {
+            Animation a;
+            a = AnimationUtils.loadAnimation(ZenAppManager.getActivity().getApplicationContext(), getAnimId(name));
+            return a;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * METHOD FOR GETTING DRAWABLE ID
+     * @param drawable
+     * @return
+     */
+
+    public static synchronized Integer getDrawableId ( String drawable ) {
+        try {
+            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+
+            for (int i = 0; i < set.length ; i++) {
+                if (set[i].getCanonicalName().endsWith("drawable")) {
+                    return (Integer) set[i].getField(drawable).get(Class.forName(ZenAppManager.getResourceClass()));
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return null;
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return null;
+
+
+
+    }
+
+    /**
+     * METHOD FOR GETTING DRAWABLE FROM ID.
+     * @param name
+     * @return
+     */
+
+    public static synchronized Drawable getDrawable ( String name ) {
+
+        try {
+            Drawable d =  ZenAppManager.getActivity().getApplicationContext().getResources().getDrawable(getDrawableId(name));
+            return d;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

@@ -170,6 +170,16 @@ public abstract class ZenFragment extends Fragment {
 
     public abstract void buildElements();
 
+    /**
+     * BISOGNA CONTROLLARE CHE OGNI OGGETTO USATO IN PROCESS
+     *
+     * E OTTENUTO IN GETELEMENTS(); NON SIA NULL.
+     *
+     * process() viene chiamato PRIMA di getElements();
+     *
+     * se l'elemento di layout preso è null, va recuperato nuovamente.
+     *
+     */
     public abstract void process();
 
 	/*
