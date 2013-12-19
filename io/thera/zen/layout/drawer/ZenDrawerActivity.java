@@ -35,22 +35,22 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
     private SeekBar 		bar;
     private GestureDetector gDetector;
-    private ImageView 		drawerButton;
-    private ImageView       backButton;
+    private Button	    	drawerButton;
+    private Button          backButton;
 
     private TextView		title;
 
-    private String[] drawerListViewItems;
-    private ListView drawerListView;
+    private String[]        drawerListViewItems;
+    private ListView        drawerListView;
 
-    private DrawerLayout drawerLayout;
+    private DrawerLayout    drawerLayout;
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     //to handle extendable menu.
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    Map<String, List<String>> listDataChild;
+    ExpandableListAdapter       listAdapter;
+    ExpandableListView          expListView;
+    List<String>                listDataHeader;
+    Map<String, List<String>>   listDataChild;
 
     /*
      * ACTIVITY METHODS.
@@ -150,6 +150,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             expListView.setAdapter(listAdapter);
 
+            //TEMP
+            expListView.setCacheColorHint(0);
+
         }
         else {
             //adding general view.
@@ -160,9 +163,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         }
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
 
-        this.drawerButton			= (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
+        this.drawerButton			= (Button) findViewById(ZenResManager.getResourceId("ic_menu"));
         this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
-        this.backButton             = (ImageView) findViewById(ZenResManager.getResourceId("ic_back"));
+        this.backButton             = (Button) findViewById(ZenResManager.getResourceId("ic_back"));
 
 
         /*
