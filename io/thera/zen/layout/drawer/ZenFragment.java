@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.thera.zen.core.ZenAppManager;
@@ -42,7 +44,7 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-
+    public boolean created = false;
 
     private FragmentActivity currentActivity;
 
@@ -77,8 +79,9 @@ public abstract class ZenFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        process();
+        if (created) {
+            onDisplay();
+        }
     }
 
     @Override
@@ -152,6 +155,7 @@ public abstract class ZenFragment extends Fragment {
         //parameters = ZenNavigationManager.getParameters();
         getElements();
         buildElements();
+        created = true;
         return rootView;
     }
 
@@ -179,8 +183,12 @@ public abstract class ZenFragment extends Fragment {
      *
      * se l'elemento di layout preso è null, va recuperato nuovamente.
      *
+     * insert
+     *
+     * if (canProcess) { .. code here ..}
+     *
      */
-    public abstract void process();
+    public abstract void onDisplay();
 
 	/*
 	 * HANDLER METHODS.
@@ -188,6 +196,12 @@ public abstract class ZenFragment extends Fragment {
 
     public abstract void handleTouch();
 
+    public static void sendParameters(Object o) {
 
+        List<Object> parameters = new ArrayList<Object>();
+        parameters.add(o);
+
+        ZenNavigationManager.setParameters(parameters);
+    }
 
 }
