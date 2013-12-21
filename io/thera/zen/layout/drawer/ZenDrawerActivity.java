@@ -241,21 +241,21 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         drawerLayout.setDrawerListener(new ZenDrawerListener());
 
-        drawerButton.setOnTouchListener(
-                new OnTouchListener() {
+        drawerButton.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
+                    public void onClick(View v) {
                         if (!ZenSettingsManager.hasExpandableMenu()) {
                             if (drawerButtonAnimation != null) {
                                 drawerButton.startAnimation(drawerButtonAnimation);
                             }
                             if (drawerLayout.isDrawerOpen(drawerListView)) {
                                 drawerLayout.closeDrawer(drawerListView);
-                                return true;
+                                //return true;
                             }
                             else {
                                 drawerLayout.openDrawer(drawerListView);
-                                return true;
+                                //return true;
                             }
                         }
                         else {
@@ -264,11 +264,11 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                             }
                             if (drawerLayout.isDrawerOpen(expListView)) {
                                 drawerLayout.closeDrawer(expListView);
-                                return true;
+                                //return true;
                             }
                             else {
                                 drawerLayout.openDrawer(expListView);
-                                return true;
+                                //return true;
                             }
                         }
 
