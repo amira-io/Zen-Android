@@ -93,7 +93,27 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
         String headerTitle = (String) getGroup(groupPosition);
         //if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //se il children count è uguale a zero, dobbiamo considerare questo elemento come un pulsante.
+        if (getChildrenCount(groupPosition)==0) {
+            String layout;
+            final String toCall = ((String) getGroup(groupPosition));
+            layout = (String) getGroup(groupPosition) + "_menu";
+            layout = layout.toLowerCase();
+            layout.replace(" " , "_");
+            convertView = infalInflater.inflate(ZenResManager.getLayoutId(layout), null);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZenLog.l("GROUP ZERO"+ toCall);
+                    ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity() , false);
+                }
+            });
+        }
+        else {
             convertView = infalInflater.inflate(ZenResManager.getLayoutId("drawer_listview_group"), null);
+
+        }
         //}
 
         TextView lblListHeader = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_header"));

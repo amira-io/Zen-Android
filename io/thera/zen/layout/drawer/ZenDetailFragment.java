@@ -157,8 +157,11 @@ public abstract class ZenDetailFragment extends Fragment {
          */
         ZenAppManager.moveDrawer(true);
         //parameters = ZenNavigationManager.getParameters();
-        getElements();
-        buildElements();
+        //if (!created)  {
+        ZenLog.l("oncreateview");
+            getElements();
+            buildElements();
+        //}
 
         created = true;
         return rootView;

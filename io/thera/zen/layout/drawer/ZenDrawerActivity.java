@@ -337,6 +337,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 @Override
                 public void onGroupExpand(int groupPosition) {
+                    /*if (listDataChild.get(listDataHeader.get(groupPosition)).size() == 0) {
+                        //vuol dire che stiamo cliccando un elemento del menu con zero figli.
+                        String layout = ZenSettingsManager.getExpandableMenuLayoutsMap().get(listDataHeader.get(groupPosition));
+                        //ZenLog.l("single layout" + layout);
+                        ZenFragmentManager.setZenFragment(layout, ZenAppManager.getActivity() , false);
+                        closeDrawer();
+                        return;
+                    }*/
                     if (ZenSettingsManager.onlyOneIsOpen()) {
                         for (int i = 0; i < listDataHeader.size() ; i++) {
                             if (i!=groupPosition) {
@@ -347,6 +355,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                 }
             });
 
+            expListView.setGroupIndicator(null);
 
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
