@@ -10,13 +10,13 @@ public class ZenMenuItem {
     public String title;
     public String layout;
     public String param;
-    public List<ZenMenuItem> childs;
+    public List<ZenMenuItem> children;
 
-    public ZenMenuItem(String title, String layout, String param, List<ZenMenuItem> childs) {
+    public ZenMenuItem(String title, String layout, String param, List<ZenMenuItem> children) {
         this.title = title;
         this.layout = layout;
         this.param = param;
-        this.childs = childs;
+        this.children = children;
     }
 
     public ZenMenuItem(String title, String layout, String param) {
@@ -24,6 +24,6 @@ public class ZenMenuItem {
     }
 
     public boolean addChild(ZenMenuItem item) {
-        return this.childs.add(item);
+        return this.children.add(item);
     }
 }

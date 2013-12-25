@@ -204,7 +204,7 @@ public class ZenSettingsManager {
            appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
 
            for (int i=0; i < appMenu.length; i++) {
-               if (appMenu[i].childs.size() > 0) {
+               if (appMenu[i].children.size() > 0) {
                    hasExpandableMenu = true;
                    break;
                }
@@ -232,12 +232,12 @@ public class ZenSettingsManager {
                    List<String> lista = new ArrayList<String>();
                    expandableMenuGroups.add(appMenu[i].title);
 
-                   if (appMenu[i].childs.size() > 0) {
-                       ZenMenuItem[] childs = appMenu[i].childs.toArray(new ZenMenuItem[appMenu[i].childs.size()]);
+                   if (appMenu[i].children.size() > 0) {
+                       ZenMenuItem[] children = appMenu[i].children.toArray(new ZenMenuItem[appMenu[i].children.size()]);
 
-                       for (int j=0; j<childs.length; j++) {
-                           expandableMenuLayoutsMap.put(childs[j].title, childs[j].layout);
-                           lista.add(childs[j].title);
+                       for (int j=0; j<children.length; j++) {
+                           expandableMenuLayoutsMap.put(children[j].title, children[j].layout);
+                           lista.add(children[j].title);
                        }
                    }
                    else {
