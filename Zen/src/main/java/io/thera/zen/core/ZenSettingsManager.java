@@ -6,6 +6,8 @@ package io.thera.zen.core;
 
 import java.util.*;
 
+import io.thera.zen.utils.ZenMenuItem;
+
 public class ZenSettingsManager {
 
     /*
@@ -39,6 +41,8 @@ public class ZenSettingsManager {
     /**
      *  DRAWER LAYOUT SETTINGS.
      */
+
+    static ZenMenuItem[] appMenu;
 
     static String[]                  DrawerMenuTitles;
     static String[]                  DrawerMenuLayouts;
@@ -196,7 +200,17 @@ public class ZenSettingsManager {
                 CHECK IF OUR APP HAS A COLLAPSIBLE MENU
             */
 
-           hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
+           List<ZenMenuItem> Menu = (List<ZenMenuItem>) settings.getField("MENU").get(settings);
+           appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
+
+           for (int i=0; i < appMenu.length; i++) {
+               if (appMenu[i].childs.size() > 0) {
+                   hasExpandableMenu = true;
+                   break;
+               }
+           }
+
+           //hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
            NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
 
@@ -212,11 +226,30 @@ public class ZenSettingsManager {
                expandableMenuLayoutsMap = new HashMap<String, String>();
                expandableMenuMap = new HashMap<String, List<String>>();
 
-               String[] groups = (String[]) settings.getField("GROUPS").get(settings);
-               for (int i = 0; i < groups.length ; i++ ) {
+               //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
+               for (int i = 0; i < appMenu.length ; i++ ) {
 
-                   expandableMenuGroups.add(groups[i]);
+                   List<String> lista = new ArrayList<String>();
+                   expandableMenuGroups.add(appMenu[i].title);
 
+                   if (appMenu[i].childs.size() > 0) {
+                       ZenMenuItem[] childs = appMenu[i].childs.toArray(new ZenMenuItem[appMenu[i].childs.size()]);
+
+                       for (int j=0; j<childs.length; j++) {
+                           expandableMenuLayoutsMap.put(childs[j].title, childs[j].layout);
+                           lista.add(childs[j].title);
+                       }
+                   }
+                   else {
+                       expandableMenuLayoutsMap.put(appMenu[i].title, appMenu[i].layout);
+                   }
+
+                   ZenLog.l(appMenu[i].title);
+                   ZenLog.l(lista.size());
+
+                   expandableMenuMap.put(appMenu[i].title, lista);
+
+                   /*
                    String[] group_names     = (String[]) settings.getField(groups[i]+"_NAMES").get(settings);
                    String[] group_layouts   = (String[]) settings.getField(groups[i]+"_LAYOUTS").get(settings);
 
@@ -240,6 +273,7 @@ public class ZenSettingsManager {
 
                    expandableMenuMap.put(groups[i],lista);
 
+                   */
 
                }
            }
@@ -270,8 +304,21 @@ public class ZenSettingsManager {
           // DrawerMenuTitles    = (String[]) settings.getField("MENU_TITLES").get(settings);
           // DrawerMenuLayouts   = (String[]) settings.getField("MENU_LAYOUT").get(settings);
 
-           DrawerMenuTitles   = (String[]) settings.getField("MENU_TITLES").get(settings);
-           DrawerMenuLayouts  = (String[]) settings.getField("MENU_LAYOUTS").get(settings);
+           List<String> titles = new ArrayList<String>();
+           List<String> layouts = new ArrayList<String>();
+
+           for (int i = 0; i < appMenu.length ; i++ ) {
+
+               titles.add(appMenu[i].title);
+               layouts.add(appMenu[i].layout);
+
+           }
+
+           DrawerMenuTitles = titles.toArray(new String[titles.size()]);
+           DrawerMenuLayouts = layouts.toArray(new String[layouts.size()]);
+
+           //DrawerMenuTitles   = (String[]) settings.getField("MENU_TITLES").get(settings);
+           //DrawerMenuLayouts  = (String[]) settings.getField("MENU_LAYOUTS").get(settings);
 
            DrawerLayoutString = new HashMap<String,String>();
            DrawerLayoutMap = new HashMap<String, Integer>();
