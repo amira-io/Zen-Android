@@ -27,6 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.widget.*;
+import io.thera.zen.layout.drawer.ZenFragment;
 
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
@@ -51,6 +52,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     ExpandableListView          expListView;
     List<String>                listDataHeader;
     Map<String, List<String>>   listDataChild;
+
+    Map<String, List<String>>   listDataParams;
 
     /*
      * ACTIVITY METHODS.
@@ -152,6 +155,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
             //TEMP
             expListView.setCacheColorHint(0);
+
+            // TEMP Parameters
+            //listDataParams = new HashMap<String, List<String>>();
+            listDataParams = ZenSettingsManager.getExpandableMenuParams();
 
         }
         else {
@@ -370,7 +377,21 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     //                childPosition), Toast.LENGTH_SHORT)
                     //        .show();
 
-                    ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
+                    //TEMP:
+                    String[] p = {
+                            //"scoprire",
+                            listDataHeader.get(groupPosition).toLowerCase(),
+                            listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition)
+                    };
+                    ZenLog.l("Sending parameter: "+p[0]+" "+p[1]);
+                    //ZenFragment.sendParameters(listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition));
+                    ZenFragment.sendParameters(p);
+                    String tit = listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition);
+                    String lay = ZenAppManager.getExpandableMenuLayoutsMap().get(tit).replace(" " ,"_");
+                    //
+
+                    //ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
+                    ZenFragmentManager.setZenFragment(lay, ZenAppManager.getActivity(),true);
 
                     return true;
                 }

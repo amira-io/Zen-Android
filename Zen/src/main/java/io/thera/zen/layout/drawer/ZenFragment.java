@@ -204,4 +204,14 @@ public abstract class ZenFragment extends Fragment {
         ZenNavigationManager.setParameters(parameters);
     }
 
+    public static void sendParameters(Object[] o) {
+        List<Object> parameters = new ArrayList<Object>();
+        for (int i=0; i<o.length; i++) {
+            parameters.add(o[i]);
+        }
+
+        ZenNavigationManager.setParameters(parameters);
+
+    }
+
 }

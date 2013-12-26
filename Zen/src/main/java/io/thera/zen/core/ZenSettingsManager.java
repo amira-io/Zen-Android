@@ -152,6 +152,12 @@ public class ZenSettingsManager {
          return expandableMenuMap;
     }
 
+    static Map<String,List<String>> expandableMenuParams;
+
+    public static Map<String,List<String>> getExpandableMenuParams() {
+        return expandableMenuParams;
+    }
+
     static Map<String,String> expandableMenuLayoutsMap;
 
     public static Map<String,String> getExpandableMenuLayoutsMap() {
@@ -225,11 +231,13 @@ public class ZenSettingsManager {
                expandableMenuGroups = new ArrayList<String>();
                expandableMenuLayoutsMap = new HashMap<String, String>();
                expandableMenuMap = new HashMap<String, List<String>>();
+               expandableMenuParams = new HashMap<String, List<String>>();
 
                //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
                for (int i = 0; i < appMenu.length ; i++ ) {
 
                    List<String> lista = new ArrayList<String>();
+                   List<String> params = new ArrayList<String>();
                    expandableMenuGroups.add(appMenu[i].title);
 
                    if (appMenu[i].children.size() > 0) {
@@ -238,6 +246,7 @@ public class ZenSettingsManager {
                        for (int j=0; j<children.length; j++) {
                            expandableMenuLayoutsMap.put(children[j].title, children[j].layout);
                            lista.add(children[j].title);
+                           params.add(children[j].param);
                        }
                    }
                    else {
@@ -248,6 +257,7 @@ public class ZenSettingsManager {
                    ZenLog.l(lista.size());
 
                    expandableMenuMap.put(appMenu[i].title, lista);
+                   expandableMenuParams.put(appMenu[i].title, params);
 
                    /*
                    String[] group_names     = (String[]) settings.getField(groups[i]+"_NAMES").get(settings);
