@@ -108,6 +108,7 @@ public class ZenNavigationManager  {
 
                 if (!(o==null)) {
                     ZenLog.l("NOTEMPTY");
+                    /*
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {
                         ZenLog.l("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
@@ -124,6 +125,7 @@ public class ZenNavigationManager  {
                         ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),true);
                         isBack = false;
                     }
+                    */
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
                         ZenLog.l("ISACTIVITY");
                         Class[] params = new Class[1];
@@ -133,6 +135,14 @@ public class ZenNavigationManager  {
                         values[0] = o;
                         ZenAppManager.getActivity().getClass().getMethod("goTo",params).invoke(ZenAppManager.getActivity(),values);
 
+                    }
+                    else {
+                        ZenLog.l("ISFRAGMENT");
+                        String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
+                        ZenLog.l("FRAGMENT TITLE: " + title);
+                        isBack = true;
+                        ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity());
+                        isBack = false;
                     }
                 }
             }

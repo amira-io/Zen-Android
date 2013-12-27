@@ -30,7 +30,7 @@ public class ZenFragmentManager {
     static Map<String,Object> availableFragments = new HashMap<String,Object>();
 
 
-    public static void setZenFragment (String title , FragmentActivity activity , boolean isDetail) {
+    public static void setZenFragment (String title , FragmentActivity activity) {
 
         ZenLog.l("SETZENFRAGMENT " + title + " - " + activity.getClass().getCanonicalName());
 
@@ -110,6 +110,8 @@ public class ZenFragmentManager {
 
                 String toCallClass;
                 Integer layoutId;
+
+                boolean isDetail = ZenSettingsManager.getDetailMap().containsKey(title);
 
                 if (!isDetail) {
 

@@ -207,7 +207,7 @@ public class ZenAppManager {
          * SETTING FIRST VIEW
          */
         ZenLog.l("FIRST VIEW"+ZenSettingsManager.getFirstView()+"\n\n");
-        ZenFragmentManager.setZenFragment( ZenSettingsManager.getFirstView(),ZenAppManager.getActivity() , false);
+        ZenFragmentManager.setZenFragment( ZenSettingsManager.getFirstView(),ZenAppManager.getActivity());
         return true;
     }
 

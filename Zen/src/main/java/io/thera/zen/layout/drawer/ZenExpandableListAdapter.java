@@ -106,7 +106,7 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     ZenLog.l("GROUP ZERO"+ toCall);
-                    ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity() , false);
+                    ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity());
                 }
             });
         }
