@@ -325,7 +325,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     ZenLog.l(""+view.getId());
                     long prima = System.nanoTime();
                     ZenLog.l("POSITION "+ position + " - ID  " + id);
-                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity(),false);
+                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText(), ZenAppManager.getActivity());
                     long dopo = System.nanoTime();
                     ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
                     //updateLayout(((TextView) view).getText());
@@ -388,7 +388,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     ZenNavigationManager.setParameters(params);
 
                     //ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
-                    ZenFragmentManager.setZenFragment(lay, ZenAppManager.getActivity(),true);
+                    ZenFragmentManager.setZenFragment(lay, ZenAppManager.getActivity());
 
                     return true;
                 }
