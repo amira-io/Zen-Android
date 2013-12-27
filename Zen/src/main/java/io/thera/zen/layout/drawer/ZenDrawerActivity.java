@@ -27,7 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.widget.*;
-import io.thera.zen.layout.drawer.ZenFragment;
 
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
@@ -378,17 +377,15 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     //        .show();
 
                     //TEMP:
-                    String[] p = {
-                            //"scoprire",
-                            listDataHeader.get(groupPosition).toLowerCase(),
-                            listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition)
-                    };
-                    ZenLog.l("Sending parameter: "+p[0]+" "+p[1]);
-                    //ZenFragment.sendParameters(listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition));
-                    ZenFragment.sendParameters(p);
                     String tit = listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition);
                     String lay = ZenAppManager.getExpandableMenuLayoutsMap().get(tit).replace(" " ,"_");
                     //
+                    List<Object> params = new ArrayList<Object>();
+                    if (ZenSettingsManager.menuParentsAsParams()) {
+                        params.add(listDataHeader.get(groupPosition).toLowerCase());
+                    }
+                    params.add(listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition));
+                    ZenNavigationManager.setParameters(params);
 
                     //ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
                     ZenFragmentManager.setZenFragment(lay, ZenAppManager.getActivity(),true);

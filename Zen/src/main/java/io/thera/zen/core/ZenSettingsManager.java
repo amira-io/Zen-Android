@@ -164,6 +164,12 @@ public class ZenSettingsManager {
         return expandableMenuLayoutsMap;
     }
 
+    static boolean menuParentsAsParams;
+
+    public static Boolean menuParentsAsParams() {
+        return menuParentsAsParams;
+    }
+
     /**
      *  FIRST VIEW
      */
@@ -294,6 +300,8 @@ public class ZenSettingsManager {
             */
 
            firstView = (String) settings.getField("FIRST_VIEW").get(settings);
+
+           menuParentsAsParams = (Boolean) settings.getField("MENU_PARENTS_AS_PARAMS").get(settings);
 
        } catch (ClassNotFoundException e) {
            e.printStackTrace();
