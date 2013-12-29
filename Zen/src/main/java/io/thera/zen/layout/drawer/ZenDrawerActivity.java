@@ -28,6 +28,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.widget.*;
 
+import io.thera.zen.layout.slider.ZenSlidingMenu;
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
@@ -43,7 +44,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     private String[]        drawerListViewItems;
     private ListView        drawerListView;
 
-    private DrawerLayout    drawerLayout;
+    private RelativeLayout    drawerLayout;
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     //to handle extendable menu.
@@ -53,6 +54,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     Map<String, List<String>>   listDataChild;
 
     Map<String, List<String>>   listDataParams;
+
+    private ZenSlidingMenu sMenu;
 
     /*
      * ACTIVITY METHODS.
@@ -141,6 +144,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         if (ZenSettingsManager.hasExpandableMenu()) {
             //adding general view.
             setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getExpandableMenuLayout())); //must be changed if we have a different menu
+            /*
             prepareListData();
             listDataHeader = new ArrayList<String>();
             listDataChild = new HashMap<String, List<String>>();
@@ -158,6 +162,23 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             // TEMP Parameters
             //listDataParams = new HashMap<String, List<String>>();
             listDataParams = ZenSettingsManager.getExpandableMenuParams();
+            */
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<String>>();
+
+            listDataHeader = ZenSettingsManager.getExpandableMenuGroups();
+            listDataChild = ZenSettingsManager.getExpandableMenuMap();
+
+            listAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
+            //expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_drawer"));
+            //expListView.setAdapter(listAdapter);
+
+            //TEMP
+            //expListView.setCacheColorHint(0);
+
+            // TEMP Parameters
+            //listDataParams = new HashMap<String, List<String>>();
+            listDataParams = ZenSettingsManager.getExpandableMenuParams();
 
         }
         else {
@@ -166,11 +187,12 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             this.drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
             this.drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
             this.drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), drawerListViewItems));
+            this.drawerLayout 			= (RelativeLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
         }
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
 
         this.drawerButton			= (Button) findViewById(ZenResManager.getResourceId("ic_menu"));
-        this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
+        //this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
         this.backButton             = (Button) findViewById(ZenResManager.getResourceId("ic_back"));
 
 
@@ -181,59 +203,29 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         /**
          *  FUCKING TESTING NEW FEATURE
          */
-           // SlidingMenu menu = new SlidingMenu(this);
-           // menu.setMode(SlidingMenu.LEFT);
-           // menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-           // menu.setFadeDegree(0.35f);
-           // menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+
+        sMenu = new ZenSlidingMenu(this, ZenSlidingMenu.SLIDING_WINDOW);
+        sMenu.setFadeDegree(0.35f);
+        sMenu.setShadowWidth(100);
+        /*
+        sMenu.setMenu(ZenResManager.getLayoutId("sliding_test"));
+        drawerListViewItems 	= ZenSettingsManager.getDrawerMenuTitles();//this.getResources().getStringArray(ZenResManager.getArrayId("items"));
+        drawerListView 		= (ListView) findViewById(ZenResManager.getResourceId("left_slide"));
+        drawerListView.setAdapter(new ArrayAdapter<String>(this, ZenResManager.getLayoutId("sliding_elem"), drawerListViewItems));
+        */
+        sMenu.setMenu(ZenResManager.getLayoutId("sliding_test_exp"));
+        expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_slide"));
+        expListView.setAdapter(listAdapter);
+        expListView.setCacheColorHint(0);
+        sMenu.setBehindOffset(160);
+
+        this.drawerLayout = (RelativeLayout) findViewById(ZenResManager.getResourceId("sliding_layout"));
+        
         /**
          *  END OF FUCKING TESTING OF NEW FEATURE
          */
 
     }
-
-    /*
-    * Preparing the list data
-    */
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
-
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
-    }
-
 
     public void addListeners () {
 
@@ -245,7 +237,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             drawerButtonAnimation = null;
         }
 
-        drawerLayout.setDrawerListener(new ZenDrawerListener());
+        //drawerLayout.setDrawerListener(new ZenDrawerListener());
 
         drawerButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -255,6 +247,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                             if (drawerButtonAnimation != null) {
                                 drawerButton.startAnimation(drawerButtonAnimation);
                             }
+                            /*
                             if (drawerLayout.isDrawerOpen(drawerListView)) {
                                 drawerLayout.closeDrawer(drawerListView);
                                 //return true;
@@ -263,11 +256,13 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                                 drawerLayout.openDrawer(drawerListView);
                                 //return true;
                             }
+                            */
                         }
                         else {
                             if (drawerButtonAnimation != null) {
                                 drawerButton.startAnimation(drawerButtonAnimation);
                             }
+                            /*
                             if (drawerLayout.isDrawerOpen(expListView)) {
                                 drawerLayout.closeDrawer(expListView);
                                 //return true;
@@ -276,6 +271,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                                 drawerLayout.openDrawer(expListView);
                                 //return true;
                             }
+                            */
+                            sMenu.toggle();
                         }
 
                     }
@@ -390,6 +387,31 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     //ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
                     ZenFragmentManager.setZenFragment(lay, ZenAppManager.getActivity());
 
+                    sMenu.toggle();
+
+                    return true;
+                }
+            });
+
+            expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    if (expListView.getExpandableListAdapter().getChildrenCount(groupPosition)==0) {
+                        String layout;
+                        final String toCall = ((String) expListView.getExpandableListAdapter().getGroup(groupPosition));
+                        ZenLog.l("GROUP ZERO"+ toCall);
+                        ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity());
+                        sMenu.toggle();
+                    }
+                    else {
+                        if (expListView.isGroupExpanded(groupPosition)) {
+                            expListView.collapseGroup(groupPosition);
+                        }
+                        else {
+                            expListView.expandGroup(groupPosition);
+                        }
+                    }
                     return true;
                 }
             });
@@ -400,7 +422,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 	/*
 	 * CLOSE DRAWER ACTIVITY
 	 */
-
+    /*
     public void closeDrawer() {
         if (ZenSettingsManager.hasExpandableMenu()) {
             drawerLayout.closeDrawer(expListView);
@@ -419,7 +441,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             drawerLayout.openDrawer(drawerListView);
 
         }    }
-
+    */
 }
 
 
