@@ -155,7 +155,7 @@ public abstract class ZenDetailFragment extends Fragment {
          *  SUBCLASS MUST PROVIDE IMPLEMENTATION
          *  TO GETELEMENTS AND SETUPELEMENTS,
          */
-        ZenAppManager.moveDrawer(true);
+        //ZenAppManager.moveDrawer(true);
         //parameters = ZenNavigationManager.getParameters();
         //if (!created)  {
         ZenLog.l("oncreateview");
