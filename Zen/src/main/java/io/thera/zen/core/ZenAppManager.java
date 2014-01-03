@@ -32,44 +32,16 @@ public class ZenAppManager {
 
     static Stack<Object> currentStack;
 
-    static String[] layoutNames;
-    static String[] layoutTitles;
+    //static Map<String,Integer> layouts = new HashMap<String,Integer>();
+    static Map<String, String> layouts = new HashMap<String,String>();
 
-    static Map<String,Integer> layouts = new HashMap<String,Integer>();
-    static Map<String, String> layoutsString = new HashMap<String,String>();
-
-    static Integer[] layoutIds;
+    public static Map<String, String> getLayouts() { return layouts; }
 
     static Map<String,String> detailLayouts;
 
-
-    static Map<String,String> expandableMenuLayoutsMap;
-
-    public static Map<String,String> getExpandableMenuLayoutsMap() {
-        return expandableMenuLayoutsMap;
-    }
+    public static Map<String,String> getDetailLayouts() { return detailLayouts; }
 
     static int layoutIndex = 0;
-
-    public static Integer[] getLayoutIds() {
-        return ZenSettingsManager.getDrawerLayoutIds();
-    }
-
-    public static Map<String,Integer> getLayouts() {
-
-        return ZenSettingsManager.getDrawerLayoutMap();
-
-    }
-
-    public static Map<String,String> getLayoutsString() {
-
-        return ZenSettingsManager.getDrawerLayoutString();
-
-    }
-
-    public static Map<String,String> getDetailLayouts() {
-        return detailLayouts;
-    }
 
 	/**
 	 * CONNECTION FLAG.
@@ -207,7 +179,7 @@ public class ZenAppManager {
          * SETTING FIRST VIEW
          */
         ZenLog.l("FIRST VIEW"+ZenSettingsManager.getFirstView()+"\n\n");
-        ZenFragmentManager.setZenFragment( ZenSettingsManager.getFirstView(),ZenAppManager.getActivity());
+        ZenFragmentManager.setZenFragment(ZenSettingsManager.getFirstView());
         return true;
     }
 
@@ -220,44 +192,11 @@ public class ZenAppManager {
 		/**
 		 * LOAD VIEW ARRAY FROM RESOURCES.
 		 */
-        System.out.println("sono prima di parsedrawer");
-        ZenSettingsManager.parseDrawerMenuLayout();
-        layoutTitles    = ZenSettingsManager.getDrawerMenuTitles();
-        layoutNames     = ZenSettingsManager.getDrawerMenuLayouts();
-        layouts         = ZenSettingsManager.getDrawerLayoutMap();
-        layoutsString   = ZenSettingsManager.getDrawerLayoutString();
-        layoutIds       = ZenSettingsManager.getDrawerLayoutIds();
+
+        layouts = ZenSettingsManager.getMenuLayouts();
 
         detailLayouts   = new HashMap<String,String>();
         detailLayouts   = ZenSettingsManager.getDetailMap();
-        ZenLog.l("printing length");
-        ZenLog.l(layoutTitles.length);
-
-        if (ZenSettingsManager.hasExpandableMenu()) {
-            expandableMenuLayoutsMap = new HashMap<String, String>();
-            expandableMenuLayoutsMap = ZenSettingsManager.getExpandableMenuLayoutsMap();
-        }
-
-        /*
-        layoutTitles = activity.getResources().getStringArray(ZenResManager.getArrayId("items"));
-        layoutNames = activity.getResources().getStringArray(ZenResManager.getArrayId("layouts"));
-
-        if (layoutTitles.length == layoutNames.length) {
-
-            layoutIds = new Integer[layoutTitles.length];
-
-            for (int i = 0; i < layoutTitles.length; i++) {
-
-                Integer  id     = ZenResManager.getLayoutId(layoutNames[i]);
-                layoutIds[i]    = id;
-                layouts.put(layoutTitles[i], id);
-                layoutsString.put(layoutTitles[i], layoutNames[i]);
-
-            }
-
-        }
-        */
-
 
     }
 }

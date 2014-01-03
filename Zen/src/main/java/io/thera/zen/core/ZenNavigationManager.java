@@ -141,7 +141,7 @@ public class ZenNavigationManager  {
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
                         ZenLog.l("FRAGMENT TITLE: " + title);
                         isBack = true;
-                        ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity());
+                        ZenFragmentManager.setZenFragment(title);
                         isBack = false;
                     }
                 }
