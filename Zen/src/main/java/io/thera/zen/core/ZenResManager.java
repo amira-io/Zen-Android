@@ -221,4 +221,38 @@ public class ZenResManager {
         }
     }
 
+
+    public static synchronized int getDimenId(String resource) {
+        try {
+            //set di classi dichiarate da R (layout, id, array, ecc ecc)
+            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //cerco la classe id
+            for (int i = 0; i < set.length ; i++) {
+
+                if (set[i].getCanonicalName().endsWith("dimen")) {
+                    //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
+                    //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
+                    return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return 0;
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+        return 0;
+
+
+
+    }
+
 }

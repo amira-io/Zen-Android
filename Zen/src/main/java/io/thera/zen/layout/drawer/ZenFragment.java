@@ -151,7 +151,7 @@ public abstract class ZenFragment extends Fragment {
          *  SUBCLASS MUST PROVIDE IMPLEMENTATION
          *  TO GETELEMENTS AND SETUPELEMENTS,
          */
-        ZenAppManager.moveDrawer(true);
+        //ZenAppManager.moveDrawer(true);
         //parameters = ZenNavigationManager.getParameters();
         getElements();
         buildElements();
@@ -202,6 +202,16 @@ public abstract class ZenFragment extends Fragment {
         parameters.add(o);
 
         ZenNavigationManager.setParameters(parameters);
+    }
+
+    public static void sendParameters(Object[] o) {
+        List<Object> parameters = new ArrayList<Object>();
+        for (int i=0; i<o.length; i++) {
+            parameters.add(o[i]);
+        }
+
+        ZenNavigationManager.setParameters(parameters);
+
     }
 
 }

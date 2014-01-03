@@ -102,13 +102,13 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
             layout = layout.toLowerCase();
             layout.replace(" " , "_");
             convertView = infalInflater.inflate(ZenResManager.getLayoutId(layout), null);
-            convertView.setOnClickListener(new View.OnClickListener() {
+            /*convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ZenLog.l("GROUP ZERO"+ toCall);
-                    ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity() , false);
+                    ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity());
                 }
-            });
+            });*/
         }
         else {
             convertView = infalInflater.inflate(ZenResManager.getLayoutId("drawer_listview_group"), null);
