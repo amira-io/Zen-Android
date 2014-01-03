@@ -93,7 +93,7 @@ public class ZenSettingsManager {
         return onlyOneIsOpen;
     }
 
-    static String DrawerLayout;
+    //static String DrawerLayout;
 
     static String MenuLayout;
 
@@ -101,7 +101,7 @@ public class ZenSettingsManager {
 
     static String ExpandableMenuLayout;
 
-    public static String getDrawerLayout() { return DrawerLayout; }
+    //public static String getDrawerLayout() { return DrawerLayout; }
 
     public static String getMenuLayout() { return MenuLayout; }
 
@@ -165,13 +165,13 @@ public class ZenSettingsManager {
 
            //hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
-           DrawerLayout = (String) settings.getField("DRAWER_LAYOUT").get(settings);
+           //DrawerLayout = (String) settings.getField("DRAWER_LAYOUT").get(settings);
 
            MenuLayout = (String) settings.getField("MENU_LAYOUT").get(settings);
 
-           NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
+           //NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
 
-           ExpandableMenuLayout     = (String) settings.getField("EXPANDABLE_MENU_LAYOUT").get(settings);
+           //ExpandableMenuLayout     = (String) settings.getField("EXPANDABLE_MENU_LAYOUT").get(settings);
 
            //System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
 

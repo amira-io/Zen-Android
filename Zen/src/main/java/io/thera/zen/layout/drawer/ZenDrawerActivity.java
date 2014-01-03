@@ -142,7 +142,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         //this.context 				= this.getApplicationContext();
 
         //load view
-        setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getDrawerLayout()));
+        //setContentView(ZenResManager.getLayoutId(ZenSettingsManager.getDrawerLayout()));
+        setContentView(ZenResManager.getLayoutId("activity_main"));
 
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
@@ -168,11 +169,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         sMenu = new ZenSlidingMenu(this, ZenSlidingMenu.SLIDING_WINDOW);
         sMenu.setFadeDegree(0.35f);
-        sMenu.setShadowWidth(100);
+        //sMenu.setShadowWidth(100);
+        //sMenu.setShadowWidthRes(ZenResManager.getResourceId("menu_shadow"));
+        sMenu.setShadowWidthRes(ZenResManager.getDimenId("menu_shadow"));
+        sMenu.setShadowDrawable(R.drawable.shadow);
         //sMenu.setMenu(ZenResManager.getLayoutId("sliding_test_exp"));
         sMenu.setMenu(ZenResManager.getLayoutId(ZenSettingsManager.getMenuLayout()));
         if (ZenSettingsManager.hasExpandableMenu()) {
-            expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("left_slide"));
+            expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("menu_elements"));
             explistAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView.setAdapter(explistAdapter);
             expListView.setCacheColorHint(0);
@@ -182,9 +186,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             listAdapter = new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), listDataHeader);
             nListView.setAdapter(listAdapter);
         }
-        sMenu.setBehindOffset(160);
+        //sMenu.setBehindOffset(160);
+        sMenu.setBehindOffsetRes(ZenResManager.getDimenId("menu_offset"));
 
-        this.drawerLayout = (RelativeLayout) findViewById(ZenResManager.getResourceId("sliding_layout"));
+        this.drawerLayout = (RelativeLayout) findViewById(ZenResManager.getResourceId("menu_l_layout"));
 
         /**
          *  END OF FUCKING TESTING OF NEW FEATURE
