@@ -163,17 +163,21 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
          * END OF ELEMENT RETRIEVING.
          */
 
-        /**
-         *  FUCKING TESTING NEW FEATURE
-         */
-
-        sMenu = new ZenSlidingMenu(this, ZenSlidingMenu.SLIDING_WINDOW);
-        sMenu.setFadeDegree(0.35f);
-        //sMenu.setShadowWidth(100);
-        //sMenu.setShadowWidthRes(ZenResManager.getResourceId("menu_shadow"));
-        sMenu.setShadowWidthRes(ZenResManager.getDimenId("menu_shadow"));
+        // load menu styling prefs and fallback on default if missing
+        int offsetId = ZenResManager.getDimenId("menu_offset");
+        if (offsetId == 0) {
+            offsetId = R.dimen.menu_shadow;
+        }
+        int shadowId = ZenResManager.getDimenId("menu_shadow");
+        if (shadowId == 0) {
+            shadowId = R.dimen.menu_shadow;
+        }
+        // load menu
+        sMenu = new ZenSlidingMenu(this, ZenSettingsManager.getMenuType());
+        sMenu.setShadowWidthRes(shadowId);
         sMenu.setShadowDrawable(R.drawable.shadow);
-        //sMenu.setMenu(ZenResManager.getLayoutId("sliding_test_exp"));
+        sMenu.setBehindOffsetRes(offsetId);
+        sMenu.setFadeDegree(0.35f);
         sMenu.setMenu(ZenResManager.getLayoutId(ZenSettingsManager.getMenuLayout()));
         if (ZenSettingsManager.hasExpandableMenu()) {
             expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("menu_elements"));
@@ -186,14 +190,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             listAdapter = new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), listDataHeader);
             nListView.setAdapter(listAdapter);
         }
-        //sMenu.setBehindOffset(160);
-        sMenu.setBehindOffsetRes(ZenResManager.getDimenId("menu_offset"));
 
         this.drawerLayout = (RelativeLayout) findViewById(ZenResManager.getResourceId("menu_l_layout"));
-
-        /**
-         *  END OF FUCKING TESTING OF NEW FEATURE
-         */
 
     }
 

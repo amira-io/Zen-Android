@@ -95,6 +95,10 @@ public class ZenSettingsManager {
 
     //static String DrawerLayout;
 
+    static int MenuType;
+
+    public static int getMenuType() { return MenuType; }
+
     static String MenuLayout;
 
     static String NotExpandableMenuLayout;
@@ -166,6 +170,15 @@ public class ZenSettingsManager {
            //hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
 
            //DrawerLayout = (String) settings.getField("DRAWER_LAYOUT").get(settings);
+
+           String menu_type = (String) settings.getField("MENU_TYPE").get(settings);
+
+           if (menu_type.equals("content")) {
+               MenuType = 1;
+           }
+           else {
+               MenuType = 0;
+           }
 
            MenuLayout = (String) settings.getField("MENU_LAYOUT").get(settings);
 
