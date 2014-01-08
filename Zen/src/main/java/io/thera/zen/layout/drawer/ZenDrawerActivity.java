@@ -164,9 +164,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
          */
 
         // load menu styling prefs and fallback on default if missing
-        int offsetId = ZenResManager.getDimenId("menu_offset");
-        if (offsetId == 0) {
-            offsetId = R.dimen.menu_shadow;
+        int widthId = ZenResManager.getDimenId("menu_width");
+        if (widthId == 0) {
+            widthId = R.dimen.menu_width;
         }
         int shadowId = ZenResManager.getDimenId("menu_shadow");
         if (shadowId == 0) {
@@ -176,7 +176,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         sMenu = new ZenSlidingMenu(this, ZenSettingsManager.getMenuType());
         sMenu.setShadowWidthRes(shadowId);
         sMenu.setShadowDrawable(R.drawable.shadow);
-        sMenu.setBehindOffsetRes(offsetId);
+        //sMenu.setBehindOffsetRes(offsetId);
+        sMenu.setBehindWidthRes(widthId);
         sMenu.setFadeDegree(0.35f);
         sMenu.setMenu(ZenResManager.getLayoutId(ZenSettingsManager.getMenuLayout()));
         if (ZenSettingsManager.hasExpandableMenu()) {
