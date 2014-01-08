@@ -6,35 +6,39 @@ package io.thera.zen.layout.drawer;
  * Copyright © 2013. Thera Technologies.
  */
 
-import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
+import com.google.android.gms.maps.GoogleMap;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import io.thera.zen.core.ZenAppManager;
 import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenNavigationManager;
+import io.thera.zen.core.ZenResManager;
+import io.thera.zen.geo.ZenMap;
 
 
 public abstract class ZenFragment extends Fragment {
-
-
-
-    public static final String ARG_PLANET_NUMBER = "myFragment String";
-
     /*
         NAVIGATION PARAMETERS.
      */
 
     //private  Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
+
+    protected List<Object> parameters =  new ArrayList<Object>();
 
     private  String title;
 
@@ -44,13 +48,25 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-    public boolean created = false;
-
     private FragmentActivity currentActivity;
 
     private int layoutId;
 
     private View rootView;
+
+    // map support vars
+    //added for maps
+    public boolean hasMap = false;
+
+    private ZenMap mapFrag;
+
+    protected GoogleMap map;
+
+    private int mapContainerId;
+
+    private boolean isNew = true;
+
+    private Bitmap onAnimScreen;
 
     public ZenFragment () {
 
@@ -58,10 +74,6 @@ public abstract class ZenFragment extends Fragment {
 		 * EMPTY CONSTRUCTOR
 		 */
 
-    }
-
-    public ZenFragment ( String cazzo) {
-        ZenLog.l(cazzo);
     }
 
     public void setVariables ( FragmentActivity a , String title, Integer layoutId) {
@@ -77,36 +89,13 @@ public abstract class ZenFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (created) {
-            onDisplay();
-        }
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-		/*
-		 *  CHECKING METHOD ARGUMENTS
-		 */
-        //int i 					= getArguments().getInt(ARG_PLANET_NUMBER);
-        //this.title 				= getArguments().getString("title");
-        //this.currentActivity 	= (Activity) getArguments().get("current_activity");
-
-	    /*
-	     * 	RETRIEVING VIEW.
-	     */
-         //= new View(currentActivity);
         try{
-
-            //String layoutName = ATLAppManager.getLayouts().get(title);
-            //Integer layoutId = ATLAppManager.getLayouts().get(title);
-
             long p = System.nanoTime();
-            //rootView = inflater.inflate(ATLResourceManager.getLayoutId(layoutName), container, false);
-            //rootView = inflater.inflate(layoutId, container, false);
+
             rootView = inflater.inflate(layoutId, container, false);
+
             long d = System.nanoTime();
             ZenLog.l("TIME to inflate view "+(d-p));
 
@@ -115,36 +104,6 @@ public abstract class ZenFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
-	    /*
-	    if (this.title.equals("4")) {
-	    	rootView = inflater.inflate(R.layout.json_example ,container, false);
-	    	TextView jsonText = (TextView) rootView.findViewById(R.id.jsonText);
-	    	String tmpUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=44,16&sensor=true";
-
-	    	ZenJsonManager.parseJson(tmpUrl, jsonText);
-	    }
-	    if (this.title.equals("5")) {
-	    	rootView = inflater.inflate(R.layout.json_example ,container, false);
-	    	TextView jsonText = (TextView) rootView.findViewById(R.id.jsonText);
-	    	//String tmpUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=44,16&sensor=true";
-	    	ZenGeoManager geo = new ZenGeoManager(currentActivity.getSystemService(Context.LOCATION_SERVICE), currentActivity);
-	    	geo.setListenerStatus(true);
-	    	//ZenJsonManager.parseJson(tmpUrl, jsonText);
-	    }
-	    else {
-	    	rootView = inflater.inflate(R.layout.myfragment, container, false);
-	    	  TextView t = (TextView) rootView.findViewById(R.id.fragment_text);
-	          t.setText(this.title);
-	          getActivity().setTitle(this.title);
-	    }
-       */
-		/*
-		 * 	SETTING UP VIEW ELEMENTS.
-		 */
-        // TextView t = (TextView) rootView.findViewById(R.id.fragment_text);
-        // t.setText(this.title);
-        // getActivity().setTitle(this.title);
-
 
         /*
          * 	RETURNING VIEW ELEMENT.
@@ -153,12 +112,42 @@ public abstract class ZenFragment extends Fragment {
          */
         //ZenAppManager.moveDrawer(true);
         //parameters = ZenNavigationManager.getParameters();
-        getElements();
-        buildElements();
-        created = true;
+
+        preLoad();
+        if (!isNew) {
+            getElements();
+            buildElements();
+        }
         return rootView;
     }
 
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isNew) {
+                    getElements();
+                    buildElements();
+                    isNew = false;
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        return anim;
+    }
 
 
 	/*
@@ -169,6 +158,11 @@ public abstract class ZenFragment extends Fragment {
 	/*
 	 *
 	 */
+
+    public void preLoad() {
+
+    }
+
     public abstract void getElements();
 
 
@@ -188,7 +182,6 @@ public abstract class ZenFragment extends Fragment {
      * if (canProcess) { .. code here ..}
      *
      */
-    public abstract void onDisplay();
 
 	/*
 	 * HANDLER METHODS.
@@ -213,5 +206,113 @@ public abstract class ZenFragment extends Fragment {
         ZenNavigationManager.setParameters(parameters);
 
     }
+
+    public void addMap(int containerId) {
+
+        hasMap = true;
+        mapContainerId = containerId;
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        ZenLog.l("IM HERE!!!!");
+
+        super.onActivityCreated(savedInstanceState);
+
+        if (hasMap) {
+            setMapFrag();
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (hasMap) {
+            loadMap();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (hasMap) {
+            detachMap();
+        }
+    }
+
+    public void setMapFrag() {
+        FragmentManager fm = getChildFragmentManager();
+        mapFrag = (ZenMap) fm.findFragmentById(mapContainerId);
+        if (mapFrag == null) {
+            ZenLog.l("MAP FRAGMENT NULL: CREATING IT");
+            mapFrag = ZenMap.create();
+            fm.beginTransaction().add(mapContainerId, mapFrag).commit();
+            // fix
+            map = null;
+        }
+    }
+
+    public void loadMap() {
+        if (map == null) {
+            ZenLog.l("MAP: LOADING");
+            map = mapFrag.getMap();
+            if (map != null) {
+                setMap();
+                //loadMapBitmap();
+            }
+        }
+    }
+
+    public void setMap() {
+        ZenLog.l("SETMAP CALLED");
+
+        map.setMyLocationEnabled(true);
+
+    }
+
+    public void detachMap() {
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*
+    @Override
+    public void onPause() {
+        if (hasMap) {
+            //loadMapBitmap();
+            ((View) findViewById(mapContainerId)).setBackgroundDrawable(new BitmapDrawable(onAnimScreen));
+        }
+        super.onPause();
+    }
+
+    public void loadMapBitmap() {
+        //int w = getView().getWidth();
+        onAnimScreen = Bitmap.createBitmap(200,150,Bitmap.Config.ARGB_8888);
+
+        GoogleMap.SnapshotReadyCallback scb = new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                ZenLog.l("MAH?!");
+                onAnimScreen = bitmap;
+            }
+        };
+
+        map.snapshot(scb);
+
+    }
+    */
 
 }

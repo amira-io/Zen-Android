@@ -158,7 +158,7 @@ public class ZenFragmentManager {
                     availableFragments.put(title, toCall.newInstance());
                     Object controller = availableFragments.get(title);
 
-                    String superclass = (isDetail) ? "io.thera.zen.layout.drawer.ZenDetailFragment" : "io.thera.zen.layout.drawer.ZenFragment";
+                    String superclass = "io.thera.zen.layout.drawer.ZenFragment";
 
                     if (controller.getClass().getSuperclass().getCanonicalName().equals(superclass)) {
                         //
