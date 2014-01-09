@@ -84,6 +84,13 @@ public abstract class ZenFragment extends Fragment {
         this.layoutId 			= layoutId;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        ZenLog.l("Saving FRAGMENT STATE");
+        super.onSaveInstanceState(outState);
+        outState.putInt("layoutid", this.layoutId);
+    }
+
     public Object findViewById(int id) {
         return rootView.findViewById(id);
     }
@@ -93,6 +100,17 @@ public abstract class ZenFragment extends Fragment {
 
         try{
             long p = System.nanoTime();
+
+            ZenLog.l("CREATING VIEW "+((Object) this).getClass().getCanonicalName());
+            ZenLog.l(this.layoutId);
+            if (savedInstanceState != null) {
+                ZenLog.l("RESUMING FRAGMENT");
+                if (this.layoutId == 0) {
+                    ZenLog.l("RELOADING LAYOUT ON RESUME");
+                    this.layoutId = savedInstanceState.getInt("layoutid");
+                }
+            }
+            ZenLog.l(this.layoutId);
 
             rootView = inflater.inflate(layoutId, container, false);
 
@@ -122,31 +140,44 @@ public abstract class ZenFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // avoid memory leaks
+        rootView = null;
+    }
+
+    @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+        if (nextAnim != 0) {
 
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
 
-            }
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (isNew) {
-                    getElements();
-                    buildElements();
-                    isNew = false;
                 }
-            }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if (isNew) {
+                        getElements();
+                        buildElements();
+                        isNew = false;
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
-        return anim;
+                }
+            });
+
+            return anim;
+        }
+        else {
+            return super.onCreateAnimation(transit, enter, nextAnim);
+        }
     }
 
 

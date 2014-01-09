@@ -28,6 +28,12 @@ public class ZenFragmentManager {
 
     static Map<String,Object> availableFragments = new HashMap<String,Object>();
 
+    static String lastFragment;
+
+    public static synchronized String getCurrent() {
+        return lastFragment;
+    }
+
 
     public static void setZenFragment (String title) {
 
@@ -67,6 +73,7 @@ public class ZenFragmentManager {
                     }
 
                     ZenNavigationManager.push(availableFragments.get(title));
+                    lastFragment = title;
                     //TEST
 
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -156,6 +163,7 @@ public class ZenFragmentManager {
 
 
                     availableFragments.put(title, toCall.newInstance());
+                    lastFragment = title;
                     Object controller = availableFragments.get(title);
 
                     String superclass = "io.thera.zen.layout.drawer.ZenFragment";

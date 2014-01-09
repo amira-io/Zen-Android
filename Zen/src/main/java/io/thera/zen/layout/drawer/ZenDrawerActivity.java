@@ -64,10 +64,31 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
      * ACTIVITY METHODS.
      */
     @Override
-    protected 	void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ZenAppManager.start(this);
+        if (savedInstanceState != null) {
+            ZenLog.l("RESTORING ACTIVITY");
+            String fragmentToLoad = savedInstanceState.getString("fragment");
+            boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
+            ZenAppManager.start(this, loadFirst);
+            ArrayList<Object> paramsToLoad = new ArrayList<Object>(savedInstanceState.getStringArrayList("parameters"));
+            ZenNavigationManager.setParameters(paramsToLoad);
+            if (loadFirst) {
+                ZenFragmentManager.setZenFragment(fragmentToLoad);
+            }
+        }
+        else {
+            ZenLog.l("NEW ACTIVITY");
+            ZenAppManager.start(this);
+        }
         setUp();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("fragment", ZenFragmentManager.getCurrent());
+        outState.putStringArrayList("parameters", ZenNavigationManager.currentParameters());
     }
 
     @Override

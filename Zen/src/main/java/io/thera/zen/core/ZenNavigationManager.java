@@ -26,6 +26,8 @@ public class ZenNavigationManager  {
 
     static List<Object> parameters = new ArrayList<Object>();
 
+    static List<Object> parametersLast = new ArrayList<Object>();
+
     public static synchronized  void setParameters( List<Object> params) {
         parameters = params;
     }
@@ -38,6 +40,7 @@ public class ZenNavigationManager  {
 
     public static synchronized List<Object> getParameters () {
         List<Object> copy =  new ArrayList<Object>(parameters);
+        parametersLast = new ArrayList<Object>(parameters);
         //copy = parameters;
         parameters.clear();
 
@@ -46,6 +49,15 @@ public class ZenNavigationManager  {
         }
 
         return copy;
+    }
+
+    public static synchronized ArrayList<String> currentParameters() {
+        List<Object> p = parametersLast;
+        ArrayList<String> s = new ArrayList<String>();
+        for (int i=0; i<p.size(); i++) {
+            s.add((String) p.get(i));
+        }
+        return s;
     }
 
     /*
@@ -75,6 +87,10 @@ public class ZenNavigationManager  {
                  *  L'OGGETTO VIENE INSERITO NELLO STACK SOLO SE NON è UGUALE A QUELLO PRECEDENTE.
                  *  ESEMPIO: POTREI AVER CLICCATO COME UN EBETE SULLA STESSA VOCE DEL MENU
                  */
+                String toPut = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                if (toPut.equals(ZenSettingsManager.getFirstView())) {
+                    navigationStack.removeAllElements();
+                }
                 previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
                 navigationStack.push(object);
 
