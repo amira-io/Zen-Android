@@ -50,6 +50,12 @@ public class ZenAppManager {
     public static boolean isConnected = false;
 
     public static synchronized boolean isConnected () {
+
+        ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        setConnected(networkInfo != null && networkInfo.isConnected());
+
         return isConnected;
     }
 
