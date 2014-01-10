@@ -101,7 +101,12 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
             layout = (String) getGroup(groupPosition) + "_menu";
             layout = layout.toLowerCase();
             layout.replace(" " , "_");
-            convertView = infalInflater.inflate(ZenResManager.getLayoutId(layout), null);
+            ZenLog.l("LAYOUT LOAD MENU "+layout);
+            int layoutId = ZenResManager.getLayoutId(layout);
+            if (layoutId == 0) {
+                layoutId = ZenResManager.getLayoutId("drawer_listview_group");
+            }
+            convertView = infalInflater.inflate(layoutId, null);
             /*convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -118,7 +123,7 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView lblListHeader = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_header"));
 
-        String fontName = ZenSettingsManager.getFont(convertView.getId()); //errore
+        String fontName = ZenSettingsManager.getFont("default"); //errore
 
         lblListHeader.setTypeface(Typeface.createFromAsset(ZenAppManager.getActivity().getAssets(), "fonts/" + fontName), 1);
         lblListHeader.setText(headerTitle);

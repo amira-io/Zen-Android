@@ -125,6 +125,8 @@ public class ZenSettingsManager {
      return firstView;
     }
 
+    static Map<String,String> appFonts;
+
 
     /**
      *  SETTINGS METHODS.
@@ -242,6 +244,8 @@ public class ZenSettingsManager {
 
            menuParentsAsParams = (Boolean) settings.getField("MENU_PARENTS_AS_PARAMS").get(settings);
 
+           appFonts = (HashMap<String,String>) settings.getField("FONTS").get(settings);
+
        } catch (ClassNotFoundException e) {
            e.printStackTrace();
 
@@ -254,30 +258,17 @@ public class ZenSettingsManager {
 
     }
 
-    public static synchronized String getFont (int id) {
+    public static synchronized String getFont (String font) {
 
         String fontName;
 
-        try {
-             fontName = (String) settings.getField(id+"_font").get(settings);
+        //fontName = (String) settings.getField(id+"_font").get(settings);
+        /*if (appFonts == null) {
 
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NoSuchFieldException e) {
-
-            //e.printStackTrace();
-            try {
-            fontName = (String) settings.getField("DEFAULT_FONT").get(settings);
-            }
-            catch (IllegalAccessException ex) {
-                e.printStackTrace();
-                return null;
-
-            } catch (NoSuchFieldException ex) {
-                e.printStackTrace();
-                return null;
-            }
+        }*/
+        fontName = appFonts.get(font);
+        if (fontName == null) {
+            fontName = appFonts.get("default");
         }
 
         return fontName;

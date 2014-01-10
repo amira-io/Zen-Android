@@ -41,8 +41,13 @@ public class ZenTextView extends TextView {
     }
 
     public void init() {
-        String fontName = ZenSettingsManager.getFont(this.getId());
-        //ZenLog.l(fontName);
+        CharSequence fontTag = this.getContentDescription();
+        String fontString = "";
+        if (fontTag != null) {
+            fontString = fontTag.toString();
+        }
+        String fontName = ZenSettingsManager.getFont(fontString);
+        ZenLog.l(fontName);
         Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
         setTypeface(tf ,1);
     }
