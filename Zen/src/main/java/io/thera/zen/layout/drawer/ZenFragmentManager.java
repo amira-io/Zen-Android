@@ -112,7 +112,6 @@ public class ZenFragmentManager {
              *
              */
             try {
-                //String toCallClass = title.replace("_", "");
                 ZenLog.l("create new fragment");
                 long p = System.nanoTime();
 
@@ -133,9 +132,29 @@ public class ZenFragmentManager {
                 boolean isDetail = ZenAppManager.getDetailLayouts().containsKey(layoutName);
                 ZenLog.l("ISDETAIL: "+isDetail);
 
+                String[] tlist;
+                tlist = layoutName.split("_");
+                ZenLog.l(tlist.length);
+
+                String cName = layoutName;
+                if (tlist.length > 1) {
+                    StringBuilder sBuilder = new StringBuilder();
+                    sBuilder.append(tlist[0]);
+                    for (int i=1; i<tlist.length; i++) {
+                        String t = Character.toUpperCase(tlist[i].charAt(0)) + tlist[i].substring(1);
+                        //tlist[i] = t;
+                        sBuilder.append(t);
+                    }
+                    cName = sBuilder.toString();
+                }
+                //else {
+                //    cName = layoutName;
+                //}
+                ZenLog.l("CNAME: "+cName);
+
                 if (!isDetail) {
                     //toCallClass = ZenAppManager.getLayouts().get(title);
-                    toCallClass = layoutName;
+                    toCallClass = cName;
                     //layoutId = ZenAppManager.getLayouts().get(title);
                     layoutId = ZenResManager.getLayoutId(layoutName);
                     ZenLog.l("SET NOT DETAIL LAYOUTID " + layoutId);
@@ -143,7 +162,7 @@ public class ZenFragmentManager {
                 else {
                         //toCallClass = ZenAppManager.getDetailLayouts().get(title);
                         //toCallClass = title + "Detail";
-                        toCallClass = layoutName + "Detail";
+                        toCallClass = cName + "Detail";
                         ZenLog.l("LAYOUTCLASS " + toCallClass);
                         layoutId    = ZenResManager.getLayoutId(ZenAppManager.getDetailLayouts().get(layoutName));
                         ZenLog.l("SET DETAIL LAYOUTID " + layoutId);

@@ -23,7 +23,9 @@ import com.google.android.gms.maps.GoogleMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenNavigationManager;
@@ -39,6 +41,8 @@ public abstract class ZenFragment extends Fragment {
     //private  Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
     protected List<Object> parameters =  new ArrayList<Object>();
+    protected Map<String, Object> current = new HashMap<String, Object>();
+
 
     private  String title;
 
@@ -165,6 +169,7 @@ public abstract class ZenFragment extends Fragment {
                         buildElements();
                         isNew = false;
                     }
+                    renderMap();
                 }
 
                 @Override
@@ -238,6 +243,10 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
+    public static void sendParameters(List<Object> o) {
+        ZenNavigationManager.setParameters(o);
+    }
+
     public void addMap(int containerId) {
 
         hasMap = true;
@@ -292,10 +301,19 @@ public abstract class ZenFragment extends Fragment {
         if (map == null) {
             ZenLog.l("MAP: LOADING");
             map = mapFrag.getMap();
+            /*
             if (map != null) {
                 setMap();
                 //loadMapBitmap();
             }
+            */
+        }
+    }
+
+    public void renderMap() {
+        if (map != null) {
+            setMap();
+            //loadMapBitmap();
         }
     }
 
