@@ -66,16 +66,17 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             ZenLog.l("RESTORING ACTIVITY");
             String fragmentToLoad = savedInstanceState.getString("fragment");
             boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
-            ZenAppManager.start(this, loadFirst);
-            ArrayList<Object> paramsToLoad = new ArrayList<Object>(savedInstanceState.getStringArrayList("parameters"));
-            ZenNavigationManager.setParameters(paramsToLoad);
-            if (loadFirst) {
-                ZenFragmentManager.setZenFragment(fragmentToLoad);
-            }
+            ZenAppManager.start(this, loadFirst, false);
+            //ZenAppManager.start(this, false);
+            //ArrayList<Object> paramsToLoad = new ArrayList<Object>(savedInstanceState.getStringArrayList("parameters"));
+            //ZenNavigationManager.setParameters(paramsToLoad);
+            // next line avoid errors on Zen back stack
+            ZenFragmentManager.setZenFragment(fragmentToLoad, false);
         }
         else {
             ZenLog.l("NEW ACTIVITY");
@@ -88,7 +89,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("fragment", ZenFragmentManager.getCurrent());
-        outState.putStringArrayList("parameters", ZenNavigationManager.currentParameters());
+        //outState.putStringArrayList("parameters", ZenNavigationManager.currentParameters());
     }
 
     @Override

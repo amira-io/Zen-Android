@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public abstract class ZenFragment extends Fragment {
     private int mapContainerId;
 
     private boolean isNew = true;
+    private boolean isResumed = false;
 
     private Bitmap onAnimScreen;
 
@@ -93,6 +95,7 @@ public abstract class ZenFragment extends Fragment {
         ZenLog.l("Saving FRAGMENT STATE");
         super.onSaveInstanceState(outState);
         outState.putInt("layoutid", this.layoutId);
+        outState.putSerializable("current", (Serializable) current);
     }
 
     public Object findViewById(int id) {
@@ -102,16 +105,21 @@ public abstract class ZenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        boolean resumed = false;
         try{
             long p = System.nanoTime();
+
 
             ZenLog.l("CREATING VIEW "+((Object) this).getClass().getCanonicalName());
             ZenLog.l(this.layoutId);
             if (savedInstanceState != null) {
                 ZenLog.l("RESUMING FRAGMENT");
+                isResumed = true;
+                isNew = false;
                 if (this.layoutId == 0) {
                     ZenLog.l("RELOADING LAYOUT ON RESUME");
                     this.layoutId = savedInstanceState.getInt("layoutid");
+                    current = (HashMap<String, Object>) savedInstanceState.getSerializable("current");
                 }
             }
             ZenLog.l(this.layoutId);
@@ -133,10 +141,11 @@ public abstract class ZenFragment extends Fragment {
          *  TO GETELEMENTS AND SETUPELEMENTS,
          */
         //ZenAppManager.moveDrawer(true);
-        //parameters = ZenNavigationManager.getParameters();
+        parameters = ZenNavigationManager.getParameters();
 
         preLoad();
         if (!isNew) {
+            ZenLog.l("FRAGMENT NOT NEW");
             getElements();
             buildElements();
         }
@@ -273,6 +282,10 @@ public abstract class ZenFragment extends Fragment {
 
         if (hasMap) {
             loadMap();
+            if (isResumed) {
+                // need to move next line, here map is null
+                renderMap();
+            }
         }
     }
 

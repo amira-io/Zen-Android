@@ -133,10 +133,10 @@ public class ZenAppManager {
 	 */
 
     public static synchronized boolean start (FragmentActivity a) {
-        return start(a, true);
+        return start(a, true, true);
     }
 
-    public static synchronized boolean start (FragmentActivity a, boolean loadFirst) {
+    public static synchronized boolean start (FragmentActivity a, boolean loadFirst, boolean loadView) {
         /**
          *  GETTING INITIAL VALUES FROM SETTINGS FILE
          */
@@ -190,7 +190,7 @@ public class ZenAppManager {
          */
         if (loadFirst) {
             ZenLog.l("FIRST VIEW"+ZenSettingsManager.getFirstView()+"\n\n");
-            ZenFragmentManager.setZenFragment(ZenSettingsManager.getFirstView());
+            ZenFragmentManager.setZenFragment(ZenSettingsManager.getFirstView(), loadView);
         }
         return true;
     }

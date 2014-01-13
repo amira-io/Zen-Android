@@ -68,15 +68,18 @@ public class ZenResManager {
             }
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            ZenLog.l("ZenResManager.getLayoutId: ClassNotFound "+layout);
             return 0;
 
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            ZenLog.l("ZenResManager.getLayoutId: NoSuchField "+layout);
             return 0;
 
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            ZenLog.l("ZenResManager.getLayoutId: IllegalAccess "+layout);
             return 0;
         }
 

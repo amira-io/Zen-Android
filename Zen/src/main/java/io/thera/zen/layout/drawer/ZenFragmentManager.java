@@ -34,8 +34,11 @@ public class ZenFragmentManager {
         return lastFragment;
     }
 
-
     public static void setZenFragment (String title) {
+        setZenFragment(title, true);
+    }
+
+    public static void setZenFragment (String title, boolean loadView) {
 
         FragmentActivity activity = ZenAppManager.getActivity();
 
@@ -225,17 +228,21 @@ public class ZenFragmentManager {
                         ZenNavigationManager.push(controller);
                         //TEST
 
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        if (loadView) {
 
-                        if (ZenNavigationManager.isBack()){
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-                            transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+                            if (ZenNavigationManager.isBack()){
+
+                                transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+
+                            }
+                            else {
+                                transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
+                            }
+                            transaction.replace(content_frame_id, (Fragment) controller ).commit();
 
                         }
-                        else {
-                            transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
-                        }
-                        transaction.replace(content_frame_id, (Fragment) controller ).commit();
                         ZenLog.l("SAVING " + title + " - " + controller.getClass().getCanonicalName());
 
                         long d = System.nanoTime();
