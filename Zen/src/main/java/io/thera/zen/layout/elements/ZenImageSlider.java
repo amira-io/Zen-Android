@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,6 +48,7 @@ import java.util.Map;
 
 import io.thera.zen.R;
 import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenResManager;
 
 /**
@@ -54,7 +56,10 @@ import io.thera.zen.core.ZenResManager;
  */
 public class ZenImageSlider {
 
-    private Map<String,Drawable> galleryMap;
+    private Map<String,Drawable> thumbImageMap;
+    private Map<String,Drawable> largeImageMap;
+
+    String currentImage;
     private ViewGroup relative;
     private ViewGroup linear;
 
@@ -135,10 +140,11 @@ public class ZenImageSlider {
 
     public ZenImageSlider( ViewGroup relative, ViewGroup linear ) {
 
-        this.linear     = linear;
-        this.relative   = relative;
-        //galleryMap      = new HashMap<Integer, Drawable>();
-        galleryMap      = new HashMap<String, Drawable>();
+        this.linear         = linear;
+        this.relative       = relative;
+        //galleryMap        = new HashMap<Integer, Drawable>();
+        thumbImageMap       = new HashMap<String,   Drawable>();
+        largeImageMap       = new HashMap<String,   Drawable>();
     }
 
 
@@ -150,8 +156,8 @@ public class ZenImageSlider {
             //imageView.setImageResource(R.drawable.color_baloons);
             //galleryMap.put(index , d);//drawableFromUrl("https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash3/c0.54.180.180/s160x160/943494_10200298310432837_1799896952_a.jpg"));
             final String imageId = imgId;
-            galleryMap.put(imgId , d);
-            imageView.setImageDrawable(galleryMap.get(imgId));
+            thumbImageMap.put(imgId , d);
+            imageView.setImageDrawable(thumbImageMap.get(imgId));
 
             linear.addView(imageView);
 
@@ -169,7 +175,7 @@ public class ZenImageSlider {
                     r.setBackgroundResource(R.drawable.white_rect);
 
                     ImageView detailImage =  new ImageView(relative.getContext());
-                    detailImage.setImageDrawable(galleryMap.get(imageId));
+                    detailImage.setImageDrawable(largeImageMap.get(imageId));
                     LinearLayout.LayoutParams lpDetail = new LinearLayout.LayoutParams(relative.getWidth(), relative.getHeight());
                     detailImage.setLayoutParams(lpDetail);
                     r.addView(detailImage);
@@ -224,12 +230,21 @@ public class ZenImageSlider {
 
     }
 
-    public void addImageFromUrl ( String url ) {
+    public void addImageFromUrl ( String thumbUrl, String largeUrl ) {
         //getDrawableFromUrl(url);
 
+        currentImage = thumbUrl;
         if (ZenAppManager.isConnected()) {
 
-            new imageTask( "addImage" , this).execute(url);
+            if (largeUrl!=null) {
+
+                new imageTask("storeLargeImage", this).execute(largeUrl);
+            }
+            else {
+
+                new imageTask( "storeLargeImage" , this).execute(thumbUrl);
+
+            }
 
         }
         else {
@@ -238,5 +253,37 @@ public class ZenImageSlider {
         }
     }
 
+    public void storeLargeImage ( Drawable d , String imgId) {
+
+        largeImageMap.put(imgId, d);
+        new imageTask("addImage" , this ).execute(currentImage);
+    }
+
+    public void addImageArray ( String[] array ) {
+        for (int i =0; i < array.length ; i++) {
+            addImageFromUrl(array[i],null);
+        }
+    }
+
+    public void addImageList (List<String> list) {
+        for (int i =0; i < list.size() ; i++) {
+            addImageFromUrl(list.get(i),null);
+        }
+    }
+
+    public void addImageArrays ( String[] thumb_array , String[] large_array ) {
+        for (int i =0; i < thumb_array.length ; i++) {
+            addImageFromUrl(thumb_array[i],large_array[i]);
+        }
+    }
+
+    public void addImageLists (List<String> thumb_list , List<String> large_list) {
+        ZenLog.l("SLIDER list length " + thumb_list.size() + " - " + large_list.size());
+        for (int i =0; i < thumb_list.size() ; i++) {
+            ZenLog.l("getting images");
+            addImageFromUrl(thumb_list.get(i),large_list.get(i));
+        }
+    }
 }
+
 
