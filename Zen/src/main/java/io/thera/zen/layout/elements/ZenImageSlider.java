@@ -58,6 +58,8 @@ public class ZenImageSlider {
 
     private Map<String,Drawable> thumbImageMap;
     private Map<String,Drawable> largeImageMap;
+    private Map<String,String> thumbToLargeMap;
+    private Map<String,String> largeToThumbMap;
 
     String currentImage;
     private ViewGroup relative;
@@ -142,9 +144,11 @@ public class ZenImageSlider {
 
         this.linear         = linear;
         this.relative       = relative;
-        //galleryMap        = new HashMap<Integer, Drawable>();
+        //galleryMap        = new HashMap<Integer,  Drawable>();
         thumbImageMap       = new HashMap<String,   Drawable>();
         largeImageMap       = new HashMap<String,   Drawable>();
+        thumbToLargeMap     = new HashMap<String,   String>();
+        largeToThumbMap     = new HashMap<String,   String>();
     }
 
 
@@ -153,12 +157,14 @@ public class ZenImageSlider {
         try {
             System.out.println("ADDIMAGE");
             ImageView imageView = new ImageView(relative.getContext());
-            //imageView.setImageResource(R.drawable.color_baloons);
-            //galleryMap.put(index , d);//drawableFromUrl("https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash3/c0.54.180.180/s160x160/943494_10200298310432837_1799896952_a.jpg"));
             final String imageId = imgId;
+
             thumbImageMap.put(imgId , d);
             imageView.setImageDrawable(thumbImageMap.get(imgId));
-
+            //imageView.setMaxHeight(140);
+            LinearLayout.LayoutParams lpImageview = new LinearLayout.LayoutParams(140,140);
+            lpImageview.setMargins(20,10,20,10);
+            imageView.setLayoutParams(lpImageview);
             linear.addView(imageView);
 
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +181,7 @@ public class ZenImageSlider {
                     r.setBackgroundResource(R.drawable.white_rect);
 
                     ImageView detailImage =  new ImageView(relative.getContext());
-                    detailImage.setImageDrawable(largeImageMap.get(imageId));
+                    detailImage.setImageDrawable(largeImageMap.get(thumbToLargeMap.get(imageId)));
                     LinearLayout.LayoutParams lpDetail = new LinearLayout.LayoutParams(relative.getWidth(), relative.getHeight());
                     detailImage.setLayoutParams(lpDetail);
                     r.addView(detailImage);
@@ -233,6 +239,9 @@ public class ZenImageSlider {
     public void addImageFromUrl ( String thumbUrl, String largeUrl ) {
         //getDrawableFromUrl(url);
 
+        largeToThumbMap.put(largeUrl, thumbUrl);
+        thumbToLargeMap.put(thumbUrl, largeUrl);
+
         currentImage = thumbUrl;
         if (ZenAppManager.isConnected()) {
 
@@ -255,10 +264,12 @@ public class ZenImageSlider {
 
     public void storeLargeImage ( Drawable d , String imgId) {
 
+        //imgid is largeurl
         largeImageMap.put(imgId, d);
         // TEMP FIX (currentImage is changed by next image!!)
         //new imageTask("addImage" , this ).execute(currentImage);
-        new imageTask("addImage" , this ).execute(imgId);
+        //new imageTask("addImage" , this ).execute(imgId);
+        new imageTask("addImage" , this ).execute(largeToThumbMap.get(imgId));
     }
 
     public void addImageArray ( String[] array ) {
