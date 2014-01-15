@@ -36,9 +36,14 @@ public class ZenJsonManager {
 	    		 *  YOU ARE NOT CONNECTED. ERROR MESSAGE DISPLAYED.
 	    		 */
                 //container.setText("Non sono riuscito a stabilire una connessione");
-                Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
-                        "Non sei connesso a internet.",
-                        1000).show();
+                ZenAppManager.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
+                                "Non sei connesso a internet.",
+                                1000).show();
+                    }
+                });
             }
         } catch (Exception e) {
             //container.setText("Exception in ZenJsonManager : "+ e.getMessage());
