@@ -38,6 +38,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -258,6 +259,9 @@ public class ZenImageSlider {
         }
         else {
 
+            Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
+                    "Non sei connesso a internet.",
+                    1000);
 
         }
     }
