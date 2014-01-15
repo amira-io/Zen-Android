@@ -261,7 +261,7 @@ public class ZenImageSlider {
 
             Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
                     "Non sei connesso a internet.",
-                    1000);
+                    1000).show();
 
         }
     }

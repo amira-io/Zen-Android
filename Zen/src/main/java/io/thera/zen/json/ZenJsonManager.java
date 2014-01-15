@@ -38,7 +38,7 @@ public class ZenJsonManager {
                 //container.setText("Non sono riuscito a stabilire una connessione");
                 Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
                         "Non sei connesso a internet.",
-                        1000);
+                        1000).show();
             }
         } catch (Exception e) {
             //container.setText("Exception in ZenJsonManager : "+ e.getMessage());
