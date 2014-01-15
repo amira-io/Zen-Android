@@ -256,7 +256,9 @@ public class ZenImageSlider {
     public void storeLargeImage ( Drawable d , String imgId) {
 
         largeImageMap.put(imgId, d);
-        new imageTask("addImage" , this ).execute(currentImage);
+        // TEMP FIX (currentImage is changed by next image!!)
+        //new imageTask("addImage" , this ).execute(currentImage);
+        new imageTask("addImage" , this ).execute(imgId);
     }
 
     public void addImageArray ( String[] array ) {
