@@ -1004,9 +1004,9 @@ public class ZenSlidingMenu extends RelativeLayout {
 
     private Handler mHandler = new Handler();
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void manageLayers(float percentOpen) {
-        if (Build.VERSION.SDK_INT < 11) return;
+        if (Build.VERSION.SDK_INT < 14) return;
 
         boolean layer = percentOpen > 0.0f && percentOpen < 1.0f;
         final int layerType = layer ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
