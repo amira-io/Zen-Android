@@ -82,12 +82,13 @@ public class ZenFragmentManager {
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
 
                     if (ZenNavigationManager.isBack()){
-
-                        transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+                        transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"),ZenResManager.getAnimId("back_exit"));
+                        //transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
 
                     }
                     else {
-                        transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
+                        transaction.setCustomAnimations(ZenResManager.getAnimId("enter"),ZenResManager.getAnimId("exit"));
+                        //transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
                     }
 
                     transaction.replace(content_frame_id, (Fragment) availableFragments.get(title)).commit();
@@ -234,11 +235,14 @@ public class ZenFragmentManager {
 
                             if (ZenNavigationManager.isBack()){
 
-                                transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
+                                transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"),ZenResManager.getAnimId("back_exit"));
+                                //transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
 
                             }
                             else {
-                                transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
+                                transaction.setCustomAnimations(ZenResManager.getAnimId("enter"),ZenResManager.getAnimId("exit"));
+
+                                //transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
                             }
                             transaction.replace(content_frame_id, (Fragment) controller ).commit();
 
