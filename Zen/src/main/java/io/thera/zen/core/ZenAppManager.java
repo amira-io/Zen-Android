@@ -7,11 +7,14 @@ package io.thera.zen.core;
  */
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.support.v4.app.FragmentActivity;
 
@@ -42,6 +45,51 @@ public class ZenAppManager {
     public static Map<String,String> getDetailLayouts() { return detailLayouts; }
 
     static int layoutIndex = 0;
+
+    /**
+     *  CHECKI IF WE ARE ON A TABLET
+     */
+
+    private static boolean isTablet;
+
+    public static boolean isTablet() {
+        return isTablet;
+    }
+    public static void setIsTablet() {
+        if (android.os.Build.VERSION.SDK_INT >= 11) { // honeycomb
+            boolean device_large = ((activity.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) ==
+                    Configuration.SCREENLAYOUT_SIZE_XLARGE);
+            System.out.println("TABLET? " + activity.getResources().getConfiguration().screenLayout + " - " + Configuration.SCREENLAYOUT_SIZE_MASK + " - " + Configuration.SCREENLAYOUT_SIZE_XLARGE + " - " + Configuration.SCREENLAYOUT_SIZE_LARGE + " - " + (activity.getResources().getConfiguration().screenLayout &
+                    Configuration.SCREENLAYOUT_SIZE_MASK) );
+            if (device_large) {
+                System.out.println("TABLET? large screen");
+                DisplayMetrics metrics = new DisplayMetrics();
+                //Activity activity = (Activity) activityContext;
+                activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+                if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT
+                        || metrics.densityDpi == DisplayMetrics.DENSITY_HIGH
+                        || metrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM
+                        || metrics.densityDpi == DisplayMetrics.DENSITY_TV
+                        || metrics.densityDpi == DisplayMetrics.DENSITY_XHIGH) {
+
+                    isTablet = true;
+                }
+            }
+            else {
+                System.out.println("TABLET? not large screen");
+                isTablet = false;
+            }
+
+        }
+        else {
+            isTablet =  false;
+
+        }
+    }
+
+
 
 	/**
 	 * CONNECTION FLAG.
@@ -137,6 +185,8 @@ public class ZenAppManager {
     }
 
     public static synchronized boolean start (FragmentActivity a, boolean loadFirst, boolean loadView) {
+
+
         /**
          *  GETTING INITIAL VALUES FROM SETTINGS FILE
          */
@@ -151,6 +201,12 @@ public class ZenAppManager {
         setCurrentPosition(a);
         currentStack = new Stack();
         currentStack.push(a);
+
+        /**
+         *   CHECKING IF WE ARE ON TABLET
+         */
+        setIsTablet();
+        System.out.println("TABLET? " + isTablet());
 
 		/**
 		 * CHECKING FOR CONNECTION.
