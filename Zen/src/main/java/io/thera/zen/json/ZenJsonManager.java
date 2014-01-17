@@ -36,6 +36,7 @@ public class ZenJsonManager {
 	    		 *  YOU ARE NOT CONNECTED. ERROR MESSAGE DISPLAYED.
 	    		 */
                 //container.setText("Non sono riuscito a stabilire una connessione");
+
                 ZenAppManager.getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -44,6 +45,7 @@ public class ZenJsonManager {
                                 1000).show();
                     }
                 });
+
             }
         } catch (Exception e) {
             //container.setText("Exception in ZenJsonManager : "+ e.getMessage());
