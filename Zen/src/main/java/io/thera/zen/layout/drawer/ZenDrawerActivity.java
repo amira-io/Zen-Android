@@ -14,6 +14,8 @@ import io.thera.zen.R;
 import io.thera.zen.core.*;
 import io.thera.zen.layout.elements.*;
 import io.thera.zen.listeners.drawer.*;
+
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.view.GestureDetector;
@@ -76,6 +78,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             //ArrayList<Object> paramsToLoad = new ArrayList<Object>(savedInstanceState.getStringArrayList("parameters"));
             //ZenNavigationManager.setParameters(paramsToLoad);
             // next line avoid errors on Zen back stack
+
             ZenFragmentManager.setZenFragment(fragmentToLoad, false);
         }
         else {
@@ -155,6 +158,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     }
 
     public void setUpElements () {
+
+        //setting up screen orientation
+        if (ZenAppManager.isTablet()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
@@ -408,6 +419,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         }    }
     */
+
 }
 
 
