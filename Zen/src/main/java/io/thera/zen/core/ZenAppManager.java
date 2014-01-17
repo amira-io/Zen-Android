@@ -55,18 +55,19 @@ public class ZenAppManager {
     public static boolean isTablet() {
         return isTablet;
     }
-    public static void setIsTablet() {
+
+    public static void setIsTablet(FragmentActivity a) {
         if (android.os.Build.VERSION.SDK_INT >= 11) { // honeycomb
-            boolean device_large = ((activity.getResources().getConfiguration().screenLayout &
+            boolean device_large = ((a.getResources().getConfiguration().screenLayout &
                     Configuration.SCREENLAYOUT_SIZE_MASK) ==
                     Configuration.SCREENLAYOUT_SIZE_XLARGE);
-            System.out.println("TABLET? " + activity.getResources().getConfiguration().screenLayout + " - " + Configuration.SCREENLAYOUT_SIZE_MASK + " - " + Configuration.SCREENLAYOUT_SIZE_XLARGE + " - " + Configuration.SCREENLAYOUT_SIZE_LARGE + " - " + (activity.getResources().getConfiguration().screenLayout &
+            System.out.println("TABLET? " + a.getResources().getConfiguration().screenLayout + " - " + Configuration.SCREENLAYOUT_SIZE_MASK + " - " + Configuration.SCREENLAYOUT_SIZE_XLARGE + " - " + Configuration.SCREENLAYOUT_SIZE_LARGE + " - " + (a.getResources().getConfiguration().screenLayout &
                     Configuration.SCREENLAYOUT_SIZE_MASK) );
             if (device_large) {
                 System.out.println("TABLET? large screen");
                 DisplayMetrics metrics = new DisplayMetrics();
                 //Activity activity = (Activity) activityContext;
-                activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                a.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
                 if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT
                         || metrics.densityDpi == DisplayMetrics.DENSITY_HIGH
@@ -205,7 +206,7 @@ public class ZenAppManager {
         /**
          *   CHECKING IF WE ARE ON TABLET
          */
-        setIsTablet();
+        //setIsTablet();
         System.out.println("TABLET? " + isTablet());
 
 		/**

@@ -159,14 +159,6 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
     public void setUpElements () {
 
-        //setting up screen orientation
-        if (ZenAppManager.isTablet()) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
 		/*
