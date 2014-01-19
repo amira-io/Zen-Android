@@ -53,8 +53,6 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-    private FragmentActivity currentActivity;
-
     private int layoutId;
 
     private View rootView;
@@ -82,10 +80,9 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-    public void setVariables ( FragmentActivity a , String title, Integer layoutId) {
+    public void setVariables ( String title, Integer layoutId) {
 
         ZenLog.l("SETTING VARIABLES " + title + " - " + ((Object) this).getClass().getCanonicalName())  ;
-        this.currentActivity 	= a;
         this.title 				= title;
         this.layoutId 			= layoutId;
     }
@@ -348,6 +345,8 @@ public abstract class ZenFragment extends Fragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        map = null;
+        mapFrag = null;
     }
 
     /*

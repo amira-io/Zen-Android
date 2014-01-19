@@ -196,11 +196,9 @@ public class ZenFragmentManager {
                         //
                         // QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
                         //
-                        Class[] paramTypes 	= new Class[3]; //prima era new class[2]
-                        paramTypes[0] 		= FragmentActivity.class;
-                        paramTypes[1] 		= String.class;
-
-                        paramTypes[2] 		= Integer.class;
+                        Class[] paramTypes 	= new Class[2]; //prima era new class[2]
+                        paramTypes[0] 		= String.class;
+                        paramTypes[1] 		= Integer.class;
 
                         //paramTypes[3] 		= DrawerLayout.class;
                         //paramTypes[4] 		= ListView.class;
@@ -211,7 +209,7 @@ public class ZenFragmentManager {
                         //TENTATIVO
                         ZenLog.l("TRYING LAYOUTID " + layoutId);
 
-                        toCall.getMethod("setVariables", paramTypes).invoke(controller, createParameters(activity, title, layoutId ));
+                        toCall.getMethod("setVariables", paramTypes).invoke(controller, createParameters(title, layoutId ));
 
                         try {
                             ZenLog.l("ALREADY SET" + (String) controller.getClass().getMethod("getTitle", null).invoke(controller, null));
@@ -307,11 +305,10 @@ public class ZenFragmentManager {
 	 * METHOD FOR GETTING PARAMETERS FOR JAVA REFLECTION
 	 */
 
-    public static Object[] createParameters( FragmentActivity a , String title , int position) {
-        Object[] parameters = new Object[3];
-        parameters[0] = a;
-        parameters[1] = title;
-        parameters[2] = position;
+    public static Object[] createParameters(String title , int position) {
+        Object[] parameters = new Object[2];
+        parameters[0] = title;
+        parameters[1] = position;
 
         return parameters;
     }
