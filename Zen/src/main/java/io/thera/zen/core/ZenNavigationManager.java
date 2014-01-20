@@ -64,38 +64,46 @@ public class ZenNavigationManager  {
            STACK FOR BACK NAVIGATION
      */
 
-    private static Stack<Object> navigationStack = new Stack();
+    //private static Stack<Object> navigationStack = new Stack();
+    private static Stack<String[]> navigationStack = new Stack<String[]>();
 
     private static String previous = ZenSettingsManager.getFirstView(); //to store previous position
 
 
-    public static synchronized void push ( Object object) {
+    public static synchronized void push (String title, String cls) {
         try {
-            ZenLog.l("PUSH" + (String) object.getClass().getMethod("getTitle",null).invoke(object,null));
-            ZenLog.l("BEFORE PUSH" + navigationStack.size());
+            //ZenLog.l("PUSH" + (String) object.getClass().getMethod("getTitle",null).invoke(object,null));
+            //ZenLog.l("BEFORE PUSH" + navigationStack.size());
+            ZenLog.l("PUSH" + title);
 
             if (navigationStack.isEmpty()) {
-                previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
-                navigationStack.push(object);
+                //previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                previous = title;
+                String[] s = {title, cls};
+                ZenLog.l(s);
+                navigationStack.push(s);
                 return;
             }
 
 
-            if ((!( object.getClass().getMethod("getTitle",null).invoke(object,null).equals(previous)))) {
+            if ((!( title.equals(previous)))) {
 
                 /**
                  *  L'OGGETTO VIENE INSERITO NELLO STACK SOLO SE NON è UGUALE A QUELLO PRECEDENTE.
                  *  ESEMPIO: POTREI AVER CLICCATO COME UN EBETE SULLA STESSA VOCE DEL MENU
                  */
-                String toPut = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
-                if (toPut.equals(ZenSettingsManager.getFirstView())) {
+                //String toPut = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                if (title.equals(ZenSettingsManager.getFirstView())) {
                     navigationStack.removeAllElements();
                 }
-                previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
-                navigationStack.push(object);
+                //previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
+                previous = title;
+                String[] s = {title, cls};
+                ZenLog.l(s);
+                navigationStack.push(s);
 
             }
-            ZenLog.l("AFTER PUSH" + navigationStack.size());
+            //ZenLog.l("AFTER PUSH" + navigationStack.size());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -110,14 +118,17 @@ public class ZenNavigationManager  {
             //if (!(navigationStack.empty())) {
             if (navigationStack.size()>=2) {
                 ZenLog.l("STACK POP" + navigationStack);
-                Object a  = navigationStack.pop();
-                ZenLog.l("POP" + (String) a.getClass().getMethod("getTitle",null).invoke(a,null));
+                //Object a  = navigationStack.pop();
+                //ZenLog.l("POP" + (String) a.getClass().getMethod("getTitle",null).invoke(a,null));
+                String[] a = navigationStack.pop();
 
                 ZenLog.l("STACK POP" + navigationStack);
 
 
-                Object o  = navigationStack.pop();
-                ZenLog.l("POP" + (String) o.getClass().getMethod("getTitle",null).invoke(o,null));
+                //Object o  = navigationStack.pop();
+                //ZenLog.l("POP" + (String) o.getClass().getMethod("getTitle",null).invoke(o,null));
+                String[] o = navigationStack.pop();
+                ZenLog.l(o);
 
                 ZenLog.l("STACK POP" + navigationStack);
 
@@ -142,22 +153,22 @@ public class ZenNavigationManager  {
                         isBack = false;
                     }
                     */
-                    if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
+                    //if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
+                    if (o[1].equals("io.thera.zen.layout.elements.ZenActivity")) {
                         ZenLog.l("ISACTIVITY");
                         Class[] params = new Class[1];
                         params[0] = Class.class;
 
                         Object[] values = new Object[1];
-                        values[0] = o;
+                        values[0] = o[0];
                         ZenAppManager.getActivity().getClass().getMethod("goTo",params).invoke(ZenAppManager.getActivity(),values);
-
                     }
                     else {
                         ZenLog.l("ISFRAGMENT");
-                        String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
-                        ZenLog.l("FRAGMENT TITLE: " + title);
+                        //String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
+                        ZenLog.l("FRAGMENT TITLE: " + o[0]);
                         isBack = true;
-                        ZenFragmentManager.setZenFragment(title);
+                        ZenFragmentManager.setZenFragment(o[0]);
                         isBack = false;
                     }
                 }

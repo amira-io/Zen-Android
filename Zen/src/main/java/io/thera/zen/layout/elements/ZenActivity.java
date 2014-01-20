@@ -81,7 +81,7 @@ public abstract class ZenActivity extends FragmentActivity{
         startActivity(i);
 
         // close this activity
-        ZenNavigationManager.push(this);
+        ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
         finish();
 
     }
@@ -99,7 +99,7 @@ public abstract class ZenActivity extends FragmentActivity{
                 startActivity(i);
 
                 // close this activity
-                ZenNavigationManager.push(this);
+                ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
 
                 finish();
             }

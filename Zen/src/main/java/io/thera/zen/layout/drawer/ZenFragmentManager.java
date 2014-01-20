@@ -75,7 +75,8 @@ public class ZenFragmentManager {
                         e.printStackTrace();
                     }
 
-                    ZenNavigationManager.push(availableFragments.get(title));
+                    //ZenNavigationManager.push(availableFragments.get(title));
+                    ZenNavigationManager.push(title, availableFragments.get(title).getClass().getSuperclass().getCanonicalName());
                     lastFragment = title;
                     //TEST
 
@@ -225,7 +226,8 @@ public class ZenFragmentManager {
                         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
                         //TEST
-                        ZenNavigationManager.push(controller);
+                        //ZenNavigationManager.push(controller);
+                        ZenNavigationManager.push(title, controller.getClass().getSuperclass().getCanonicalName());
                         //TEST
 
                         if (loadView) {
