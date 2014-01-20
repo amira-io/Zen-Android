@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import java.util.*;
 
+import io.thera.zen.core.ZenLog;
 import io.thera.zen.core.ZenNavigationManager;
 
 /**
@@ -73,16 +74,37 @@ public abstract class ZenActivity extends FragmentActivity{
 
     public abstract void buildElements();
 
-    public void goTo (Class activity) {
-
+    public void goTo(Class activity, boolean addToStack) {
         final Class a = activity;
 
         Intent i = new Intent(ZenActivity.this, activity);
         startActivity(i);
 
         // close this activity
-        ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+        if (addToStack) {
+            ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+        }
         finish();
+    }
+
+    public void goTo ( Class activity , boolean addToStack , boolean mustFinish ) {
+        final Class a = activity;
+
+        Intent i = new Intent(ZenActivity.this, activity);
+        startActivity(i);
+
+        // close this activity
+        if (addToStack) {
+            ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+        }
+        if (mustFinish) {
+            finish();
+        }
+    }
+
+    public void goTo (Class activity) {
+
+        this.goTo(activity, true);
 
     }
 
@@ -99,7 +121,27 @@ public abstract class ZenActivity extends FragmentActivity{
                 startActivity(i);
 
                 // close this activity
-                ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+                ZenLog.l("GOTO " + this.getClass().getName());
+                finish();
+            }
+        }, timeout);
+    }
+
+    public void goToOnTimeout(String cActivity, Class activity, int timeout) {
+        final String cName = cActivity;
+        final Class a = activity;
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // This method will be executed once the timer is over
+                // Start your app main activity
+                Intent i = new Intent(ZenActivity.this, a);
+                startActivity(i);
+
+                // close this activity
+                ZenLog.l("GOTO " + this.getClass().getName());
+                ZenNavigationManager.push(cName, this.getClass().getSuperclass().getCanonicalName());
 
                 finish();
             }
