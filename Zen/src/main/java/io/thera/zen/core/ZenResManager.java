@@ -1,10 +1,13 @@
 package io.thera.zen.core;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import io.thera.zen.R;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by marcostagni on 26/11/13
@@ -256,6 +259,25 @@ public class ZenResManager {
 
 
 
+    }
+
+    static Map<String, Typeface> tfs = new HashMap<String, Typeface>();
+
+    public static synchronized Typeface getTypeface(String font, Context c) {
+        String fontName = ZenSettingsManager.getFont(font);
+        //ZenLog.l(fontName);
+        if (!tfs.containsKey(fontName)) {
+            try {
+                ZenLog.l("Creating typeface for font "+fontName);
+                tfs.put(fontName, Typeface.createFromAsset(c.getAssets(), "fonts/"+fontName));
+            }
+            catch (Exception e) {
+                ZenLog.l("Could not get typeface '" + fontName
+                        + "' because " + e.getMessage());
+                return null;
+            }
+        }
+        return tfs.get(fontName);
     }
 
 }

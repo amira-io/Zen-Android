@@ -1,11 +1,10 @@
 package io.thera.zen.layout.elements;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import io.thera.zen.core.*;
+import io.thera.zen.core.ZenResManager;
 
 /**
  * Created by marcostagni on 28/11/13.
@@ -46,9 +45,6 @@ public class ZenTextView extends TextView {
         if (fontTag != null) {
             fontString = fontTag.toString();
         }
-        String fontName = ZenSettingsManager.getFont(fontString);
-        ZenLog.l(fontName);
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/"+fontName);
-        setTypeface(tf ,1);
+        setTypeface(ZenResManager.getTypeface(fontString, getContext()) ,1);
     }
 }
