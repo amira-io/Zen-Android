@@ -53,7 +53,7 @@ public class ZenGeoDirections {
         String url = "http://maps.googleapis.com/maps/api/directions/json?"
                 + "origin=" + start.latitude + "," + start.longitude
                 + "&destination=" + end.latitude + "," + end.longitude
-                + "&sensor=false&units=metric&mode=driving";
+                + "&sensor=false&units=metric&mode="+travelMode.getValue();
         Log.d("url", url);
 
         ZenJsonManager.parseJson(url, "parseData", this);
