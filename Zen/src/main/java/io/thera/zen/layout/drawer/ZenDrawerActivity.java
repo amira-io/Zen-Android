@@ -42,6 +42,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     private Button	    	drawerButton;
     private Button          backButton;
 
+    private ImageView       drawerButtonImage;
+
+
     private TextView		title;
 
     private String[]        drawerListViewItems;
@@ -179,9 +182,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
 
-        this.drawerButton			= (Button) findViewById(ZenResManager.getResourceId("ic_menu"));
+        this.drawerButton			= (Button) findViewById(ZenResManager.getResourceId("ic_menu_overlay"));
+        this.drawerButtonImage      = (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
         //this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
-        this.backButton             = (Button) findViewById(ZenResManager.getResourceId("ic_back"));
+        this.backButton             = (Button) findViewById(ZenResManager.getResourceId("ic_back_overlay"));
 
 
         /*
@@ -239,7 +243,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     public void onClick(View v) {
 
                         if (drawerButtonAnimation != null) {
-                            drawerButton.startAnimation(drawerButtonAnimation);
+                            drawerButtonImage.startAnimation(drawerButtonAnimation);
                         }
                         sMenu.toggle();
                     }
