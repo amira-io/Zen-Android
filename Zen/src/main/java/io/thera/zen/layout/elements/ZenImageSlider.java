@@ -190,6 +190,8 @@ public class ZenImageSlider {
                     ImageView closeImage = new ImageView(relative.getContext());
                     closeImage.setImageDrawable(ZenResManager.getDrawable("close_image"));
                     RelativeLayout.LayoutParams lpClose = new RelativeLayout.LayoutParams(50,50);
+                    lpClose.setMargins(20,25,20,25);
+
                     lpClose.addRule(RelativeLayout.ALIGN_PARENT_TOP);
                     lpClose.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     closeImage.setLayoutParams(lpClose);
