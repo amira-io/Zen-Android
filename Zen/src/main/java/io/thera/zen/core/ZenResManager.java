@@ -24,16 +24,19 @@ public class ZenResManager {
     public static synchronized int getResourceId(String resource) {
         try {
             //set di classi dichiarate da R (layout, id, array, ecc ecc)
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
             //cerco la classe id
-            for (int i = 0; i < set.length ; i++) {
+            //for (int i = 0; i < set.length ; i++) {
 
-                if (set[i].getCanonicalName().endsWith("id")) {
-                    //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
-                    //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
-                    return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //    if (set[i].getCanonicalName().endsWith("id")) {
+            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
+            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
+            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$id");
+            return (Integer) Res.getField(resource).get(Res);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -47,11 +50,6 @@ public class ZenResManager {
             e.printStackTrace();
             return 0;
         }
-
-        return 0;
-
-
-
     }
 
 
@@ -62,13 +60,15 @@ public class ZenResManager {
 
     public static synchronized int getLayoutId(String layout) {
         try {
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
 
-            for (int i = 0; i < set.length ; i++) {
-                if (set[i].getCanonicalName().endsWith("layout")) {
-                    return (Integer) set[i].getField(layout).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //for (int i = 0; i < set.length ; i++) {
+            //    if (set[i].getCanonicalName().endsWith("layout")) {
+            //        return (Integer) set[i].getField(layout).get(Class.forName(ZenAppManager.getResourceClass()));
+            //   }
+            //}
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$layout");
+            return (Integer) Res.getField(layout).get(Res);
 
         } catch (ClassNotFoundException e) {
             //e.printStackTrace();
@@ -86,7 +86,6 @@ public class ZenResManager {
             return 0;
         }
 
-        return 0;
 
 
 
@@ -98,13 +97,15 @@ public class ZenResManager {
 
     public static synchronized Integer getArrayId (String array) {
         try {
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
 
-            for (int i = 0; i < set.length ; i++) {
-                if (set[i].getCanonicalName().endsWith("array")) {
-                    return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //for (int i = 0; i < set.length ; i++) {
+            //    if (set[i].getCanonicalName().endsWith("array")) {
+            //        return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$array");
+            return (Integer) Res.getField(array).get(Res);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -118,28 +119,25 @@ public class ZenResManager {
             e.printStackTrace();
             return null;
         }
-
-        return null;
-
-
-
     }
 
     /**
      * METHOD FOR GETTING ANIMATION ID
      *
-     * @param array
+     * @param anim
      * @return
      */
-    public static synchronized Integer getAnimId (String array) {
+    public static synchronized Integer getAnimId (String anim) {
         try {
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
 
-            for (int i = 0; i < set.length ; i++) {
-                if (set[i].getCanonicalName().endsWith("anim")) {
-                    return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //for (int i = 0; i < set.length ; i++) {
+            //    if (set[i].getCanonicalName().endsWith("anim")) {
+            //        return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$anim");
+            return (Integer) Res.getField(anim).get(Res);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -153,11 +151,6 @@ public class ZenResManager {
             e.printStackTrace();
             return null;
         }
-
-        return null;
-
-
-
     }
 
     public static synchronized Animation getAnimation( String name ) {
@@ -182,13 +175,16 @@ public class ZenResManager {
 
     public static synchronized Integer getDrawableId ( String drawable ) {
         try {
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
 
-            for (int i = 0; i < set.length ; i++) {
-                if (set[i].getCanonicalName().endsWith("drawable")) {
-                    return (Integer) set[i].getField(drawable).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //for (int i = 0; i < set.length ; i++) {
+            //    if (set[i].getCanonicalName().endsWith("drawable")) {
+            //        return (Integer) set[i].getField(drawable).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$drawable");
+            return (Integer) Res.getField(drawable).get(Res);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -202,11 +198,6 @@ public class ZenResManager {
             e.printStackTrace();
             return null;
         }
-
-        return null;
-
-
-
     }
 
     /**
@@ -231,16 +222,18 @@ public class ZenResManager {
     public static synchronized int getDimenId(String resource) {
         try {
             //set di classi dichiarate da R (layout, id, array, ecc ecc)
-            Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
             //cerco la classe id
-            for (int i = 0; i < set.length ; i++) {
+            //for (int i = 0; i < set.length ; i++) {
 
-                if (set[i].getCanonicalName().endsWith("dimen")) {
-                    //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
-                    //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
-                    return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
-                }
-            }
+            //    if (set[i].getCanonicalName().endsWith("dimen")) {
+            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
+            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
+            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$dimen");
+            return (Integer) Res.getField(resource).get(Res);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -254,11 +247,6 @@ public class ZenResManager {
             e.printStackTrace();
             return 0;
         }
-
-        return 0;
-
-
-
     }
 
     static Map<String, Typeface> tfs = new HashMap<String, Typeface>();
