@@ -85,16 +85,29 @@ public class ZenImageSlider {
             try {
 
                 this.url = params[0];
+                String imgtype = params[1];
                 System.out.println("URL PARAMS " + params[0]);
                 System.out.println("URL THIS.URL" + this.url);
                 HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
                 connection.connect();
                 InputStream input = connection.getInputStream();
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                ZenLog.l("IMGTYPE: "+imgtype);
+                if (imgtype.equals("thumb")) {
+                    options.inSampleSize = 2;
+                }
+                else {
+                    options.inSampleSize = 4;
+                }
+
                 Bitmap x;
-                x = BitmapFactory.decodeStream(input);
+                x = BitmapFactory.decodeStream(input, null, options);
                 BitmapDrawable bd = new BitmapDrawable(x);
+                //Drawable d = Drawable.createFromStream(input, "src");
 
                 return bd.mutate();
+                //return d;
 
             }
             catch (Exception e) {
@@ -250,11 +263,11 @@ public class ZenImageSlider {
 
             if (largeUrl!=null) {
 
-                new imageTask("storeLargeImage", this).execute(largeUrl);
+                new imageTask("storeLargeImage", this).execute(largeUrl, "large");
             }
             else {
 
-                new imageTask( "storeLargeImage" , this).execute(thumbUrl);
+                new imageTask( "storeLargeImage" , this).execute(thumbUrl, "thumb");
 
             }
 
@@ -280,7 +293,7 @@ public class ZenImageSlider {
         // TEMP FIX (currentImage is changed by next image!!)
         //new imageTask("addImage" , this ).execute(currentImage);
         //new imageTask("addImage" , this ).execute(imgId);
-        new imageTask("addImage" , this ).execute(largeToThumbMap.get(imgId));
+        new imageTask("addImage" , this ).execute(largeToThumbMap.get(imgId), "thumb");
     }
 
     public void addImageArray ( String[] array ) {
