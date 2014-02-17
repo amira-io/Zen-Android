@@ -6,6 +6,7 @@ package io.thera.zen.layout.drawer;
  * Copyright © 2013. Thera Technologies.
  */
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -296,6 +297,21 @@ public abstract class ZenFragment extends Fragment {
     }
 
     public void setMapFrag() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fm = getChildFragmentManager();
+                mapFrag = (ZenMap) fm.findFragmentById(mapContainerId);
+                if (mapFrag == null) {
+                    ZenLog.l("MAP FRAGMENT NULL: CREATING IT");
+                    mapFrag = ZenMap.create();
+                    fm.beginTransaction().add(mapContainerId, mapFrag).commit();
+                    // fix
+                    map = null;
+                }
+            }
+        });
+        /*
         FragmentManager fm = getChildFragmentManager();
         mapFrag = (ZenMap) fm.findFragmentById(mapContainerId);
         if (mapFrag == null) {
@@ -305,6 +321,7 @@ public abstract class ZenFragment extends Fragment {
             // fix
             map = null;
         }
+        */
     }
 
     public void loadMap() {
