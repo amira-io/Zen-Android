@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -138,6 +139,18 @@ public class ZenAppManager {
 
         activity = a;
     }
+
+    static Intent activity_intent;
+
+    public static synchronized Intent getActivity_intent() {
+        //Intent i = activity_intent;
+        //activity_intent = null;
+        return activity_intent;
+    }
+
+    public static synchronized void setActivity_intent(Intent i) { activity_intent = i; }
+
+    public static synchronized void delActivity_intent() { activity_intent = null; }
 
 	/**
 	 * METHODS FOR HANDLING ACTIVITY.
@@ -268,5 +281,6 @@ public class ZenAppManager {
         detailLayouts   = ZenSettingsManager.getDetailMap();
 
     }
+
 }
 

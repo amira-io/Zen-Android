@@ -35,7 +35,7 @@ import io.thera.zen.layout.slider.ZenSlidingMenu;
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
-
+    protected boolean skipStart = false;
 
     private SeekBar 		bar;
     private GestureDetector gDetector;
@@ -71,6 +71,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (skipStart) {
+            return;
+        }
 
         if (savedInstanceState != null) {
             ZenLog.l("RESTORING ACTIVITY");
