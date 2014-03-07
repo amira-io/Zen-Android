@@ -4,6 +4,7 @@ package io.thera.zen.core;
  * Created by marcostagni on 29/11/13.
  */
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import io.thera.zen.utils.ZenMenuItem;
@@ -24,6 +25,8 @@ public class ZenSettingsManager {
      */
 
     static Class settings;
+
+    private static List<String> settings_list;
 
     /**
      *  LAYOUT TYPE.
@@ -143,38 +146,29 @@ public class ZenSettingsManager {
            /*
                 GET HOME BUTTON ANIMATION IF AVAILABLE
            */
-           drawerButtonAnimation = (String) settings.getField("DRAWER_BUTTON_ANIMATION").get(settings);
 
-           if (drawerButtonAnimation == null) {
-               /*
-                    NO ANIMATION FOR MENU PROVIDED, SET TO DEFAULT.
-                */
-
-               drawerButtonAnimation = "default";
+           Field[] fields = settings.getFields();
+           settings_list = new ArrayList<String>();
+           for (Field f : fields) {
+               settings_list.add(f.getName());
            }
 
-           layoutType = (Integer) settings.getField("LAYOUT_TYPE").get(settings);
+           drawerButtonAnimation = (String) _getSetting("DRAWER_BUTTON_ANIMATION", "default");
+           layoutType = (Integer) _getSetting("LAYOUT_TYPE", 1);
 
-           /*
-                CHECK IF OUR APP HAS A COLLAPSIBLE MENU
-            */
+           List<ZenMenuItem> Menu = (List<ZenMenuItem>) _getSetting("MENU");
+           if (Menu != null) {
+               appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
 
-           List<ZenMenuItem> Menu = (List<ZenMenuItem>) settings.getField("MENU").get(settings);
-           appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
-
-           for (int i=0; i < appMenu.length; i++) {
-               if (appMenu[i].children.size() > 0) {
-                   hasExpandableMenu = true;
-                   break;
+               for (int i=0; i < appMenu.length; i++) {
+                   if (appMenu[i].children.size() > 0) {
+                       hasExpandableMenu = true;
+                       break;
+                   }
                }
            }
 
-           //hasExpandableMenu = (Boolean) settings.getField("HAS_EXPANDABLE_MENU").get(settings);
-
-           //DrawerLayout = (String) settings.getField("DRAWER_LAYOUT").get(settings);
-
-           String menu_type = (String) settings.getField("MENU_TYPE").get(settings);
-
+           String menu_type = (String) _getSetting("MENU_TYPE", "content");
            if (menu_type.equals("content")) {
                MenuType = 1;
            }
@@ -182,14 +176,7 @@ public class ZenSettingsManager {
                MenuType = 0;
            }
 
-           MenuLayout = (String) settings.getField("MENU_LAYOUT").get(settings);
-
-           //NotExpandableMenuLayout  = (String) settings.getField("NOT_EXPANDABLE_MENU_LAYOUT").get(settings);
-
-           //ExpandableMenuLayout     = (String) settings.getField("EXPANDABLE_MENU_LAYOUT").get(settings);
-
-           //System.err.println("\n\nValore di layout type: "+layoutType+"\n\n");
-
+           MenuLayout = (String) _getSetting("MENU_LAYOUT");
            //elements
            menuElements = new ArrayList<String>();
            //layouts
@@ -198,62 +185,47 @@ public class ZenSettingsManager {
            menuChildren = new HashMap<String, List<String>>();
            //params
            menuParams = new HashMap<String, List<String>>();
+           if (appMenu != null) {
+               //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
+               for (int i = 0; i < appMenu.length ; i++ ) {
 
-           //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
-           for (int i = 0; i < appMenu.length ; i++ ) {
+                   List<String> lista = new ArrayList<String>();
+                   List<String> params = new ArrayList<String>();
+                   menuElements.add(appMenu[i].title);
 
-               List<String> lista = new ArrayList<String>();
-               List<String> params = new ArrayList<String>();
-               menuElements.add(appMenu[i].title);
+                   if (appMenu[i].children.size() > 0) {
+                       ZenMenuItem[] children = appMenu[i].children.toArray(new ZenMenuItem[appMenu[i].children.size()]);
 
-               if (appMenu[i].children.size() > 0) {
-                   ZenMenuItem[] children = appMenu[i].children.toArray(new ZenMenuItem[appMenu[i].children.size()]);
-
-                   for (int j=0; j<children.length; j++) {
-                       menuLayouts.put(children[j].title, children[j].layout);
-                       lista.add(children[j].title);
-                       params.add(children[j].param);
+                       for (int j=0; j<children.length; j++) {
+                           menuLayouts.put(children[j].title, children[j].layout);
+                           lista.add(children[j].title);
+                           params.add(children[j].param);
+                       }
                    }
-               }
-               else {
-                   menuLayouts.put(appMenu[i].title, appMenu[i].layout);
-               }
+                   else {
+                       menuLayouts.put(appMenu[i].title, appMenu[i].layout);
+                   }
 
-               ZenLog.l(appMenu[i].title);
-               ZenLog.l(lista.size());
+                   ZenLog.l(appMenu[i].title);
+                   ZenLog.l(lista.size());
 
-               menuChildren.put(appMenu[i].title, lista);
-               menuParams.put(appMenu[i].title, params);
+                   menuChildren.put(appMenu[i].title, lista);
+                   menuParams.put(appMenu[i].title, params);
+               }
            }
 
            if (hasExpandableMenu) {
-
-               onlyOneIsOpen = (Boolean) settings.getField("ONLY_ONE_IS_OPEN").get(settings);
-
+               onlyOneIsOpen = (Boolean) _getSetting("ONLY_ONE_IS_OPEN", true);
            }
 
-           detailMap = new HashMap<String,String>();
-           detailMap = (HashMap<String,String>) settings.getField("DETAIL_LAYOUTS").get(settings);
+           detailMap = (HashMap<String,String>) _getSetting("DETAIL_LAYOUTS");
+           firstView = (String) _getSetting("FIRST_VIEW");
+           menuParentsAsParams = (Boolean) _getSetting("MENU_PARENTS_AS_PARAMS", false);
+           appFonts = (HashMap<String,String>) _getSetting("FONTS");
 
-           /*
-                GETTING VERY FIRST VIEW.
-
-            */
-
-           firstView = (String) settings.getField("FIRST_VIEW").get(settings);
-
-           menuParentsAsParams = (Boolean) settings.getField("MENU_PARENTS_AS_PARAMS").get(settings);
-
-           appFonts = (HashMap<String,String>) settings.getField("FONTS").get(settings);
-
-       } catch (ClassNotFoundException e) {
+       } catch (Exception e) {
            e.printStackTrace();
 
-       } catch (NoSuchFieldException e) {
-           e.printStackTrace();
-
-       } catch (IllegalAccessException e) {
-           e.printStackTrace();
        }
 
     }
@@ -286,5 +258,26 @@ public class ZenSettingsManager {
             e.printStackTrace();
             return "io.thera.default.storage";
         }
+    }
+
+
+    private static Object _getSetting(String name) {
+        return _getSetting(name, null);
+    }
+
+    private static Object _getSetting(String name, Object def) {
+        Object o;
+
+        if (settings_list.contains(name)) {
+            try {
+                o = settings.getField(name).get(settings);
+            } catch (Exception e) {
+                o = null;
+            }
+        } else {
+            o = def;
+        }
+
+        return o;
     }
 }
