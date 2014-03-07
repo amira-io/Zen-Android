@@ -35,8 +35,6 @@ import io.thera.zen.layout.slider.ZenSlidingMenu;
 
 public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
 
-    protected boolean skipStart = false;
-
     private SeekBar 		bar;
     private GestureDetector gDetector;
     private Button	    	drawerButton;
@@ -72,34 +70,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (skipStart) {
-            return;
+        if (!skipStart) {
+            setUp();
         }
-
-        if (savedInstanceState != null) {
-            ZenLog.l("RESTORING ACTIVITY");
-            String fragmentToLoad = savedInstanceState.getString("fragment");
-            boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
-            ZenAppManager.start(this, loadFirst, false);
-            //ZenAppManager.start(this, false);
-            //ArrayList<Object> paramsToLoad = new ArrayList<Object>(savedInstanceState.getStringArrayList("parameters"));
-            //ZenNavigationManager.setParameters(paramsToLoad);
-            // next line avoid errors on Zen back stack
-
-            ZenFragmentManager.setZenFragment(fragmentToLoad, false);
-        }
-        else {
-            ZenLog.l("NEW ACTIVITY");
-            ZenAppManager.start(this);
-        }
-        setUp();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("fragment", ZenFragmentManager.getCurrent());
-        //outState.putStringArrayList("parameters", ZenNavigationManager.currentParameters());
     }
 
     @Override
@@ -121,39 +94,6 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         //getMenuInflater().inflate(R.menu.android_test_app, menu);
         return true;
     }
-
-    @Override
-    public 		void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //actionBarDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public 		boolean onOptionsItemSelected(MenuItem item) {
-
-        // call ActionBarDrawerToggle.onOptionsItemSelected(), if it returns true
-        // then it has handled the app icon touch event
-        //if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-        //    return true;
-        //}
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    protected	void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        //actionBarDrawerToggle.syncState();
-    }
-
-    /*
-     * END OF ACTIVITY METHODS.
-     */
 
     public void setUp () {
 
@@ -395,30 +335,6 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         }
 
     }
-
-	/*
-	 * CLOSE DRAWER ACTIVITY
-	 */
-    /*
-    public void closeDrawer() {
-        if (ZenSettingsManager.hasExpandableMenu()) {
-            drawerLayout.closeDrawer(expListView);
-        }
-        else {
-            drawerLayout.closeDrawer(drawerListView);
-
-        }
-    }
-
-    public void openDrawer() {
-        if (ZenSettingsManager.hasExpandableMenu()) {
-            drawerLayout.openDrawer(expListView);
-        }
-        else {
-            drawerLayout.openDrawer(drawerListView);
-
-        }    }
-    */
 
 }
 
