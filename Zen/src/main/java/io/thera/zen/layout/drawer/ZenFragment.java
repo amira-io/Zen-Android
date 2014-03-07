@@ -230,8 +230,6 @@ public abstract class ZenFragment extends Fragment {
 	 * HANDLER METHODS.
 	 */
 
-    public abstract void handleTouch();
-
     public static void sendParameters(Object o) {
 
         List<Object> parameters = new ArrayList<Object>();
