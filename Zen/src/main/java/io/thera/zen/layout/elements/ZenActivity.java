@@ -23,24 +23,24 @@ public abstract class ZenActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!skipStart) {
+            if (savedInstanceState != null) {
+                ZenLog.l("RESTORING ACTIVITY");
+                String fragmentToLoad = savedInstanceState.getString("fragment");
+                boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
+                ZenAppManager.start(this, loadFirst, false);
+                ZenFragmentManager.setZenFragment(fragmentToLoad, false);
+            }
+            else {
+                ZenLog.l("NEW ACTIVITY");
+                ZenAppManager.start(this);
+            }
+        }
+
         getElements();
         buildElements();
 
-        if (skipStart) {
-            return;
-        }
 
-        if (savedInstanceState != null) {
-            ZenLog.l("RESTORING ACTIVITY");
-            String fragmentToLoad = savedInstanceState.getString("fragment");
-            boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
-            ZenAppManager.start(this, loadFirst, false);
-            ZenFragmentManager.setZenFragment(fragmentToLoad, false);
-        }
-        else {
-            ZenLog.l("NEW ACTIVITY");
-            ZenAppManager.start(this);
-        }
 
     }
 

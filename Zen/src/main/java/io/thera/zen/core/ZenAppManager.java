@@ -200,6 +200,7 @@ public class ZenAppManager {
 
     public static synchronized boolean start (FragmentActivity a, boolean loadFirst, boolean loadView) {
 
+        ZenLog.l("ZENAPPMANAGER start");
 
         /**
          *  GETTING INITIAL VALUES FROM SETTINGS FILE
