@@ -34,6 +34,8 @@ public class ZenFragmentManager {
         return lastFragment;
     }
 
+    public static synchronized Object getCurrentInstance() { return availableFragments.get(lastFragment); }
+
     public static void setZenFragment (String title) {
         setZenFragment(title, true);
     }

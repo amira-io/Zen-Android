@@ -1,10 +1,19 @@
 package io.thera.zen.layout.elements;
 
-import android.animation.ObjectAnimator;
+//import android.animation.ObjectAnimator;
+import android.graphics.Matrix;
 import android.os.Build;
+import android.text.format.Time;
 import android.view.View;
+import android.view.ViewGroup;
+//import android.view.ViewPropertyAnimator;
 import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
+import java.util.Timer;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+import io.thera.zen.core.ZenLog;
 
 /**
  * Created by giovanni on 21/03/14.
@@ -22,10 +31,12 @@ public abstract class ZenAnimator {
     public static void set(View view, float fromX, float toX, float fromY, float toY, int duration, boolean autostart) {
         mView = view;
 
-        if (Build.VERSION.SDK_INT >= 11) {
+        //if (Build.VERSION.SDK_INT >= 11) {
             objanim = ObjectAnimator.ofFloat(view , "y" , fromY, toY);
             objanim.setDuration(duration);
-        } else {
+        //} else {
+            //animate(mView).setDuration(duration).translationYBy(toY);
+            /*
             final float fToY = toY;
             final float fFromY = fromY;
             final float rFromY;
@@ -45,12 +56,18 @@ public abstract class ZenAnimator {
             tanim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    //mView.setDrawingCacheEnabled(true);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mView.layout(0,(int) fToY,mView.getMeasuredWidth(),(int) (fToY + mView.getMeasuredHeight()));
+                    //mView.setDrawingCacheEnabled(false);
+                    ZenLog.l("height " + mView.getMeasuredHeight());
+                    //((ViewGroup.MarginLayoutParams)mView.getLayoutParams()).setMargins(0, (int) fToY, 0, 0);
+                    mView.layout(0, (int) fToY, mView.getMeasuredWidth(), (int) (fToY + mView.getMeasuredHeight()));
+                    //tanim.cancel();
+                    //mView.getParent().requestLayout();
+
                 }
 
                 @Override
@@ -58,7 +75,8 @@ public abstract class ZenAnimator {
 
                 }
             });
-        }
+            */
+        //}
 
         if (autostart) {
             start();
@@ -67,11 +85,11 @@ public abstract class ZenAnimator {
     }
 
     public static void start() {
-        if (Build.VERSION.SDK_INT >= 11) {
+        //if (Build.VERSION.SDK_INT >= 11) {
             objanim.start();
-        } else {
-            mView.startAnimation(tanim);
-        }
+        //} else {
+            /*mView.startAnimation(tanim);*/
+        //}
     }
 
 }
