@@ -45,6 +45,9 @@ public class ZenAppManager {
 
     public static Map<String,String> getDetailLayouts() { return detailLayouts; }
 
+    protected static String language;
+    public static String getLanguage() { return language; }
+
     static int layoutIndex = 0;
 
     /**
@@ -223,6 +226,7 @@ public class ZenAppManager {
          */
 
         ZenSettingsManager.start();
+        language = ZenSettingsManager.getLang();
 
         /**
          *   CHECKING IF WE ARE ON TABLET
