@@ -25,6 +25,7 @@ public class ZenSettingsManager {
      */
 
     static Class settings;
+    static Class settings_menu;
 
     private static List<String> settings_list;
 
@@ -128,7 +129,11 @@ public class ZenSettingsManager {
      return firstView;
     }
 
+    static List<String> appLanguages;
+    static String appLanguageDefault;
+
     static Map<String,String> appFonts;
+
 
 
     /**
@@ -156,78 +161,100 @@ public class ZenSettingsManager {
            drawerButtonAnimation = (String) _getSetting("DRAWER_BUTTON_ANIMATION", "default");
            layoutType = (Integer) _getSetting("LAYOUT_TYPE", 1);
 
-           List<ZenMenuItem> Menu = (List<ZenMenuItem>) _getSetting("MENU");
-           if (Menu != null) {
-               appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
-
-               for (int i=0; i < appMenu.length; i++) {
-                   if (appMenu[i].children.size() > 0) {
-                       hasExpandableMenu = true;
-                       break;
-                   }
-               }
-           }
-
-           String menu_type = (String) _getSetting("MENU_TYPE", "content");
-           if (menu_type.equals("content")) {
-               MenuType = 1;
-           }
-           else {
-               MenuType = 0;
-           }
-
-           MenuLayout = (String) _getSetting("MENU_LAYOUT");
-           //elements
-           menuElements = new ArrayList<String>();
-           //layouts
-           menuLayouts = new HashMap<String, String>();
-           //children
-           menuChildren = new HashMap<String, List<String>>();
-           //params
-           menuParams = new HashMap<String, List<String>>();
-           if (appMenu != null) {
-               //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
-               for (int i = 0; i < appMenu.length ; i++ ) {
-
-                   List<String> lista = new ArrayList<String>();
-                   List<String> params = new ArrayList<String>();
-                   menuElements.add(appMenu[i].title);
-
-                   if (appMenu[i].children.size() > 0) {
-                       ZenMenuItem[] children = appMenu[i].children.toArray(new ZenMenuItem[appMenu[i].children.size()]);
-
-                       for (int j=0; j<children.length; j++) {
-                           menuLayouts.put(children[j].title, children[j].layout);
-                           lista.add(children[j].title);
-                           params.add(children[j].param);
-                       }
-                   }
-                   else {
-                       menuLayouts.put(appMenu[i].title, appMenu[i].layout);
-                   }
-
-                   ZenLog.l(appMenu[i].title);
-                   ZenLog.l(lista.size());
-
-                   menuChildren.put(appMenu[i].title, lista);
-                   menuParams.put(appMenu[i].title, params);
-               }
-           }
-
-           if (hasExpandableMenu) {
-               onlyOneIsOpen = (Boolean) _getSetting("ONLY_ONE_IS_OPEN", true);
-           }
-
            detailMap = (HashMap<String,String>) _getSetting("DETAIL_LAYOUTS");
            firstView = (String) _getSetting("FIRST_VIEW");
-           menuParentsAsParams = (Boolean) _getSetting("MENU_PARENTS_AS_PARAMS", false);
+
+           appLanguages = (ArrayList<String>) _getSetting("LANGUAGES");
+           appLanguageDefault = (String) _getSetting("LANGUAGE_DEFAULT", "en");
+
            appFonts = (HashMap<String,String>) _getSetting("FONTS");
+
+           loadMenuConfig();
 
        } catch (Exception e) {
            e.printStackTrace();
 
        }
 
+    }
+
+    protected static void loadMenuConfig() {
+        try {
+            settings_menu =  Class.forName("app.settings.Menu");
+            settings_menu.getMethod("set").invoke(settings_menu);
+
+            Field[] fields = settings_menu.getFields();
+            for (Field f : fields) {
+                settings_list.add(f.getName());
+            }
+
+            List<ZenMenuItem> Menu = (List<ZenMenuItem>) _getMenuSetting("MENU");
+            if (Menu != null) {
+                appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
+
+                for (int i=0; i < appMenu.length; i++) {
+                    if (appMenu[i].children.size() > 0) {
+                        hasExpandableMenu = true;
+                        break;
+                    }
+                }
+            }
+
+            String menu_type = (String) _getMenuSetting("MENU_TYPE", "content");
+            if (menu_type.equals("content")) {
+                MenuType = 1;
+            }
+            else {
+                MenuType = 0;
+            }
+
+            MenuLayout = (String) _getMenuSetting("MENU_LAYOUT");
+            //elements
+            menuElements = new ArrayList<String>();
+            //layouts
+            menuLayouts = new HashMap<String, String>();
+            //children
+            menuChildren = new HashMap<String, List<String>>();
+            //params
+            menuParams = new HashMap<String, List<String>>();
+            if (appMenu != null) {
+                //String[] groups = (String[]) settings.getField("GROUPS").get(settings);
+                for (int i = 0; i < appMenu.length ; i++ ) {
+
+                    List<String> lista = new ArrayList<String>();
+                    List<String> params = new ArrayList<String>();
+                    menuElements.add(appMenu[i].title);
+
+                    if (appMenu[i].children.size() > 0) {
+                        ZenMenuItem[] children = appMenu[i].children.toArray(new ZenMenuItem[appMenu[i].children.size()]);
+
+                        for (int j=0; j<children.length; j++) {
+                            menuLayouts.put(children[j].title, children[j].layout);
+                            lista.add(children[j].title);
+                            params.add(children[j].param);
+                        }
+                    }
+                    else {
+                        menuLayouts.put(appMenu[i].title, appMenu[i].layout);
+                    }
+
+                    ZenLog.l(appMenu[i].title);
+                    ZenLog.l(lista.size());
+
+                    menuChildren.put(appMenu[i].title, lista);
+                    menuParams.put(appMenu[i].title, params);
+                }
+            }
+
+            if (hasExpandableMenu) {
+                onlyOneIsOpen = (Boolean) _getMenuSetting("ONLY_ONE_IS_OPEN", true);
+            }
+
+            menuParentsAsParams = (Boolean) _getMenuSetting("MENU_PARENTS_AS_PARAMS", false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static synchronized String getFont (String font) {
@@ -260,6 +287,14 @@ public class ZenSettingsManager {
         }
     }
 
+    public static synchronized String getLang() {
+        String s = Locale.getDefault().getLanguage();
+        if (appLanguages.contains(s)) {
+            return s;
+        }
+        return appLanguageDefault;
+    }
+
 
     private static Object _getSetting(String name) {
         return _getSetting(name, null);
@@ -280,4 +315,25 @@ public class ZenSettingsManager {
 
         return o;
     }
+
+    private static Object _getMenuSetting(String name) {
+        return _getSetting(name, null);
+    }
+
+    private static Object _getMenuSetting(String name, Object def) {
+        Object o;
+
+        if (settings_list.contains(name)) {
+            try {
+                o = settings_menu.getField(name).get(settings_menu);
+            } catch (Exception e) {
+                o = null;
+            }
+        } else {
+            o = def;
+        }
+
+        return o;
+    }
+
 }
