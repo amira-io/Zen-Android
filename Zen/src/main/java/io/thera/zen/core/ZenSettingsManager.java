@@ -180,16 +180,19 @@ public class ZenSettingsManager {
 
     protected static void loadMenuConfig() {
         try {
-            settings_menu =  Class.forName("app.settings.Menu");
-            settings_menu.getMethod("set").invoke(settings_menu);
+            settings_menu = Class.forName("app.settings.Menu");
+            settings_menu.getMethod("set").invoke(null);
 
             Field[] fields = settings_menu.getFields();
             for (Field f : fields) {
                 settings_list.add(f.getName());
             }
 
+            ZenLog.l(settings_list);
+
             List<ZenMenuItem> Menu = (List<ZenMenuItem>) _getMenuSetting("MENU");
             if (Menu != null) {
+                ZenLog.l("MENU IS NOT NULL");
                 appMenu = Menu.toArray(new ZenMenuItem[Menu.size()]);
 
                 for (int i=0; i < appMenu.length; i++) {
@@ -317,19 +320,23 @@ public class ZenSettingsManager {
     }
 
     private static Object _getMenuSetting(String name) {
-        return _getSetting(name, null);
+        return _getMenuSetting(name, null);
     }
 
     private static Object _getMenuSetting(String name, Object def) {
         Object o;
 
+        ZenLog.l("menuSetting name: "+name);
         if (settings_list.contains(name)) {
             try {
                 o = settings_menu.getField(name).get(settings_menu);
+                ZenLog.l("menuSetting value: "+o.toString());
             } catch (Exception e) {
+                e.printStackTrace();
                 o = null;
             }
         } else {
+            ZenLog.l("SETTING NAME NOT IN LIST: "+name);
             o = def;
         }
 

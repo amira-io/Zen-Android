@@ -202,12 +202,6 @@ public class ZenAppManager {
 
         ZenLog.l("ZENAPPMANAGER start");
 
-        /**
-         *  GETTING INITIAL VALUES FROM SETTINGS FILE
-         */
-
-        ZenSettingsManager.start();
-
 		/**
 		 * SET CURRENT ACTIVITY
 		 */
@@ -216,6 +210,19 @@ public class ZenAppManager {
         setCurrentPosition(a);
         currentStack = new Stack();
         currentStack.push(a);
+
+        /**
+         * BUILDING RESOURCE CLASS NAME
+         */
+
+        String pack = a.getClass().getPackage().getName();
+        resourceClass = pack + ".R";
+
+        /**
+         *  GETTING INITIAL VALUES FROM SETTINGS FILE
+         */
+
+        ZenSettingsManager.start();
 
         /**
          *   CHECKING IF WE ARE ON TABLET
@@ -230,13 +237,6 @@ public class ZenAppManager {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         setConnected(networkInfo != null && networkInfo.isConnected());
-
-	    /**
-	     * BUILDING RESOURCE CLASS NAME
-	     */
-
-        String pack = a.getClass().getPackage().getName();
-        resourceClass = pack + ".R";
 
 	    /**
 	     * DIFFERENT BEHAVIOUR FOR DIFFERENT LAYOUT.
