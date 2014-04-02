@@ -268,4 +268,49 @@ public class ZenResManager {
         return tfs.get(fontName);
     }
 
+    public static synchronized int getStringId(String resource) {
+        try {
+            //set di classi dichiarate da R (layout, id, array, ecc ecc)
+            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
+            //cerco la classe id
+            //for (int i = 0; i < set.length ; i++) {
+
+            //    if (set[i].getCanonicalName().endsWith("id")) {
+            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
+            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
+            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
+            //    }
+            //}
+
+            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$string");
+            return (Integer) Res.getField(resource).get(Res);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            return 0;
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static synchronized String getString ( String name ) {
+
+        try {
+            String s =  ZenAppManager.getActivity().getApplicationContext().getResources().getString(getStringId(name));
+            return s;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
 }
