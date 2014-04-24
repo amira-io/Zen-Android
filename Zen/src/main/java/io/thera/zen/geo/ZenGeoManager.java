@@ -16,6 +16,7 @@ import android.app.*;
 import android.content.Context;
 
 import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenLog;
 
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -23,36 +24,24 @@ public class ZenGeoManager{
 
 
 
-	private double latitude;
-	private double longitude;
-	private double bearing;
-	private double speed;
-	private double altitude;
-	
-	private static LocationManager locationManager;
-	private Context context;
+    private double latitude;
+    private double longitude;
+    private double bearing;
+    private double speed;
+    private double altitude;
+
+    private static LocationManager locationManager;
+    private Context context;
 
     private static String callback;
     private static Object caller;
-		
-	private static boolean isListenerSet = false;
+
+    private static boolean isListenerSet = false;
 
 
     private static ZenLocationListener locationListener;
-	/*
-	public ZenGeoManager ( String callback, Object caller) {
-		try {
-            this.callback   = callback;
-            this.caller     =
-   			//this.locationManager    = (LocationManager) lm;
-			//this.context            = a.getApplicationContext();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 
-    public static synchronized void getPosition (String callback_name , Object caller_name) {
+    public static synchronized void getPosition(String callback_name , Object caller_name) {
 
         if (!isListenerSet) {
 
@@ -60,46 +49,46 @@ public class ZenGeoManager{
             callback           = callback_name;
             caller             = caller_name;
 
-            locationListener   = new ZenLocationListener(callback,caller);
-
-
+            locationListener   = new ZenLocationListener("_stopListenPosition",ZenGeoManager.class);
 
             Criteria c          =   new Criteria();
-            long minTime        =   1000;
-            float minDistance   =   1;
+            c.setPowerRequirement(Criteria.POWER_LOW);
+            c.setAccuracy(Criteria.ACCURACY_FINE);
+
             locationManager    = (LocationManager) ZenAppManager.getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(minTime, minDistance, c, locationListener , null);
+            locationManager.requestSingleUpdate(c, locationListener , null);
         }
 
     }
 
 
-    public static synchronized void stopListenPosition () {
+    public static synchronized void _stopListenPosition(Location location) {
 
-            isListenerSet = false;
-            locationManager.removeUpdates(locationListener);
+        locationManager.removeUpdates(locationListener);
+
+        //abbiamo ottenuto la posizione
+        Class[] params = new Class[1];
+        params[0] = Location.class;
+
+        Object[] values = new Object[1];
+        values[0] = location;
+        try {
+            if (caller instanceof Class) {
+                ((Class)caller).getMethod(callback, params).invoke(caller,values);
+            }
+            else {
+                caller.getClass().getMethod(callback, params).invoke(caller, values);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        isListenerSet = false;
 
     }
-	/*
-	public synchronized void setListenerStatus(boolean status) {
-		if (status!=isListenerSet) {
-			if (status) {
-				Criteria c          =   new Criteria();
-				long minTime        =   1000;
-				float minDistance   =   1;
-				locationManager.requestLocationUpdates(minTime, minDistance, c, this, null);
-			}
-			else {
-				locationManager.removeUpdates(this);
-			}	
-			isListenerSet = status;
-		}
-		else {
-			//se status e il flag sono uguali, abbiamo gi� fatto il setup
-			//dovrei mostrare un messaggio di errore.
-		}
-	}*/
-	
-
 
 }

@@ -19,7 +19,6 @@ public class ZenLocationListener implements LocationListener {
     public ZenLocationListener(String callback, Object caller) {
         this.callback   =   callback;
         this.caller     =   caller;
-        ZenLog.l(callback + " - " + caller.getClass().getCanonicalName());
 
     }
     @Override
@@ -30,14 +29,10 @@ public class ZenLocationListener implements LocationListener {
         Object[] values = new Object[1];
         values[0] = location;
         try {
-            ZenLog.l(this.callback + " - " + this.caller.getClass().getCanonicalName());
             if (this.caller instanceof Class) {
-                ZenLog.l("PROVO A CHIAMARE"+((Class) this.caller).getCanonicalName());
                 ((Class) this.caller).getMethod(this.callback, params).invoke(this.caller,values);
             }
             else {
-                ZenLog.l("NON CLASSE PROVO A CHIAMARE"+this.caller.getClass().getCanonicalName());
-
                 this.caller.getClass().getMethod(this.callback, params).invoke(this.caller, values);
             }
         } catch (IllegalAccessException e) {
