@@ -67,7 +67,7 @@ public class ZenImageSlider {
     private ViewGroup linear;
 
 
-    class imageTask extends AsyncTask<String, Void, Drawable> {
+    public static class imageTask extends AsyncTask<String, Void, Drawable> {
 
         private String method;
         private Object caller;
