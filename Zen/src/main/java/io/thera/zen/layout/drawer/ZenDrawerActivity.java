@@ -73,6 +73,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         if (!skipStart) {
             setUp();
         }
+
+        getElements();
+        buildElements();
     }
 
     @Override
@@ -82,6 +85,11 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
     @Override
     public void buildElements() {
+
+    }
+
+    @Override
+    public void loadHelpers() {
 
     }
 
@@ -129,7 +137,11 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         this.drawerButton			= (Button) findViewById(ZenResManager.getResourceId("ic_menu_overlay"));
         this.drawerButtonImage      = (ImageView) findViewById(ZenResManager.getResourceId("ic_menu"));
         //this.drawerLayout 			= (DrawerLayout) findViewById(ZenResManager.getResourceId("drawer_layout"));
-        this.backButton             = (Button) findViewById(ZenResManager.getResourceId("ic_back_overlay"));
+        try {
+            this.backButton = (Button) findViewById(ZenResManager.getResourceId("ic_back_overlay"));
+        } catch (Exception e) {
+            this.backButton = null;
+        }
 
 
         /*
@@ -161,7 +173,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         }
         else {
             nListView = (ListView) findViewById(ZenResManager.getResourceId("left_drawer"));
-            listAdapter = new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), listDataHeader);
+            listAdapter = new ArrayAdapter<String>(this, ZenResManager.getLayoutId("drawer_listview_item"), ZenResManager.getResourceId("group_item"), listDataHeader);
             nListView.setAdapter(listAdapter);
         }
 
@@ -194,13 +206,18 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                 }
         );
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ZenLog.l("BACK BUTTON PRESSED");
-                ZenNavigationManager.back();
-            }
-        });
+
+        if (backButton != null) {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ZenLog.l("BACK BUTTON PRESSED");
+                    ZenNavigationManager.back();
+                }
+            });
+        }
+
+
         /*
         backButton.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -233,14 +250,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
 
                     //drawerLayout.closeDrawer(drawerListView);
                     //drawerLayout.
-                    ZenLog.l("inside itemclicklistener");
-                    ZenLog.l(""+view.getId());
-                    long prima = System.nanoTime();
-                    ZenLog.l("POSITION "+ position + " - ID  " + id);
-                    ZenFragmentManager.setZenFragment((String) ((TextView) view).getText());
-                    long dopo = System.nanoTime();
-                    ZenLog.l("TIME to launch ATLFragmentmangager"+(dopo-prima));
+                    String tit = listDataHeader.get(position).toLowerCase();
+                    ZenFragmentManager.setZenFragment(tit);
                     //updateLayout(((TextView) view).getText());
+                    sMenu.toggle();
                 }
 
             });

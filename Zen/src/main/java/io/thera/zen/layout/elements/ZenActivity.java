@@ -37,10 +37,7 @@ public abstract class ZenActivity extends FragmentActivity{
             }
         }
 
-        getElements();
-        buildElements();
-
-
+        loadHelpers();
 
     }
 
@@ -58,6 +55,11 @@ public abstract class ZenActivity extends FragmentActivity{
     public abstract void getElements();
 
     public abstract void buildElements();
+
+    public void loadHelpers() {
+        getElements();
+        buildElements();
+    }
 
     public void goTo(Class activity, boolean addToStack) {
         final Class a = activity;
