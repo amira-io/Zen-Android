@@ -92,9 +92,9 @@ public class ZenGeoUtil {
             else {
                 JSONObject val = new JSONObject();
                 val.put("country", country);
-                val.put("reg", region);
-                val.put("prov", province);
-                val.put("loc", locality);
+                val.put("region", region);
+                val.put("province", province);
+                val.put("locality", locality);
 
                 params = new Class[1];
                 params[0] = JSONObject.class;
