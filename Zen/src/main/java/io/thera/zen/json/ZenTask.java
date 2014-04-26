@@ -163,7 +163,7 @@ public class ZenTask extends AsyncTask<Object, Void, String> {
 	}
 
     public String postJson ( String url, Map<String, String> params, Map<String, String> req_headers ) throws ClientProtocolException, IOException {
-        ZenLog.l(url);
+        //ZenLog.l(url);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(url);
@@ -171,8 +171,8 @@ public class ZenTask extends AsyncTask<Object, Void, String> {
             //convert parameters into JSON object
             JSONObject holder = getJsonObjectFromMap(params);
             //passes the results to a string builder/entity
-            StringEntity se = new StringEntity(holder.toString());
-            ZenLog.l(holder.toString());
+            StringEntity se = new StringEntity(holder.toString(), "UTF8");
+            //ZenLog.l(holder.toString());
             //sets the post request as the resulting string
             httppost.setEntity(se);
         } catch (Exception e) {
