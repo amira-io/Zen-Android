@@ -22,8 +22,13 @@ public abstract class ZenAnimator {
     public static void set(View view, float fromX, float toX, float fromY, float toY, int duration, boolean autostart) {
         mView = view;
 
-        objanim = ObjectAnimator.ofFloat(view , "y" , fromY, toY);
-        objanim.setDuration(duration);
+        if (fromX == toX) {
+            objanim = ObjectAnimator.ofFloat(view , "y" , fromY, toY);
+            objanim.setDuration(duration);
+        } else if (fromY == toY) {
+            objanim = ObjectAnimator.ofFloat(view, "x", fromX, toX);
+            objanim.setDuration(duration);
+        }
 
         if (autostart) {
             start();
