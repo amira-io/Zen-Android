@@ -94,7 +94,10 @@ public class ZenImageSlider {
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 ZenLog.l("IMGTYPE: "+imgtype);
-                if (imgtype.equals("thumb")) {
+                if (imgtype.equals("fine")) {
+                    options.inSampleSize = 1;
+                }
+                else if (imgtype.equals("thumb")) {
                     options.inSampleSize = 2;
                 }
                 else {
