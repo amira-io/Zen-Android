@@ -194,8 +194,8 @@ public class ZenFragmentManager {
                     Object controller = availableFragments.get(title);
 
                     String superclass = "io.thera.zen.layout.drawer.ZenFragment";
-
-                    if (controller.getClass().getSuperclass().getCanonicalName().equals(superclass)) {
+                    if (ZenFragment.class.isAssignableFrom(controller.getClass())) {
+                    //if (controller.getClass().getSuperclass().getCanonicalName().equals(superclass)) {
                         //
                         // QUESTO VUOL DIRE CHE ABBIAMO CARICATO UNA CLASSE CHE HA COME SUPERCLASSE ATLFRAGMENT
                         //
