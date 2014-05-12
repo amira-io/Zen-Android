@@ -1,11 +1,15 @@
 package io.thera.zen.layout.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.ContextThemeWrapper;
+
+import com.google.android.gms.internal.ac;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +55,17 @@ public abstract class ZenDialog {
     }
 
     public void show() {
-        ZenAppManager.getActivity().runOnUiThread(new Runnable() {
+        show(ZenAppManager.getActivity());
+    }
+
+    public void show(Activity activity) {
+        final Activity a = activity;
+        a.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 switch (_type) {
                     case 0 : {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ZenAppManager.getActivity(), android.R.style.Theme_Holo_Light_Dialog));
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper( a, android.R.style.Theme_Holo_Light_Dialog));
                         builder.setTitle(title);
                         builder.setMessage(message)
                                 .setPositiveButton(_defaults.get("ok"), new DialogInterface.OnClickListener() {
@@ -73,7 +82,7 @@ public abstract class ZenDialog {
                         break;
                     }
                     case 1 : {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ZenAppManager.getActivity(), android.R.style.Theme_Holo_Light_Dialog));
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(a, android.R.style.Theme_Holo_Light_Dialog));
                         builder.setTitle(title);
                         builder.setMessage(message)
                                 .setPositiveButton(button_OK, new DialogInterface.OnClickListener() {
@@ -85,7 +94,7 @@ public abstract class ZenDialog {
                         break;
                     }
                     case 2 : {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ZenAppManager.getActivity(), android.R.style.Theme_Holo_Light_Dialog));
+                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(a, android.R.style.Theme_Holo_Light_Dialog));
                         builder.setTitle(title);
                         builder.setMessage(message);
                         builder.create().show();
