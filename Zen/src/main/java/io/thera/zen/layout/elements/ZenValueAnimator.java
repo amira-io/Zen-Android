@@ -1,6 +1,8 @@
 package io.thera.zen.layout.elements;
 
 //import android.animation.*;
+import android.view.animation.LinearInterpolator;
+
 import com.nineoldandroids.animation.*;
 
 import io.thera.zen.core.ZenLog;
@@ -8,37 +10,15 @@ import io.thera.zen.core.ZenLog;
 /**
  * Created by marcostagni on 13/05/14.
  */
+
+
+
 public class ZenValueAnimator  {
 
-    static TickerRunnable _runnable;
+    static ZenTickerRunnable _runnable;
     static Ticker t;
 
-    public static abstract class TickerRunnable implements Runnable {
-        public Object value, to;
-
-        public void set(Object value, Object to) {
-            ZenLog.l("TEST TICKER calling set value");
-            this.value = value;
-            this.to = to;
-        }
-        public Object get() {
-            ZenLog.l("TEST TICKER calling get");
-            return value;
-        }
-
-        public void run() {
-            ZenLog.l("TEST TICKER calling run");
-            if (((Integer) this.value).intValue() == ((Integer) this.to).intValue()) {
-                onComplete();
-            }
-            tick();
-        }
-
-        public abstract void tick();
-        public abstract void onComplete();
-    }
-
-    public static class Ticker {
+    public class Ticker {
         Object from, to;
         int duration;
         public Object value;
@@ -59,7 +39,7 @@ public class ZenValueAnimator  {
         }
 //
 
-        public void go(TickerRunnable runnable) {
+        public void go(ZenTickerRunnable runnable) {
             ZenLog.l("TEST TICKER calling go");
             _runnable = runnable;
             ValueAnimator va;
@@ -69,11 +49,11 @@ public class ZenValueAnimator  {
                 va = ValueAnimator.ofFloat((Float) from, (Float) to);
             }
             va.setDuration(duration);
+            //va.setInterpolator(new LinearInterpolator());
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     try {
-                        ZenLog.l("TEST TICKER calling set");
                         _runnable.set(animation.getAnimatedValue(), to);
                         _runnable.run();
                     } catch (Exception e) {
@@ -88,12 +68,12 @@ public class ZenValueAnimator  {
 
     }
 
-    public static Ticker set(int from, int to, int duration) {
+    public Ticker set(int from, int to, int duration) {
         ZenLog.l("TEST TICKER calling set");
         return new Ticker(from, to, duration);
     }
 
-    public static Ticker set(float from, float to, int duration) {
+    public Ticker set(float from, float to, int duration) {
         return new Ticker(from, to, duration);
     }
 
