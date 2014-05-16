@@ -250,6 +250,8 @@ public class ZenAppManager {
 	     * DIFFERENT BEHAVIOUR FOR DIFFERENT LAYOUT.
 	     */
 
+        detailLayouts   = ZenSettingsManager.getDetailMap();
+
         switch(ZenSettingsManager.getLayoutType()) {
 
             case 1: {
@@ -285,9 +287,6 @@ public class ZenAppManager {
 		 */
 
         layouts = ZenSettingsManager.getMenuLayouts();
-
-        detailLayouts   = new HashMap<String,String>();
-        detailLayouts   = ZenSettingsManager.getDetailMap();
 
     }
 
