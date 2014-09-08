@@ -1,0 +1,21 @@
+-dontshrink
+-dontoptimize
+-ignorewarnings
+
+-renamesourcefileattribute SourceFile
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,
+                SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+
+-keep class * { public protected *; }
+-keepclasseswithmembernames class io.thera.zen.geo.ZenGeoDirections {
+    public *;
+}
+-keepclasseswithmembernames class io.thera.zen.geo.ZenGeoUtil {
+    public *;
+}
+
+-keepclasseswithmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+-keepclasseswithmembernames class **.R$* { *; }
