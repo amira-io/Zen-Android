@@ -39,7 +39,7 @@ public class ZenTextView extends TextView {
 
     }
 
-    public void init() {
+    private void init() {
         CharSequence fontTag = this.getContentDescription();
         String fontString = "";
         if (fontTag != null) {

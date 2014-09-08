@@ -62,12 +62,12 @@ public class ZenImageSlider {
     private Map<String,String> thumbToLargeMap;
     private Map<String,String> largeToThumbMap;
 
-    String currentImage;
+    private String currentImage;
     private ViewGroup relative;
     private ViewGroup linear;
 
 
-    public static class imageTask extends AsyncTask<String, Void, Drawable> {
+    private static class imageTask extends AsyncTask<String, Void, Drawable> {
 
         private String method;
         private Object caller;
@@ -255,7 +255,7 @@ public class ZenImageSlider {
 
     }
 
-    public void addImageFromUrl ( String thumbUrl, String largeUrl ) {
+    private void addImageFromUrl ( String thumbUrl, String largeUrl ) {
         //getDrawableFromUrl(url);
 
         largeToThumbMap.put(largeUrl, thumbUrl);

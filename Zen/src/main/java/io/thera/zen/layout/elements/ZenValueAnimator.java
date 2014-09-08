@@ -15,13 +15,13 @@ import io.thera.zen.core.ZenLog;
 
 public class ZenValueAnimator  {
 
-    static ZenTickerRunnable _runnable;
-    static Ticker t;
+    private static ZenTickerRunnable _runnable;
+    private static Ticker t;
 
-    public class Ticker {
-        Object from, to;
-        int duration;
-        public Object value;
+    private class Ticker {
+        private Object from, to;
+        private int duration;
+        private Object value;
         protected String type;
 
         public Ticker(int from, int to, int duration){
