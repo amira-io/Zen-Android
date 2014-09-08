@@ -19,7 +19,7 @@ public class ZenDrawerListener implements DrawerListener {
     @Override
     public void onDrawerSlide(View arg0, float arg1) {
         // TODO Auto-generated method stub
-        //	ATLAppManager.revertDrawerFlag();
+        //	ATLAppManager.revertDrawerFlag(); ATL FTW
     }
 
     @Override

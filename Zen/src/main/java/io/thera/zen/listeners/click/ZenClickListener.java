@@ -13,13 +13,13 @@ import io.thera.zen.core.ZenAppManager;
 public class ZenClickListener implements OnItemClickListener {
 
 
-    int 	view_id;
-    View 	view;
-    String 	className;
-    String 	methodName;
-    Method 	callback;
-    Object 	caller;
-    String 	type; //so we know which type of event is handled.
+    private int 	view_id;
+    private View 	view;
+    private String 	className;
+    private String 	methodName;
+    private Method 	callback;
+    private Object 	caller;
+    private String 	type; //so we know which type of event is handled.
 
     public ZenClickListener (View v, String methodName) {
         System.out.println("Initializing ATLItemClickListener");
@@ -53,7 +53,7 @@ public class ZenClickListener implements OnItemClickListener {
         //empty constructor
     }
 
-    public Object[] createParameters(View v, int position, long id) {
+    private Object[] createParameters(View v, int position, long id) {
 
         Object[] parameters = new Object[3];
         parameters[0] = v;

@@ -17,13 +17,13 @@ import io.thera.zen.core.ZenAppManager;
 
 public class ZenTouchListener implements OnTouchListener {
 
-    int 	view_id;
-    View 	view;
-    String 	className;
-    String 	methodName;
-    Method 	callback;
-    Object 	caller;
-    String 	type; //so we know which type of event is handled.
+    private int 	view_id;
+    private View 	view;
+    private String 	className;
+    private String 	methodName;
+    private Method 	callback;
+    private Object 	caller;
+    private String 	type; //so we know which type of event is handled.
 
     public ZenTouchListener (View v, String methodName) {
         System.out.println("Initializing ATLTouchListener");
@@ -51,7 +51,7 @@ public class ZenTouchListener implements OnTouchListener {
         //empty constructor
     }
 
-    public Object[] createParameters(View v, MotionEvent event) {
+    private Object[] createParameters(View v, MotionEvent event) {
 
         Object[] parameters = new Object[2];
         parameters[0] = v;
