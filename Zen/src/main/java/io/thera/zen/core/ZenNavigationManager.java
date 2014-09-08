@@ -24,9 +24,9 @@ public class ZenNavigationManager  {
 
     //static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
-    static List<Object> parameters = new ArrayList<Object>();
+    private static List<Object> parameters = new ArrayList<Object>();
 
-    static List<Object> parametersLast = new ArrayList<Object>();
+    private static List<Object> parametersLast = new ArrayList<Object>();
 
     public static synchronized  void setParameters( List<Object> params) {
         parameters = params;

@@ -134,7 +134,7 @@ public class ZenTask extends AsyncTask<Object, Void, String> {
 	/*
 	 *  PERMITTED TYPES METHODS.
 	 */
-	public String getJson ( String url, Map<String, String> req_headers ) throws ClientProtocolException, IOException {
+	protected String getJson ( String url, Map<String, String> req_headers ) throws ClientProtocolException, IOException {
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpget = new HttpGet(url);
@@ -162,7 +162,7 @@ public class ZenTask extends AsyncTask<Object, Void, String> {
         return builder.toString();
 	}
 
-    public String postJson ( String url, Map<String, String> params, Map<String, String> req_headers ) throws ClientProtocolException, IOException {
+    protected String postJson ( String url, Map<String, String> params, Map<String, String> req_headers ) throws ClientProtocolException, IOException {
         //ZenLog.l(url);
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
