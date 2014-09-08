@@ -26,9 +26,9 @@ import io.thera.zen.core.ZenResManager;
 
 public class ZenFragmentManager {
 
-    static Map<String,Object> availableFragments = new HashMap<String,Object>();
+    private static Map<String,Object> availableFragments = new HashMap<String,Object>();
 
-    static String lastFragment;
+    private static String lastFragment;
 
     public static synchronized String getCurrent() {
         return lastFragment;
@@ -309,7 +309,7 @@ public class ZenFragmentManager {
 	 * METHOD FOR GETTING PARAMETERS FOR JAVA REFLECTION
 	 */
 
-    public static Object[] createParameters(String title , int position) {
+    private static Object[] createParameters(String title , int position) {
         Object[] parameters = new Object[2];
         parameters[0] = title;
         parameters[1] = position;

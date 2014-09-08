@@ -294,7 +294,7 @@ public abstract class ZenFragment extends Fragment {
         }
     }
 
-    public void setMapFrag() {
+    private void setMapFrag() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -322,7 +322,7 @@ public abstract class ZenFragment extends Fragment {
         */
     }
 
-    public void loadMap() {
+    private void loadMap() {
         if (map == null) {
             ZenLog.l("MAP: LOADING");
             map = mapFrag.getMap();
@@ -335,7 +335,7 @@ public abstract class ZenFragment extends Fragment {
         }
     }
 
-    public void renderMap() {
+    private void renderMap() {
         if (map != null) {
             setMap();
             //loadMapBitmap();
@@ -349,7 +349,7 @@ public abstract class ZenFragment extends Fragment {
 
     }
 
-    public void detachMap() {
+    private void detachMap() {
         try {
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
