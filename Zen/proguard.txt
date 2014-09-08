@@ -6,11 +6,8 @@
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,
                 SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 
--keep class * { public protected *; }
--keepclasseswithmembernames class io.thera.zen.geo.ZenGeoDirections {
-    public *;
-}
--keepclasseswithmembernames class io.thera.zen.geo.ZenGeoUtil {
+-keep class * { public *; }
+-keepclasseswithmembernames class * {
     public *;
 }
 
