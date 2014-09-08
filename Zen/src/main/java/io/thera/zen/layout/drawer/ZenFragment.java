@@ -42,8 +42,8 @@ public abstract class ZenFragment extends Fragment {
 
     //private  Map<String, Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
-    protected List<Object> parameters =  new ArrayList<Object>();
-    protected Map<String, Object> current = new HashMap<String, Object>();
+    private List<Object> parameters =  new ArrayList<Object>();
+    private Map<String, Object> current = new HashMap<String, Object>();
 
 
     private  String title;
@@ -64,7 +64,7 @@ public abstract class ZenFragment extends Fragment {
 
     private ZenMap mapFrag;
 
-    protected GoogleMap map;
+    private GoogleMap map;
 
     private int mapContainerId;
 
