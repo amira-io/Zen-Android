@@ -23,7 +23,7 @@ import io.thera.zen.layout.drawer.ZenFragmentManager;
 
 public class ZenAppManager {
 
-    static Object current;
+    private static Object current;
     //used to store current activity/fragment.
 
     public static synchronized void setCurrentPosition(Object o) {
@@ -34,21 +34,21 @@ public class ZenAppManager {
         return current;
     }
 
-    static Stack<Object> currentStack;
+    private static Stack<Object> currentStack;
 
     //static Map<String,Integer> layouts = new HashMap<String,Integer>();
-    static Map<String, String> layouts = new HashMap<String,String>();
+    private static Map<String, String> layouts = new HashMap<String,String>();
 
     public static Map<String, String> getLayouts() { return layouts; }
 
-    static Map<String,String> detailLayouts;
+    private static Map<String,String> detailLayouts;
 
     public static Map<String,String> getDetailLayouts() { return detailLayouts; }
 
     protected static String language;
     public static String getLanguage() { return language; }
 
-    static int layoutIndex = 0;
+    private static int layoutIndex = 0;
 
     /**
      *  CHECKI IF WE ARE ON A TABLET
@@ -100,7 +100,7 @@ public class ZenAppManager {
 	 * CONNECTION FLAG.
 	 */
 
-    public static boolean isConnected = false;
+    private static boolean isConnected = false;
 
     public static synchronized boolean isConnected() {
         return isConnected(getActivity());
@@ -126,7 +126,7 @@ public class ZenAppManager {
 	 * GENERAL VARIABLES
 	 */
 
-    static String resourceClass;
+    private static String resourceClass;
 
     public static synchronized String getResourceClass() {
 
@@ -134,7 +134,7 @@ public class ZenAppManager {
 
     }
 
-    static FragmentActivity activity;
+    private static FragmentActivity activity;
 
     public static synchronized FragmentActivity getActivity() {
 
@@ -147,7 +147,7 @@ public class ZenAppManager {
         activity = a;
     }
 
-    static Intent activity_intent;
+    private static Intent activity_intent;
 
     public static synchronized Intent getActivity_intent() {
         //Intent i = activity_intent;
@@ -170,7 +170,7 @@ public class ZenAppManager {
         drawerFlag = (!drawerFlag);
     }
 
-    public static synchronized void moveDrawer(boolean flag) {
+    private static synchronized void moveDrawer(boolean flag) {
         try {
             ZenLog.l("PRIMA " + drawerFlag);
             if (flag) {

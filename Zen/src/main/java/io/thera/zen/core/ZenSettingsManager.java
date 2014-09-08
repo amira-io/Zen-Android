@@ -24,8 +24,8 @@ public class ZenSettingsManager {
      *  SETTINGS FILE.
      */
 
-    static Class settings;
-    static Class settings_menu;
+    private static Class settings;
+    private static Class settings_menu;
 
     private static List<String> settings_list;
 
@@ -33,7 +33,7 @@ public class ZenSettingsManager {
      *  LAYOUT TYPE.
      */
 
-    static Integer layoutType;
+    private static Integer layoutType;
 
     public static Integer getLayoutType() {
 
@@ -46,12 +46,12 @@ public class ZenSettingsManager {
      *  DRAWER LAYOUT SETTINGS.
      */
 
-    static ZenMenuItem[] appMenu;
+    private static ZenMenuItem[] appMenu;
 
-    static List<String> menuElements;
-    static HashMap<String, String> menuLayouts;
-    static HashMap<String, List<String>> menuChildren;
-    static HashMap<String, List<String>> menuParams;
+    private static List<String> menuElements;
+    private static HashMap<String, String> menuLayouts;
+    private static HashMap<String, List<String>> menuChildren;
+    private static HashMap<String, List<String>> menuParams;
 
     public static List<String> getMenuElements() { return menuElements; }
 
@@ -61,7 +61,7 @@ public class ZenSettingsManager {
 
     public static HashMap<String, List<String>> getMenuParams() { return menuParams; }
 
-    static String drawerButtonAnimation;
+    private static String drawerButtonAnimation;
 
     public static String getDrawerButtonAnimation() {
 
@@ -75,7 +75,7 @@ public class ZenSettingsManager {
     *    DETAIL VIEWS.
     */
 
-    static Map<String,String> detailMap;
+    private static Map<String,String> detailMap;
 
     public static Map<String,String> getDetailMap() {
        return detailMap;
@@ -85,13 +85,13 @@ public class ZenSettingsManager {
      *  EXPANDABLE MENU
      */
 
-    static boolean  hasExpandableMenu;
+    private static boolean  hasExpandableMenu;
 
     public static Boolean hasExpandableMenu() {
         return hasExpandableMenu;
     }
 
-    static boolean onlyOneIsOpen;
+    private static boolean onlyOneIsOpen;
 
     public static Boolean onlyOneIsOpen() {
         return onlyOneIsOpen;
@@ -99,21 +99,21 @@ public class ZenSettingsManager {
 
     //static String DrawerLayout;
 
-    static int MenuType;
+    private static int MenuType;
 
     public static int getMenuType() { return MenuType; }
 
-    static String MenuLayout;
+    private static String MenuLayout;
 
-    static String NotExpandableMenuLayout;
+    private static String NotExpandableMenuLayout;
 
-    static String ExpandableMenuLayout;
+    private static String ExpandableMenuLayout;
 
     //public static String getDrawerLayout() { return DrawerLayout; }
 
     public static String getMenuLayout() { return MenuLayout; }
 
-    static boolean menuParentsAsParams;
+    private static boolean menuParentsAsParams;
 
     public static Boolean menuParentsAsParams() {
         return menuParentsAsParams;
@@ -123,16 +123,16 @@ public class ZenSettingsManager {
      *  FIRST VIEW
      */
 
-    static String firstView;
+    private static String firstView;
 
     public static String getFirstView() {
      return firstView;
     }
 
-    static List<String> appLanguages;
-    static String appLanguageDefault;
+    private static List<String> appLanguages;
+    private static String appLanguageDefault;
 
-    static Map<String,String> appFonts;
+    private static Map<String,String> appFonts;
 
 
 
