@@ -20,7 +20,7 @@ import io.thera.zen.core.ZenLog;
 import io.thera.zen.json.ZenJsonManager;
 
 public class ZenGeoDirections {
-    private enum TravelMode {
+    public enum TravelMode {
         BIKING("biking"),
         DRIVING("driving"),
         WALKING("walking"),

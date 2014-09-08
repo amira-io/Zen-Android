@@ -16,7 +16,7 @@ import io.thera.zen.layout.drawer.ZenFragmentManager;
  */
 public abstract class ZenActivity extends FragmentActivity{
 
-    protected boolean skipStart = false;
+    public boolean skipStart = false;
 
 
     @Override
