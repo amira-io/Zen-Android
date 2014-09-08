@@ -52,14 +52,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     //to handle extendable menu.
-    ArrayAdapter<String>        listAdapter;
-    ExpandableListAdapter       explistAdapter;
+    private ArrayAdapter<String>        listAdapter;
+    private ExpandableListAdapter       explistAdapter;
     private ListView            nListView;
-    ExpandableListView          expListView;
-    List<String>                listDataHeader;
-    Map<String, List<String>>   listDataChild;
+    private ExpandableListView          expListView;
+    private List<String>                listDataHeader;
+    private Map<String, List<String>>   listDataChild;
 
-    Map<String, List<String>>   listDataParams;
+    private Map<String, List<String>>   listDataParams;
 
     private ZenSlidingMenu sMenu;
 
@@ -103,7 +103,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         return true;
     }
 
-    public void setUp () {
+    private void setUp () {
 
 		/*
 		 * SETTING UP VIEW CONTENT.
@@ -112,7 +112,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         addListeners();
     }
 
-    public void setUpElements () {
+    private void setUpElements () {
 
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 

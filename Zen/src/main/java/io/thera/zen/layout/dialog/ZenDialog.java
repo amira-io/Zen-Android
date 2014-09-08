@@ -22,12 +22,12 @@ import io.thera.zen.core.ZenLog;
  */
 public abstract class ZenDialog {
 
-    String message;
-    String button_OK = null, button_CANCEL = null;
-    String title;
+    private String message;
+    private String button_OK = null, button_CANCEL = null;
+    private String title;
     int _type;
 
-    static Map<String, String> _defaults = new HashMap<String, String>();
+    private static Map<String, String> _defaults = new HashMap<String, String>();
     static {
         _defaults.put("ok", "ok");
         _defaults.put("cancel", "cancel");
