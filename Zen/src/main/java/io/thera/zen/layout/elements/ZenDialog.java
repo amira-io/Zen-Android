@@ -1,33 +1,26 @@
-package io.thera.zen.layout.dialog;
+package io.thera.zen.layout.elements;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.ContextThemeWrapper;
-
-import com.google.android.gms.internal.ac;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenApplication;
 
 /**
  * Created by marcostagni on 05/12/13.
  */
 public abstract class ZenDialog {
 
-    private String message;
-    private String button_OK = null, button_CANCEL = null;
-    private String title;
+    String message;
+    String button_OK = null, button_CANCEL = null;
+    String title;
     int _type;
 
-    private static Map<String, String> _defaults = new HashMap<String, String>();
+    static Map<String, String> _defaults = new HashMap<String, String>();
     static {
         _defaults.put("ok", "ok");
         _defaults.put("cancel", "cancel");
@@ -55,7 +48,7 @@ public abstract class ZenDialog {
     }
 
     public void show() {
-        show(ZenAppManager.getActivity());
+        show(ZenApplication.getAppActivity());
     }
 
     public void show(Activity activity) {
@@ -105,7 +98,7 @@ public abstract class ZenDialog {
         });
     }
 
-    public abstract void ok();
-    public abstract void cancel();
+    public void ok() {}
+    public void cancel() {}
 
 }

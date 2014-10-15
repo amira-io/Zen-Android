@@ -16,10 +16,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenApplication;
 import io.thera.zen.core.ZenResManager;
-import io.thera.zen.core.ZenSettingsManager;
 
 public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -30,14 +28,14 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
     public ZenExpandableListAdapter(Context context, List<String> listDataHeader, Map<String, List<String>> listChildData) {
 
-        ZenLog.l("listDataHeader" +(listDataHeader == null));
+        ZenApplication.log("listDataHeader" +(listDataHeader == null));
         this._context = context;
         this._listDataHeader = new ArrayList<String>();
         this._listDataHeader = listDataHeader;
 
         this._listDataChild = new HashMap<String, List<String>>();
         this._listDataChild = listChildData;
-        ZenLog.l("SIZE " + this._listDataHeader.size());
+        ZenApplication.log("SIZE " + this._listDataHeader.size());
     }
 
     @Override
@@ -101,7 +99,7 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
             layout = (String) getGroup(groupPosition) + "_menu";
             layout = layout.toLowerCase();
             layout.replace(" " , "_");
-            ZenLog.l("LAYOUT LOAD MENU "+layout);
+            ZenApplication.log("LAYOUT LOAD MENU "+layout);
             int layoutId = ZenResManager.getLayoutId(layout);
             if (layoutId == 0) {
                 layoutId = ZenResManager.getLayoutId("drawer_listview_group");
@@ -110,7 +108,7 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
             /*convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ZenLog.l("GROUP ZERO"+ toCall);
+                    ZenApplication.log("GROUP ZERO"+ toCall);
                     ZenFragmentManager.setZenFragment(toCall , ZenAppManager.getActivity());
                 }
             });*/
@@ -123,9 +121,9 @@ public class ZenExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView lblListHeader = (TextView) convertView.findViewById(ZenResManager.getResourceId("group_header"));
 
-        String fontName = ZenSettingsManager.getFont("default"); //errore
+        String fontName = ZenApplication.config().getFont("default"); //errore
 
-        lblListHeader.setTypeface(Typeface.createFromAsset(ZenAppManager.getActivity().getAssets(), "fonts/" + fontName), 1);
+        lblListHeader.setTypeface(Typeface.createFromAsset(ZenApplication.getAppActivity().getAssets(), "fonts/" + fontName), 1);
         lblListHeader.setText(headerTitle);
 
         return convertView;

@@ -11,306 +11,76 @@ import java.util.Map;
 
 /**
  * Created by marcostagni on 26/11/13
+ * Revisited by gi0baro on 14/05/14.
  *
- * Copyright © 2013. Thera Technologies.
+ * Copyright © 2014. Thera Technologies.
  */
 
 public class ZenResManager {
 
-	/*
-	 * METHOD FOR GETTING RESOURCE ID
-	 */
-
-    public static synchronized int getResourceId(String resource) {
-        try {
-            //set di classi dichiarate da R (layout, id, array, ecc ecc)
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-            //cerco la classe id
-            //for (int i = 0; i < set.length ; i++) {
-
-            //    if (set[i].getCanonicalName().endsWith("id")) {
-            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
-            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
-            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$id");
-            return (Integer) Res.getField(resource).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return 0;
-        }
+    public static int getResourceId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "id", ZenApplication.packageName());
     }
 
-
-
-	/*
-	 * METHOD FOR GETTING LAYOUT ID
-	 */
-
-    public static synchronized int getLayoutId(String layout) {
-        try {
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-
-            //for (int i = 0; i < set.length ; i++) {
-            //    if (set[i].getCanonicalName().endsWith("layout")) {
-            //        return (Integer) set[i].getField(layout).get(Class.forName(ZenAppManager.getResourceClass()));
-            //   }
-            //}
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$layout");
-            return (Integer) Res.getField(layout).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            //e.printStackTrace();
-            ZenLog.l("ZenResManager.getLayoutId: ClassNotFound "+layout);
-            return 0;
-
-        } catch (NoSuchFieldException e) {
-            //e.printStackTrace();
-            ZenLog.l("ZenResManager.getLayoutId: NoSuchField "+layout);
-            return 0;
-
-        } catch (IllegalAccessException e) {
-            //e.printStackTrace();
-            ZenLog.l("ZenResManager.getLayoutId: IllegalAccess "+layout);
-            return 0;
-        }
-
-
-
-
+    public static int getLayoutId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "layout", ZenApplication.packageName());
     }
 
-	/*
-	 * METHOD FOR GETTING RESOURCE ARRAY
-	 */
-
-    public static synchronized Integer getArrayId (String array) {
-        try {
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-
-            //for (int i = 0; i < set.length ; i++) {
-            //    if (set[i].getCanonicalName().endsWith("array")) {
-            //        return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$array");
-            return (Integer) Res.getField(array).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static int getArrayId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "array", ZenApplication.packageName());
     }
 
-    /**
-     * METHOD FOR GETTING ANIMATION ID
-     *
-     * @param anim
-     * @return
-     */
-    public static synchronized Integer getAnimId (String anim) {
-        try {
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-
-            //for (int i = 0; i < set.length ; i++) {
-            //    if (set[i].getCanonicalName().endsWith("anim")) {
-            //        return (Integer) set[i].getField(array).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$anim");
-            return (Integer) Res.getField(anim).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static int getAnimId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "anim", ZenApplication.packageName());
     }
 
-    public static synchronized Animation getAnimation( String name ) {
-
+	public static Animation getAnimation(String name) {
+        Animation a;
         try {
-            Animation a;
-            a = AnimationUtils.loadAnimation(ZenAppManager.getActivity().getApplicationContext(), getAnimId(name));
-            return a;
+            a = AnimationUtils.loadAnimation(ZenApplication.context(), getAnimId(name));
+        } catch (Exception e) {
+            a = null;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return a;
     }
 
-
-    /**
-     * METHOD FOR GETTING DRAWABLE ID
-     * @param drawable
-     * @return
-     */
-
-    public static synchronized Integer getDrawableId ( String drawable ) {
-        try {
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-
-            //for (int i = 0; i < set.length ; i++) {
-            //    if (set[i].getCanonicalName().endsWith("drawable")) {
-            //        return (Integer) set[i].getField(drawable).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$drawable");
-            return (Integer) Res.getField(drawable).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static int getDrawableId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "drawable", ZenApplication.packageName());
     }
 
-    /**
-     * METHOD FOR GETTING DRAWABLE FROM ID.
-     * @param name
-     * @return
-     */
-
-    public static synchronized Drawable getDrawable ( String name ) {
-
-        try {
-            Drawable d =  ZenAppManager.getActivity().getApplicationContext().getResources().getDrawable(getDrawableId(name));
-            return d;
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static Drawable getDrawable(String name) {
+        return ZenApplication.resources().getDrawable(getDrawableId(name));
     }
 
+    public static int getStringId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "string", ZenApplication.packageName());
+    }
 
-    public static synchronized int getDimenId(String resource) {
-        try {
-            //set di classi dichiarate da R (layout, id, array, ecc ecc)
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-            //cerco la classe id
-            //for (int i = 0; i < set.length ; i++) {
+    public static String getString(String name) {
+        return ZenApplication.resources().getString(getStringId(name));
+    }
 
-            //    if (set[i].getCanonicalName().endsWith("dimen")) {
-            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
-            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
-            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$dimen");
-            return (Integer) Res.getField(resource).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return 0;
-        }
+    public static int getDimenId(String name) {
+        return ZenApplication.resources().getIdentifier(name, "dimen", ZenApplication.packageName());
     }
 
     static Map<String, Typeface> tfs = new HashMap<String, Typeface>();
 
-    public static synchronized Typeface getTypeface(String font, Context c) {
-        String fontName = ZenSettingsManager.getFont(font);
-        //ZenLog.l(fontName);
+    public static Typeface getTypeface(String font, Context c) {
+        String fontName = ZenApplication.config().getFont(font);
+        //ZenApplication.log(fontName);
         if (!tfs.containsKey(fontName)) {
             try {
-                ZenLog.l("Creating typeface for font "+fontName);
+                ZenApplication.log("Creating typeface for font "+fontName);
                 tfs.put(fontName, Typeface.createFromAsset(c.getAssets(), "fonts/"+fontName));
             }
             catch (Exception e) {
-                ZenLog.l("Could not get typeface '" + fontName
+                ZenApplication.log("Could not get typeface '" + fontName
                         + "' because " + e.getMessage());
                 return null;
             }
         }
         return tfs.get(fontName);
     }
-
-    public static synchronized int getStringId(String resource) {
-        try {
-            //set di classi dichiarate da R (layout, id, array, ecc ecc)
-            //Class set[] = Class.forName(ZenAppManager.getResourceClass()).getDeclaredClasses();
-            //cerco la classe id
-            //for (int i = 0; i < set.length ; i++) {
-
-            //    if (set[i].getCanonicalName().endsWith("id")) {
-            //        //recupero il field della classe che corrisponde alla stringa in ingresso alla funzione
-            //        //viene ritornato come intero. La struttura della chiamata è colpa di Java Reflection.
-            //        return (Integer) set[i].getField(resource).get(Class.forName(ZenAppManager.getResourceClass()));
-            //    }
-            //}
-
-            Class Res = Class.forName(ZenAppManager.getResourceClass()+"$string");
-            return (Integer) Res.getField(resource).get(Res);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return 0;
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static synchronized String getString ( String name ) {
-
-        try {
-            String s =  ZenAppManager.getActivity().getApplicationContext().getResources().getString(getStringId(name));
-            return s;
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 
 }

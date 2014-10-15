@@ -1,43 +1,26 @@
 package io.thera.zen.geo;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.annotation.TargetApi;
-import android.app.*;
 import android.content.Context;
 
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenApplication;
 
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class ZenGeoManager{
 
-
-
-    private double latitude;
-    private double longitude;
-    private double bearing;
-    private double speed;
-    private double altitude;
-
     private static LocationManager locationManager;
-    private Context context;
 
     private static String callback;
     private static Object caller;
 
     private static boolean isListenerSet = false;
-
 
     private static ZenLocationListener locationListener;
 
@@ -50,12 +33,28 @@ public class ZenGeoManager{
             caller             = caller_name;
 
             locationListener   = new ZenLocationListener("_stopListenPosition",ZenGeoManager.class);
+            locationManager    = (LocationManager) ZenApplication.context().getSystemService(Context.LOCATION_SERVICE);
 
             Criteria c          =   new Criteria();
             c.setPowerRequirement(Criteria.POWER_LOW);
             c.setAccuracy(Criteria.ACCURACY_FINE);
 
-            locationManager    = (LocationManager) ZenAppManager.getActivity().getSystemService(Context.LOCATION_SERVICE);
+            //: verify provider exists
+            String provider = locationManager.getBestProvider(c , true);
+            if (provider == null) {
+                ZenApplication.log("No location provider found!");
+                c.setAccuracy(Criteria.ACCURACY_COARSE);
+                provider = locationManager.getBestProvider(c, true);
+                if (provider == null) {
+                    c.setPowerRequirement(Criteria.POWER_HIGH);
+                    provider = locationManager.getBestProvider(c, true);
+                    if (provider == null) {
+                        _stopListenPosition(null);
+                        return;
+                    }
+                }
+            }
+
             locationManager.requestSingleUpdate(c, locationListener , null);
         }
 
@@ -63,8 +62,11 @@ public class ZenGeoManager{
 
 
     public static synchronized void _stopListenPosition(Location location) {
-
-        locationManager.removeUpdates(locationListener);
+        try {
+            locationManager.removeUpdates(locationListener);
+        } catch (Exception e) {
+            //: this is not a deal, no need to catch
+        }
 
         //abbiamo ottenuto la posizione
         Class[] params = new Class[1];

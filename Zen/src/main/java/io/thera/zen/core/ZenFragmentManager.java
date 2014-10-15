@@ -1,91 +1,77 @@
-package io.thera.zen.layout.drawer;
+package io.thera.zen.core;
 
 /**
  * Created by marcostagni on 26/11/13.
+ * Revisited by gi0baro on 14/05/14.
  *
- * Copyright © 2013. Thera Technologies.
+ * Copyright © 2014. Thera Technologies.
  */
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 
-import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ListView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
-import io.thera.zen.core.ZenNavigationManager;
-import io.thera.zen.core.ZenResManager;
 
 public class ZenFragmentManager {
 
-    private static Map<String,Object> availableFragments = new HashMap<String,Object>();
+    private Map<String,Object> availableFragments;
+    private String lastFragment;
 
-    private static String lastFragment;
+    public ZenFragmentManager() {
+        availableFragments = new HashMap<String,Object>();
+    }
 
-    public static synchronized String getCurrent() {
+    public String getCurrent() {
         return lastFragment;
     }
 
-    public static synchronized Object getCurrentInstance() { return availableFragments.get(lastFragment); }
+    public Object getCurrentInstance() { return availableFragments.get(lastFragment); }
 
-    public static void setZenFragment (String title) {
-        setZenFragment(title, true);
+    public void load(String title) {
+        load(title, true);
     }
 
-    public static void setZenFragment (String title, boolean loadView) {
+    public void load(String title, boolean loadView) {
 
-        FragmentActivity activity = ZenAppManager.getActivity();
+        //FragmentActivity activity = ZenAppManager.getActivity();
+        FragmentActivity activity = ZenApplication.getAppActivity();
 
-        ZenLog.l("SETZENFRAGMENT " + title + " - " + activity.getClass().getCanonicalName());
+        ZenApplication.log("SETZENFRAGMENT " + title + " - " + activity.getClass().getCanonicalName());
 
 
-        ZenLog.l("your api version is ok :  GRAZIE A STO CAZZO.");
+        ZenApplication.log("your api version is ok :  GRAZIE A STO CAZZO.");
         /*
          * API LEVEL GREATER OR EQUAL TO HONEYCOMB.
          */
 
-        ZenLog.l("AVAILABLEFRAGMENTS ARE: "+availableFragments);
+        ZenApplication.log("AVAILABLEFRAGMENTS ARE: "+availableFragments);
         if (availableFragments.containsKey(title)) {
             /*
              * IF WE HAVE ALREADY CREATED AN ATLFRAGMENT,
              * THEN IT'S INSIDE AVAILABLEFRAGMENTS.
              */
             try {
-
                     long p = System.nanoTime();
-                    ZenLog.l("old fragment");
+                    ZenApplication.log("Fragment "+title+" instance available, using it.");
                     int content_frame_id = ZenResManager.getResourceId("content_frame");
 
                     FragmentManager fragmentManager =  activity.getSupportFragmentManager();
 
-                    //TEST
-                    try {
-                        ZenLog.l("ABOUT TO PUSH" + (String) availableFragments.get(title).getClass().getMethod("getTitle",null).invoke(availableFragments.get(title),null));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    }
-
                     //ZenNavigationManager.push(availableFragments.get(title));
-                    ZenNavigationManager.push(title, availableFragments.get(title).getClass().getSuperclass().getCanonicalName());
+                    ZenApplication.navigation().push(title, availableFragments.get(title).getClass().getSuperclass().getCanonicalName());
                     lastFragment = title;
                     //TEST
 
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     //ANIMATIONS
 
-                    if (ZenNavigationManager.isBack()){
+                    if (ZenApplication.navigation().isBack()){
                         transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"),ZenResManager.getAnimId("back_exit"));
                         //transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
 
@@ -95,10 +81,10 @@ public class ZenFragmentManager {
                         //transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
                     }
 
-                    transaction.replace(content_frame_id, (Fragment) availableFragments.get(title)).commit();
+                    transaction.replace(content_frame_id, (Fragment) availableFragments.get(title)).commitAllowingStateLoss();
                     long d = System.nanoTime();
                     //ZenAppManager.moveDrawer(true);
-                    ZenLog.l("TIME to recover old "+(d-p));
+                    ZenApplication.log("TIME to recover old "+(d-p));
 
 
             }
@@ -120,29 +106,30 @@ public class ZenFragmentManager {
              *
              */
             try {
-                ZenLog.l("create new fragment");
+                ZenApplication.log("create new fragment");
                 long p = System.nanoTime();
 
                 String layoutName;
                 String toCallClass;
                 Integer layoutId;
 
-                ZenLog.l("TIT: "+title);
+                ZenApplication.log("TIT: "+title);
 
-                layoutName = ZenAppManager.getLayouts().get(title);
+                //layoutName = ZenAppManager.getLayouts().get(title);
+                layoutName = ZenApplication.config().getDrawer_menu_layouts().get(title);
                 // if layoutName is null fall back to title (because is the layout actually)
                 if (layoutName == null) {
-                    ZenLog.l("ZENFRAGMAN: title is null");
+                    ZenApplication.log("ZENFRAGMAN: title is null");
                     layoutName = title;
                 }
-                ZenLog.l("LAY NAME: "+layoutName);
+                ZenApplication.log("LAY NAME: "+layoutName);
 
-                boolean isDetail = ZenAppManager.getDetailLayouts().containsKey(layoutName);
-                ZenLog.l("ISDETAIL: "+isDetail);
+                //boolean isDetail = ZenAppManager.getDetailLayouts().containsKey(layoutName);
+                //ZenApplication.log("ISDETAIL: "+isDetail);
 
                 String[] tlist;
                 tlist = layoutName.split("_");
-                ZenLog.l(tlist.length);
+                ZenApplication.log(tlist.length);
 
                 String cName = layoutName;
                 if (tlist.length > 1) {
@@ -158,25 +145,27 @@ public class ZenFragmentManager {
                 //else {
                 //    cName = layoutName;
                 //}
-                ZenLog.l("CNAME: "+cName);
+                ZenApplication.log("CNAME: "+cName);
 
-                if (!isDetail) {
+
+                //if (!isDetail) {
                     //toCallClass = ZenAppManager.getLayouts().get(title);
-                    toCallClass = cName;
-                    //layoutId = ZenAppManager.getLayouts().get(title);
-                    layoutId = ZenResManager.getLayoutId(layoutName);
-                    ZenLog.l("SET NOT DETAIL LAYOUTID " + layoutId);
-                }
+                toCallClass = cName;
+                //layoutId = ZenAppManager.getLayouts().get(title);
+                layoutId = ZenResManager.getLayoutId(layoutName);
+                ZenApplication.log("SET NOT DETAIL LAYOUTID " + layoutId);
+                //}
+                /*
                 else {
                         //toCallClass = ZenAppManager.getDetailLayouts().get(title);
                         //toCallClass = title + "Detail";
                         toCallClass = cName + "Detail";
-                        ZenLog.l("LAYOUTCLASS " + toCallClass);
+                        ZenApplication.log("LAYOUTCLASS " + toCallClass);
                         layoutId    = ZenResManager.getLayoutId(ZenAppManager.getDetailLayouts().get(layoutName));
-                        ZenLog.l("SET DETAIL LAYOUTID " + layoutId);
-                }
+                        ZenApplication.log("SET DETAIL LAYOUTID " + layoutId);
+                }*/
 
-                //ZenLog.l("LAYOUTID " + layoutId);
+                //ZenApplication.log("LAYOUTID " + layoutId);
 
                 //TENTATIVO
                 //int pos = ZenAppManager.getLayouts().get(title); //prima non esisteva.
@@ -184,7 +173,7 @@ public class ZenFragmentManager {
 
                 toCallClass = Character.toUpperCase(toCallClass.charAt(0)) + toCallClass.substring(1);
                 Class toCall = Class.forName("app.Controllers."+toCallClass+"Controller");
-                ZenLog.l("app.Controllers."+toCallClass+"Controller");
+                ZenApplication.log("app.Controllers."+toCallClass+"Controller");
                 try {
 
 
@@ -210,26 +199,16 @@ public class ZenFragmentManager {
                         //Integer layoutId = ZenAppManager.getLayoutIds()[pos]; // prima era position
                         //= ZenAppManager.getLayouts().get(title);
                         //TENTATIVO
-                        ZenLog.l("TRYING LAYOUTID " + layoutId);
+                        ZenApplication.log("TRYING LAYOUTID " + layoutId);
 
                         toCall.getMethod("setVariables", paramTypes).invoke(controller, createParameters(title, layoutId ));
-
-                        try {
-                            ZenLog.l("ALREADY SET" + (String) controller.getClass().getMethod("getTitle", null).invoke(controller, null));
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchMethodException e) {
-                            e.printStackTrace();
-                        }
 
                         int content_frame_id = ZenResManager.getResourceId("content_frame");
                         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
                         //TEST
                         //ZenNavigationManager.push(controller);
-                        ZenNavigationManager.push(title, controller.getClass().getSuperclass().getCanonicalName());
+                        ZenApplication.navigation().push(title, controller.getClass().getSuperclass().getCanonicalName());
                         //TEST
 
                         if (loadView) {
@@ -237,7 +216,7 @@ public class ZenFragmentManager {
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
                             //ANIMATION
 
-                            if (ZenNavigationManager.isBack()){
+                            if (ZenApplication.navigation().isBack()){
 
                                 transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"),ZenResManager.getAnimId("back_exit"));
                                 //transaction.setCustomAnimations(ZenResManager.getAnimId("back_enter"), ZenResManager.getAnimId("back_exit"), ZenResManager.getAnimId("back_pop_enter") , ZenResManager.getAnimId("back_pop_exit"));
@@ -249,13 +228,13 @@ public class ZenFragmentManager {
                                 //transaction.setCustomAnimations(ZenResManager.getAnimId("enter"), ZenResManager.getAnimId("exit"), ZenResManager.getAnimId("pop_enter") , ZenResManager.getAnimId("pop_exit"));
                             }
 
-                            transaction.replace(content_frame_id, (Fragment) controller ).commit();
+                            transaction.replace(content_frame_id, (Fragment) controller ).commitAllowingStateLoss();
 
                         }
-                        ZenLog.l("SAVING " + title + " - " + controller.getClass().getCanonicalName());
+                        ZenApplication.log("SAVING " + title + " - " + controller.getClass().getCanonicalName());
 
                         long d = System.nanoTime();
-                        ZenLog.l("TIME to create new fragment " + (d-p));
+                        ZenApplication.log("TIME to create new fragment " + (d-p));
 
                     }
                 }
@@ -309,7 +288,7 @@ public class ZenFragmentManager {
 	 * METHOD FOR GETTING PARAMETERS FOR JAVA REFLECTION
 	 */
 
-    private static Object[] createParameters(String title , int position) {
+    public Object[] createParameters(String title , int position) {
         Object[] parameters = new Object[2];
         parameters[0] = title;
         parameters[1] = position;

@@ -7,13 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import io.thera.zen.R;
+import io.thera.zen.core.ZenApplication;
 import io.thera.zen.layout.slider.ZenSlidingMenu.CanvasTransformer;
 
 /**
@@ -238,7 +238,7 @@ public class ZenViewBehind extends ViewGroup {
             }
         }
         if (vis == View.INVISIBLE)
-            Log.v(TAG, "behind INVISIBLE");
+            ZenApplication.log.v("behind INVISIBLE");
         setVisibility(vis);
     }
 

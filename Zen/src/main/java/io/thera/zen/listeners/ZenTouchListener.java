@@ -1,4 +1,4 @@
-package io.thera.zen.listeners.touch;
+package io.thera.zen.listeners;
 
 /**
  * Copyright © 2013. 
@@ -13,30 +13,28 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import java.lang.reflect.*;
 
-import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenApplication;
 
 public class ZenTouchListener implements OnTouchListener {
 
-    private int 	view_id;
-    private View 	view;
-    private String 	className;
-    private String 	methodName;
-    private Method 	callback;
-    private Object 	caller;
-    private String 	type; //so we know which type of event is handled.
+    int 	view_id;
+    View 	view;
+    String 	className;
+    String 	methodName;
+    Method 	callback;
+    Object 	caller;
+    String 	type; //so we know which type of event is handled.
 
     public ZenTouchListener (View v, String methodName) {
-        System.out.println("Initializing ATLTouchListener");
         this.view 		= v;
         this.view_id 	= v.getId();
-        this.caller	 	= ZenAppManager.getCurrentPosition();
+        this.caller	 	= ZenApplication.getAppActivity();
 
         Class[] paramTypes = new Class[2];
         paramTypes[0] = View.class;
         paramTypes[1] = MotionEvent.class;
 
         try {
-            System.out.println("Trying to load "+ caller.getClass().getCanonicalName());
             this.callback = Class.forName(caller.getClass().getCanonicalName()).getMethod(methodName, paramTypes);
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
@@ -51,7 +49,7 @@ public class ZenTouchListener implements OnTouchListener {
         //empty constructor
     }
 
-    private Object[] createParameters(View v, MotionEvent event) {
+    public Object[] createParameters(View v, MotionEvent event) {
 
         Object[] parameters = new Object[2];
         parameters[0] = v;

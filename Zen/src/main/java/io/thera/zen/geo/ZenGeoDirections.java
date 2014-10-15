@@ -16,8 +16,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.util.Log;
 
-import io.thera.zen.core.ZenLog;
-import io.thera.zen.json.ZenJsonManager;
+import io.thera.zen.json.ZenJson;
 
 public class ZenGeoDirections {
     public enum TravelMode {
@@ -56,7 +55,8 @@ public class ZenGeoDirections {
                 + "&sensor=false&units=metric&mode="+travelMode.getValue();
         Log.d("url", url);
 
-        ZenJsonManager.parseJson(url, "parseData", this);
+        //ZenJsonManager.parseJson(url, "parseData", this);
+        ZenJson.get(url, this, "parseData", "parseData");
 
     }
 
@@ -65,7 +65,7 @@ public class ZenGeoDirections {
      * @return a Route object based on the JSON object by Haseem Saheed
      */
 
-    public void parseData(String calledJson) {
+    public void parseData(JSONObject json) {
         // turn the stream into a string
         //final String result = convertStreamToString(this.getInputStream());
         //if (result == null) return null;
@@ -75,8 +75,6 @@ public class ZenGeoDirections {
         //Create an empty segment
         final ZenSegment segment = new ZenSegment();
         try {
-            //Tranform the string into a json object
-            final JSONObject json = new JSONObject(calledJson);
             //Get the route object
             final JSONObject jsonRoute = json.getJSONArray("routes").getJSONObject(0);
             //Get the leg, only one leg as we don't support waypoints

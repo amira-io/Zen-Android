@@ -11,29 +11,23 @@ import java.util.List;
 import java.util.Map;
 
 import io.thera.zen.R;
-import io.thera.zen.core.*;
-import io.thera.zen.layout.elements.*;
-import io.thera.zen.listeners.drawer.*;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.content.res.Configuration;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.support.v4.widget.*;
 
+import io.thera.zen.core.ZenActivityMain;
+import io.thera.zen.core.ZenApplication;
+import io.thera.zen.core.ZenResManager;
 import io.thera.zen.layout.slider.ZenSlidingMenu;
 
-public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListener, OnTouchListener {
+public class ZenDrawerActivity extends ZenActivityMain {//implements OnGestureListener, OnTouchListener {
 
     private SeekBar 		bar;
     private GestureDetector gDetector;
@@ -52,31 +46,16 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     //to handle extendable menu.
-    private ArrayAdapter<String>        listAdapter;
-    private ExpandableListAdapter       explistAdapter;
+    ArrayAdapter<String>        listAdapter;
+    ExpandableListAdapter       explistAdapter;
     private ListView            nListView;
-    private ExpandableListView          expListView;
-    private List<String>                listDataHeader;
-    private Map<String, List<String>>   listDataChild;
+    ExpandableListView          expListView;
+    List<String>                listDataHeader;
+    Map<String, List<String>>   listDataChild;
 
-    private Map<String, List<String>>   listDataParams;
+    Map<String, List<String>>   listDataParams;
 
     private ZenSlidingMenu sMenu;
-
-    /*
-     * ACTIVITY METHODS.
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (!skipStart) {
-            setUp();
-        }
-
-        getElements();
-        buildElements();
-    }
 
     @Override
     public void getElements() {
@@ -89,8 +68,10 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     }
 
     @Override
-    public void loadHelpers() {
+    public void _preHelpers(Bundle savedInstanceState) {
+        super._preHelpers(savedInstanceState);
 
+        setUp();
     }
 
     @Override
@@ -103,7 +84,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         return true;
     }
 
-    private void setUp () {
+    public void setUp () {
 
 		/*
 		 * SETTING UP VIEW CONTENT.
@@ -112,7 +93,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         addListeners();
     }
 
-    private void setUpElements () {
+    public void setUpElements () {
 
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
@@ -128,9 +109,9 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
-        listDataHeader = ZenSettingsManager.getMenuElements();
-        listDataChild = ZenSettingsManager.getMenuChildren();
-        listDataParams = ZenSettingsManager.getMenuParams();
+        listDataHeader = ZenApplication.config().getDrawer_menu_elements();
+        listDataChild = ZenApplication.config().getDrawer_menu_children();
+        listDataParams = ZenApplication.config().getDrawer_menu_params();
 
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, ZenResManager.getLayoutId("activity_title_bar"));
 
@@ -158,14 +139,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             shadowId = R.dimen.menu_shadow;
         }
         // load menu
-        sMenu = new ZenSlidingMenu(this, ZenSettingsManager.getMenuType());
+        sMenu = new ZenSlidingMenu(this, ZenApplication.config().getDrawer_menuType());
         sMenu.setShadowWidthRes(shadowId);
         sMenu.setShadowDrawable(R.drawable.shadow);
         //sMenu.setBehindOffsetRes(offsetId);
         sMenu.setBehindWidthRes(widthId);
         sMenu.setFadeDegree(0.35f);
-        sMenu.setMenu(ZenResManager.getLayoutId(ZenSettingsManager.getMenuLayout()));
-        if (ZenSettingsManager.hasExpandableMenu()) {
+        sMenu.setMenu(ZenResManager.getLayoutId(ZenApplication.config().getDrawer_menuLayout()));
+        if (ZenApplication.config().isDrawer_menuExpandable()) {
             expListView = (ExpandableListView) findViewById(ZenResManager.getResourceId("menu_elements"));
             explistAdapter = new ZenExpandableListAdapter(this, listDataHeader, listDataChild);
             expListView.setAdapter(explistAdapter);
@@ -184,8 +165,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
     public void addListeners () {
 
         final Animation drawerButtonAnimation;
-        if ( ZenSettingsManager.getDrawerButtonAnimation() != "default") {
-            drawerButtonAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId(ZenSettingsManager.getDrawerButtonAnimation()));
+        if (ZenApplication.config().getDrawer_buttonAnimation() != "default") {
+            drawerButtonAnimation = AnimationUtils.loadAnimation(this, ZenResManager.getAnimId(ZenApplication.config().getDrawer_buttonAnimation()));
         }
         else {
             drawerButtonAnimation = null;
@@ -211,8 +192,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ZenLog.l("BACK BUTTON PRESSED");
-                    ZenNavigationManager.back();
+                    ZenApplication.log("BACK BUTTON PRESSED");
+                    ZenApplication.navigation().back();
                 }
             });
         }
@@ -222,13 +203,13 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
         backButton.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ZenLog.l("BACK BUTTON PRESSED");
+                ZenApplication.log("BACK BUTTON PRESSED");
                 ZenNavigationManager.back();
                 return true;
             }
         });*/
 
-        if (!ZenSettingsManager.hasExpandableMenu()) {
+        if (!ZenApplication.config().isDrawer_menuExpandable()) {
 
 
 
@@ -251,7 +232,7 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     //drawerLayout.closeDrawer(drawerListView);
                     //drawerLayout.
                     String tit = listDataHeader.get(position).toLowerCase();
-                    ZenFragmentManager.setZenFragment(tit);
+                    ZenApplication.fragments().load(tit);
                     //updateLayout(((TextView) view).getText());
                     sMenu.toggle();
                 }
@@ -271,12 +252,12 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     /*if (listDataChild.get(listDataHeader.get(groupPosition)).size() == 0) {
                         //vuol dire che stiamo cliccando un elemento del menu con zero figli.
                         String layout = ZenSettingsManager.getExpandableMenuLayoutsMap().get(listDataHeader.get(groupPosition));
-                        //ZenLog.l("single layout" + layout);
+                        //ZenApplication.log("single layout" + layout);
                         ZenFragmentManager.setZenFragment(layout, ZenAppManager.getActivity() , false);
                         closeDrawer();
                         return;
                     }*/
-                    if (ZenSettingsManager.onlyOneIsOpen()) {
+                    if (ZenApplication.config().isDrawer_menuExpOnlyOne()) {
                         for (int i = 0; i < listDataHeader.size() ; i++) {
                             if (i!=groupPosition) {
                                 expListView.collapseGroup(i);
@@ -309,14 +290,14 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                     //String lay = ZenSettingsManager.getMenuLayouts().get(tit).replace(" ", "_");
                     //
                     List<Object> params = new ArrayList<Object>();
-                    if (ZenSettingsManager.menuParentsAsParams()) {
+                    if (ZenApplication.config().isDrawer_menuExpParentsParams()) {
                         params.add(listDataHeader.get(groupPosition).toLowerCase());
                     }
                     params.add(listDataParams.get(listDataHeader.get(groupPosition)).get(childPosition));
-                    ZenNavigationManager.setParameters(params);
+                    ZenApplication.navigation().setParameters(params);
 
                     //ZenFragmentManager.setZenFragment(listDataChild.get( listDataHeader.get(groupPosition)).get(childPosition), ZenAppManager.getActivity(),false);
-                    ZenFragmentManager.setZenFragment(tit);
+                    ZenApplication.fragments().load(tit);
 
                     sMenu.toggle();
 
@@ -330,8 +311,8 @@ public class ZenDrawerActivity extends ZenActivity {//implements OnGestureListen
                 public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     if (expListView.getExpandableListAdapter().getChildrenCount(groupPosition)==0) {
                         final String toCall = ((String) expListView.getExpandableListAdapter().getGroup(groupPosition));
-                        ZenLog.l("GROUP ZERO"+ toCall);
-                        ZenFragmentManager.setZenFragment(toCall);
+                        ZenApplication.log("GROUP ZERO" + toCall);
+                        ZenApplication.fragments().load(toCall);
                         sMenu.toggle();
                     }
                     else {

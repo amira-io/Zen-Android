@@ -1,9 +1,5 @@
 package io.thera.zen.layout.elements;
 
-/**
- * Created by marcostagni on 10/01/14.
- */
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,32 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import io.thera.zen.R;
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenApplication;
 import io.thera.zen.core.ZenResManager;
+import io.thera.zen.utils.Network;
+import io.thera.zen.utils.Utilities;
 
 /**
  * Created by marcostagni on 10/01/14.
@@ -62,12 +39,12 @@ public class ZenImageSlider {
     private Map<String,String> thumbToLargeMap;
     private Map<String,String> largeToThumbMap;
 
-    private String currentImage;
+    String currentImage;
     private ViewGroup relative;
     private ViewGroup linear;
 
 
-    private static class imageTask extends AsyncTask<String, Void, Drawable> {
+    public static class imageTask extends AsyncTask<String, Void, Drawable> {
 
         private String method;
         private Object caller;
@@ -93,7 +70,7 @@ public class ZenImageSlider {
                 InputStream input = connection.getInputStream();
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                ZenLog.l("IMGTYPE: "+imgtype);
+                ZenApplication.log("IMGTYPE: "+imgtype);
                 if (imgtype.equals("fine")) {
                     options.inSampleSize = 1;
                 }
@@ -255,14 +232,14 @@ public class ZenImageSlider {
 
     }
 
-    private void addImageFromUrl ( String thumbUrl, String largeUrl ) {
+    public void addImageFromUrl ( String thumbUrl, String largeUrl ) {
         //getDrawableFromUrl(url);
 
         largeToThumbMap.put(largeUrl, thumbUrl);
         thumbToLargeMap.put(thumbUrl, largeUrl);
 
         currentImage = thumbUrl;
-        if (ZenAppManager.isConnected()) {
+        if (Network.isConnected()) {
 
             if (largeUrl!=null) {
 
@@ -277,10 +254,10 @@ public class ZenImageSlider {
         }
         else {
 
-            ZenAppManager.getActivity().runOnUiThread(new Runnable() {
+            Utilities.RunOnUIThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ZenAppManager.getActivity().getApplicationContext(),
+                    Toast.makeText(ZenApplication.context(),
                             "Non sei connesso a internet.",
                             1000).show();
                 }
@@ -318,9 +295,9 @@ public class ZenImageSlider {
     }
 
     public void addImageLists (List<String> thumb_list , List<String> large_list) {
-        ZenLog.l("SLIDER list length " + thumb_list.size() + " - " + large_list.size());
+        ZenApplication.log("SLIDER list length " + thumb_list.size() + " - " + large_list.size());
         for (int i =0; i < thumb_list.size() ; i++) {
-            ZenLog.l("getting images");
+            ZenApplication.log("getting images");
             addImageFromUrl(thumb_list.get(i),large_list.get(i));
         }
     }

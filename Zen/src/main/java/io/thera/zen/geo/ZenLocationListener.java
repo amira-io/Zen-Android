@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import java.lang.reflect.InvocationTargetException;
 
-import io.thera.zen.core.ZenLog;
-
 /**
  * Created by marcostagni on 03/12/13.
  */

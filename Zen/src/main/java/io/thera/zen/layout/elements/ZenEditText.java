@@ -34,7 +34,7 @@ public class ZenEditText extends EditText {
 
     }
 
-    private void init() {
+    public void init() {
         CharSequence fontTag = this.getContentDescription();
         String fontString = "";
         if (fontTag != null) {

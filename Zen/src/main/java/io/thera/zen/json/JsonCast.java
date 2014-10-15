@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by giovanni on 14/01/14.
  */
-public class ZenJsonCast {
+public class JsonCast {
 
     public static String[] toArray(JSONArray jarr) throws JSONException {
         List<String> list = new ArrayList<String>();

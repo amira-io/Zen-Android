@@ -1,35 +1,31 @@
-package io.thera.zen.listeners.click;
+package io.thera.zen.listeners;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import io.thera.zen.core.ZenAppManager;
+import io.thera.zen.core.ZenApplication;
 
 public class ZenClickListener implements OnItemClickListener {
 
 
-    private int 	view_id;
-    private View 	view;
-    private String 	className;
-    private String 	methodName;
-    private Method 	callback;
-    private Object 	caller;
-    private String 	type; //so we know which type of event is handled.
+    int 	view_id;
+    View 	view;
+    String 	className;
+    String 	methodName;
+    Method 	callback;
+    Object 	caller;
+    String 	type; //so we know which type of event is handled.
 
     public ZenClickListener (View v, String methodName) {
-        System.out.println("Initializing ATLItemClickListener");
-
-
         this.view 		= v;
         this.methodName = methodName;
         this.view_id 	= v.getId();
-        this.className 	= ZenAppManager.getCurrentPosition().getClass().getCanonicalName();
-        this.caller	 	= ZenAppManager.getCurrentPosition();
+        this.className 	= ZenApplication.getAppActivity().getClass().getCanonicalName();
+        this.caller	 	= ZenApplication.getAppActivity();
 
         Class[] paramTypes = new Class[3];
         paramTypes[0] = View.class;
@@ -38,7 +34,6 @@ public class ZenClickListener implements OnItemClickListener {
         //paramTypes[1] = MotionEvent.class;
 
         try {
-            System.out.println("Trying to load "+ className);
             this.callback = Class.forName(className).getMethod(methodName, paramTypes);
         } catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
@@ -53,7 +48,7 @@ public class ZenClickListener implements OnItemClickListener {
         //empty constructor
     }
 
-    private Object[] createParameters(View v, int position, long id) {
+    public Object[] createParameters(View v, int position, long id) {
 
         Object[] parameters = new Object[3];
         parameters[0] = v;

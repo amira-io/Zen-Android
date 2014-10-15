@@ -2,13 +2,15 @@
 -dontoptimize
 -ignorewarnings
 
+-keepparameternames
 -renamesourcefileattribute SourceFile
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,
                 SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 
--keep class * { public *; }
+-keep class * { public protected *; }
 -keepclasseswithmembernames class * {
-    public *;
+    public protected *;
+    private <methods>;
 }
 
 -keepclasseswithmembers class * implements android.os.Parcelable {

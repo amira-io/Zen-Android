@@ -1,18 +1,30 @@
 package io.thera.zen.core;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 import java.util.*;
-
-import io.thera.zen.layout.drawer.ZenFragment;
-import io.thera.zen.layout.drawer.ZenFragmentManager;
 
 /**
  * Created by marcostagni on 04/12/13.
  */
 public class ZenNavigationManager  {
+
+    private List<Object> parameters;
+    private List<Object> parametersLast;
+    private Stack<String[]> navigationStack;
+    private String first;
+    private String previous;
+    private boolean goingBack;
+
+
+    public ZenNavigationManager(ZenSettingsManager settings) {
+        parameters = new ArrayList<Object>();
+        parametersLast = new ArrayList<Object>();
+        navigationStack = new Stack<String[]>();
+        first = settings.getFirstView();
+        previous = settings.getFirstView();
+        goingBack = false;
+    }
 
     /*
         THIS WILL HELP US HANDLING PARAMETERS BETWEEN VIEWS.
@@ -22,23 +34,17 @@ public class ZenNavigationManager  {
         AFTER GETTING PARAMETERS, THESE ARE DESTROYED.
      */
 
-    //static Map<String,Map<Class,Object>> parameters = new HashMap<String, Map<Class, Object>>();
 
-    private static List<Object> parameters = new ArrayList<Object>();
 
-    private static List<Object> parametersLast = new ArrayList<Object>();
-
-    public static synchronized  void setParameters( List<Object> params) {
+    public void setParameters( List<Object> params) {
         parameters = params;
     }
 
-    public static boolean isBack  = false;
-
-    public static synchronized boolean isBack() {
-        return isBack;
+    public boolean isBack() {
+        return goingBack;
     }
 
-    public static synchronized List<Object> getParameters () {
+    public List<Object> getParameters () {
         List<Object> copy =  new ArrayList<Object>(parameters);
         parametersLast = new ArrayList<Object>(parameters);
         //copy = parameters;
@@ -51,7 +57,7 @@ public class ZenNavigationManager  {
         return copy;
     }
 
-    public static synchronized ArrayList<String> currentParameters() {
+    public ArrayList<String> currentParameters() {
         List<Object> p = parametersLast;
         ArrayList<String> s = new ArrayList<String>();
         for (int i=0; i<p.size(); i++) {
@@ -65,22 +71,20 @@ public class ZenNavigationManager  {
      */
 
     //private static Stack<Object> navigationStack = new Stack();
-    private static Stack<String[]> navigationStack = new Stack<String[]>();
-
-    private static String previous = ZenSettingsManager.getFirstView(); //to store previous position
 
 
-    public static synchronized void push (String title, String cls) {
+
+    public void push (String title, String cls) {
         try {
-            //ZenLog.l("PUSH" + (String) object.getClass().getMethod("getTitle",null).invoke(object,null));
-            //ZenLog.l("BEFORE PUSH" + navigationStack.size());
-            ZenLog.l("PUSH" + title);
+            //ZenApplication.log("PUSH" + (String) object.getClass().getMethod("getTitle",null).invoke(object,null));
+            //ZenApplication.log("BEFORE PUSH" + navigationStack.size());
+            ZenApplication.log("PUSH" + title);
 
             if (navigationStack.isEmpty()) {
                 //previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
                 previous = title;
                 String[] s = {title, cls};
-                ZenLog.l(s);
+                ZenApplication.log(s);
                 navigationStack.push(s);
                 return;
             }
@@ -93,17 +97,17 @@ public class ZenNavigationManager  {
                  *  ESEMPIO: POTREI AVER CLICCATO COME UN EBETE SULLA STESSA VOCE DEL MENU
                  */
                 //String toPut = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
-                if (title.equals(ZenSettingsManager.getFirstView())) {
+                if (title.equals(first)) {
                     navigationStack.removeAllElements();
                 }
                 //previous = (String) object.getClass().getMethod("getTitle",null).invoke(object,null);
                 previous = title;
                 String[] s = {title, cls};
-                ZenLog.l(s);
+                ZenApplication.log(s);
                 navigationStack.push(s);
 
             }
-            //ZenLog.l("AFTER PUSH" + navigationStack.size());
+            //ZenApplication.log("AFTER PUSH" + navigationStack.size());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -112,42 +116,42 @@ public class ZenNavigationManager  {
 
     }
 
-    public static synchronized void back() {
+    public void back() {
 
         try {
             //if (!(navigationStack.empty())) {
             if (navigationStack.size()>=2) {
-                ZenLog.l("STACK POP" + navigationStack);
+                ZenApplication.log("STACK POP" + navigationStack);
                 //Object a  = navigationStack.pop();
-                //ZenLog.l("POP" + (String) a.getClass().getMethod("getTitle",null).invoke(a,null));
+                //ZenApplication.log("POP" + (String) a.getClass().getMethod("getTitle",null).invoke(a,null));
                 String[] a = navigationStack.pop();
 
-                ZenLog.l("STACK POP" + navigationStack);
+                ZenApplication.log("STACK POP" + navigationStack);
 
 
                 //Object o  = navigationStack.pop();
-                //ZenLog.l("POP" + (String) o.getClass().getMethod("getTitle",null).invoke(o,null));
+                //ZenApplication.log("POP" + (String) o.getClass().getMethod("getTitle",null).invoke(o,null));
                 String[] o = navigationStack.pop();
-                ZenLog.l(o);
+                ZenApplication.log(o);
 
-                ZenLog.l("STACK POP" + navigationStack);
+                ZenApplication.log("STACK POP" + navigationStack);
 
 
                 if (!(o==null)) {
-                    ZenLog.l("NOTEMPTY");
+                    ZenApplication.log("NOTEMPTY");
                     /*
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenFragment")) {
-                        ZenLog.l("ISFRAGMENT");
+                        ZenApplication.log("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
-                        ZenLog.l("FRAGMENT TITLE: " + title);
+                        ZenApplication.log("FRAGMENT TITLE: " + title);
                         isBack = true;
                         ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),false);
                         isBack = false;
                     }
                     if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.drawer.ZenDetailFragment")) {
-                        ZenLog.l("ISFRAGMENT");
+                        ZenApplication.log("ISFRAGMENT");
                         String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
-                        ZenLog.l("FRAGMENT TITLE: " + title);
+                        ZenApplication.log("FRAGMENT TITLE: " + title);
                         isBack = true;
                         ZenFragmentManager.setZenFragment(title, ZenAppManager.getActivity(),true);
                         isBack = false;
@@ -155,28 +159,28 @@ public class ZenNavigationManager  {
                     */
                     //if (o.getClass().getSuperclass().getCanonicalName().equals("io.thera.zen.layout.elements.ZenActivity")) {
                     if (o[1].equals("io.thera.zen.layout.elements.ZenActivity")) {
-                        ZenLog.l("ISACTIVITY");
+                        ZenApplication.log("ISACTIVITY");
                         Class[] params = new Class[1];
                         params[0] = Class.class;
 
                         Object[] values = new Object[1];
                         values[0] = o[0];
-                        ZenAppManager.getActivity().getClass().getMethod("goTo",params).invoke(ZenAppManager.getActivity(),values);
+                        ZenApplication.getAppActivity().getClass().getMethod("goTo",params).invoke(ZenApplication.getAppActivity(),values);
                     }
                     else {
-                        ZenLog.l("ISFRAGMENT");
+                        ZenApplication.log("ISFRAGMENT");
                         //String title = (String) o.getClass().getMethod("getTitle",null).invoke(o,null);
-                        ZenLog.l("FRAGMENT TITLE: " + o[0]);
-                        isBack = true;
-                        ZenFragmentManager.setZenFragment(o[0]);
-                        isBack = false;
+                        ZenApplication.log("FRAGMENT TITLE: " + o[0]);
+                        goingBack = true;
+                        ZenApplication.fragments().load(o[0]);
+                        goingBack = false;
                     }
                 }
             }
 
             else {
 
-                ZenAppManager.getActivity().finish();
+                ZenApplication.getAppActivity().finish();
 
             }
 

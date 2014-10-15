@@ -1,62 +1,51 @@
-package io.thera.zen.layout.elements;
+package io.thera.zen.core;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
 
-import io.thera.zen.core.ZenAppManager;
-import io.thera.zen.core.ZenLog;
-import io.thera.zen.core.ZenNavigationManager;
-import io.thera.zen.core.ZenSettingsManager;
-import io.thera.zen.layout.drawer.ZenFragmentManager;
-
 /**
  * Created by marcostagni on 03/12/13.
+ * Revisited by gi0baro on 14/05/14.
  */
+
 public abstract class ZenActivity extends FragmentActivity{
 
-    public boolean skipStart = false;
-
+    public boolean doAndroidStateRecover() {
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (!skipStart) {
-            if (savedInstanceState != null) {
-                ZenLog.l("RESTORING ACTIVITY");
-                String fragmentToLoad = savedInstanceState.getString("fragment");
-                boolean loadFirst = !(fragmentToLoad.equals(ZenSettingsManager.getFirstView()));
-                ZenAppManager.start(this, loadFirst, false);
-                ZenFragmentManager.setZenFragment(fragmentToLoad, false);
-            }
-            else {
-                ZenLog.l("NEW ACTIVITY");
-                ZenAppManager.start(this);
+        if (savedInstanceState != null && !doAndroidStateRecover()) {
+            if (savedInstanceState.getParcelable("android:support:fragments") != null) {
+                savedInstanceState.putParcelable("android:support:fragments", null);
             }
         }
+        super.onCreate(savedInstanceState);
 
-        loadHelpers();
+        ZenApplication.initApplication();
 
+        _preHelpers(savedInstanceState);
+        _loadHelpers();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("fragment", ZenFragmentManager.getCurrent());
-    }
 
     @Override
     public  void onBackPressed() {
-        ZenNavigationManager.back();
+        ZenApplication.navigation().back();
     }
 
     public abstract void getElements();
 
     public abstract void buildElements();
 
-    public void loadHelpers() {
+    public void _preHelpers(Bundle savedInstanceState) {
+
+    }
+
+    public void _loadHelpers() {
         getElements();
         buildElements();
     }
@@ -69,7 +58,7 @@ public abstract class ZenActivity extends FragmentActivity{
 
         // close this activity
         if (addToStack) {
-            ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+            ZenApplication.navigation().push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
         }
         finish();
     }
@@ -82,7 +71,7 @@ public abstract class ZenActivity extends FragmentActivity{
 
         // close this activity
         if (addToStack) {
-            ZenNavigationManager.push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
+            ZenApplication.navigation().push(this.getClass().getCanonicalName(), this.getClass().getSuperclass().getCanonicalName());
         }
         if (mustFinish) {
             finish();
@@ -108,7 +97,7 @@ public abstract class ZenActivity extends FragmentActivity{
                 startActivity(i);
 
                 // close this activity
-                ZenLog.l("GOTO " + this.getClass().getName());
+                ZenApplication.log("GOTO " + a.getClass().getName());
                 finish();
             }
         }, timeout);
@@ -127,8 +116,8 @@ public abstract class ZenActivity extends FragmentActivity{
                 startActivity(i);
 
                 // close this activity
-                ZenLog.l("GOTO " + this.getClass().getName());
-                ZenNavigationManager.push(cName, this.getClass().getSuperclass().getCanonicalName());
+                ZenApplication.log("GOTO " + a.getClass().getName());
+                ZenApplication.navigation().push(cName, a.getClass().getSuperclass().getCanonicalName());
 
                 finish();
             }

@@ -2,7 +2,6 @@ package io.thera.zen.layout.elements;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.*;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.*;

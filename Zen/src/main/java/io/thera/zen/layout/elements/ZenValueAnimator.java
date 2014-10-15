@@ -1,27 +1,22 @@
 package io.thera.zen.layout.elements;
 
-//import android.animation.*;
-import android.view.animation.LinearInterpolator;
-
 import com.nineoldandroids.animation.*;
 
-import io.thera.zen.core.ZenLog;
+import io.thera.zen.core.ZenApplication;
 
 /**
  * Created by marcostagni on 13/05/14.
  */
 
-
-
 public class ZenValueAnimator  {
 
-    private static ZenTickerRunnable _runnable;
-    private static Ticker t;
+    static ZenTickerRunnable _runnable;
+    static Ticker t;
 
-    private class Ticker {
-        private Object from, to;
-        private int duration;
-        private Object value;
+    public class Ticker {
+        Object from, to;
+        int duration;
+        public Object value;
         protected String type;
 
         public Ticker(int from, int to, int duration){
@@ -40,7 +35,7 @@ public class ZenValueAnimator  {
 //
 
         public void go(ZenTickerRunnable runnable) {
-            ZenLog.l("TEST TICKER calling go");
+            ZenApplication.log("TEST TICKER calling go");
             _runnable = runnable;
             ValueAnimator va;
             if (type.equals("int")) {
@@ -57,8 +52,8 @@ public class ZenValueAnimator  {
                         _runnable.set(animation.getAnimatedValue(), to);
                         _runnable.run();
                     } catch (Exception e) {
-                        ZenLog.l("TEST TICKER exception");
-                        ZenLog.l("EXCEPTION occurred in value animator listener");
+                        ZenApplication.log("TEST TICKER exception");
+                        ZenApplication.log("EXCEPTION occurred in value animator listener");
                         e.printStackTrace();
                     }
                 }
@@ -69,7 +64,7 @@ public class ZenValueAnimator  {
     }
 
     public Ticker set(int from, int to, int duration) {
-        ZenLog.l("TEST TICKER calling set");
+        ZenApplication.log("TEST TICKER calling set");
         return new Ticker(from, to, duration);
     }
 

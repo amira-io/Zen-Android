@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import io.thera.zen.core.ZenApplication;
 import io.thera.zen.layout.slider.ZenViewAbove.OnPageChangeListener;
 import io.thera.zen.R;
 
@@ -996,7 +996,7 @@ public class ZenSlidingMenu extends RelativeLayout {
         int topPadding = insets.top;
         int bottomPadding = insets.bottom;
         if (!mActionbarOverlay) {
-            Log.v(TAG, "setting padding!");
+            ZenApplication.log.v("setting padding!");
             setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
         }
         return true;
@@ -1014,7 +1014,7 @@ public class ZenSlidingMenu extends RelativeLayout {
         if (layerType != getContent().getLayerType()) {
             mHandler.post(new Runnable() {
                 public void run() {
-                    Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
+                    ZenApplication.log.v("changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
                     getContent().setLayerType(layerType, null);
                     getMenu().setLayerType(layerType, null);
                     if (getSecondaryMenu() != null) {
