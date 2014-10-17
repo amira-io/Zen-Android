@@ -52,11 +52,16 @@ public class ZenViewProxy {
         } else {
             view = activity.findViewById(view_id);
         }
-        view_class = view.getClass();
+        try {
+            view_class = view.getClass();
+        } catch (Exception e) {
+            view_class = null;
+        }
         _fill_classes();
     }
 
-    private void _invoke(String method, Object[] args, Class[] types) {
+    private Object _invoke(String method, Object[] args, Class[] types) {
+        Object rv = null;
         Method[] allMethods = view_class.getMethods();
         List<Method> foundMethods = new ArrayList<Method>();
         Method theMethod = null;
@@ -92,20 +97,20 @@ public class ZenViewProxy {
         if (theMethod != null) {
             // we have the method with same args types, invoke it
             try {
-                theMethod.invoke(view_class.cast(view), args);
+                rv = theMethod.invoke(view_class.cast(view), args);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             // we first try to invoke method with current types, maybe we are lucky
             try {
-                view_class.getMethod(method, types).invoke(view_class.cast(view), args);
+                rv = view_class.getMethod(method, types).invoke(view_class.cast(view), args);
             } catch (Exception e) {
                 // if we came here, we try to change our args types with the method required ones
                 boolean succeded = false;
                 for (Method m : foundMethods) {
                     try {
-                        m.invoke(view_class.cast(view), args);
+                        rv = m.invoke(view_class.cast(view), args);
                         succeded = true;
                         break;
                     } catch (Exception e2) {
@@ -117,10 +122,12 @@ public class ZenViewProxy {
                 }
             }
         }
+        return rv;
     }
 
-    public void go(String method, Object... args) {
+    public Object go(String method, Object... args) {
         _load_view();
+        if (!exists()) return null;
         Class[] args_types = new Class[args.length];
         int c = 0;
         for (Object arg: args) {
@@ -131,7 +138,12 @@ public class ZenViewProxy {
             args_types[c] = arg_type;
             c++;
         }
-        _invoke(method, args, args_types);
+        return _invoke(method, args, args_types);
+    }
+
+    public boolean exists() {
+        _load_view();
+        return !(view_class == null);
     }
 
     public Object ret(String method, Object... args) {

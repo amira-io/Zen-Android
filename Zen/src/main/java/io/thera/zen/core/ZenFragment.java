@@ -30,7 +30,7 @@ import io.thera.zen.layout.ZenViewProxy;
 
 
 public abstract class ZenFragment extends Fragment {
-    //: parameters are parameters are injected by Zen
+    //: parameters are injected by Zen
     protected List<Object> parameters =  new ArrayList<Object>();
     //: current is stored on instance savings. MUST contains only serializable
     protected Map<String, Object> current = new HashMap<String, Object>();
