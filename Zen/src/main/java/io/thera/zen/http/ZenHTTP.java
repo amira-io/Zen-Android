@@ -82,6 +82,10 @@ public class ZenHTTP {
 
     //: handle json GET requests. Implements caching via ZenCache
     public static void getJson(String url, Object caller, String onSuccessMethod, String onErrorMethod, Map<String, String> headers, int cache, boolean refresh_cache) {
+        getJson(url, caller, onSuccessMethod, onErrorMethod, headers, cache, refresh_cache, true);
+    }
+
+    public static void getJson(String url, Object caller, String onSuccessMethod, String onErrorMethod, Map<String, String> headers, int cache, boolean refresh_cache, boolean async) {
         ZenJsonHandler handler = new ZenJsonHandler(caller, onSuccessMethod, onErrorMethod, url, cache);
         boolean with_cache = (cache != 0);
         boolean run_req = true;
@@ -92,11 +96,17 @@ public class ZenHTTP {
             }
         }
         if (run_req) {
+            AsyncHttpClient c;
+            if (async) {
+                c = client();
+            } else {
+                c = syncClient;
+            }
             if (headers != null) {
                 Header[] mheaders = _parseHeaders(headers);
-                client().get(ZenApplication.context(), url, mheaders, null, handler);
+                c.get(ZenApplication.context(), url, mheaders, null, handler);
             } else {
-                client().get(url, handler);
+                c.get(url, handler);
             }
         }
     }

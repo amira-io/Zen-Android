@@ -75,6 +75,16 @@ public class ZenJson {
         ZenHTTP.getJson(url, caller, onSuccessMethod, onErrorMethod, headers, cache_time, refresh_cache);
     }
 
+    public static void getwsync(String url, Object caller, String onSuccessMethod, String onErrorMethod,
+                           Map<String, String> headers) {
+        getwsync(url, caller, onSuccessMethod, onErrorMethod, headers, 0, false);
+    }
+
+    public static void getwsync(String url, Object caller, String onSuccessMethod, String onErrorMethod,
+                           Map<String, String> headers, int cache_time, boolean refresh_cache) {
+        ZenHTTP.getJson(url, caller, onSuccessMethod, onErrorMethod, headers, cache_time, refresh_cache, false);
+    }
+
     public static void post(String url, Object caller, String onSuccessMethod, String onErrorMethod,
                             Map<String, Object> params) {
         post(url, caller, onSuccessMethod, onErrorMethod, params, null);
