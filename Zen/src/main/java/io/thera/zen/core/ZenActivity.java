@@ -5,12 +5,20 @@ import android.os.Bundle;
 import android.content.*;
 import android.os.Handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import io.thera.zen.layout.ZenViewProxy;
+
 /**
  * Created by marcostagni on 03/12/13.
  * Revisited by gi0baro on 14/05/14.
  */
 
 public abstract class ZenActivity extends FragmentActivity{
+
+    //: Zen support to resources (in views)
+    private Map<String, Integer> _res;
 
     public boolean doAndroidStateRecover() {
         return true;
@@ -26,6 +34,8 @@ public abstract class ZenActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
 
         ZenApplication.initApplication();
+
+        _res = new HashMap<String, Integer>();
 
         _preHelpers(savedInstanceState);
         _loadHelpers();
@@ -48,6 +58,15 @@ public abstract class ZenActivity extends FragmentActivity{
     public void _loadHelpers() {
         getElements();
         buildElements();
+    }
+
+    //: provides access to resources
+    public ZenViewProxy res(String id) {
+        if (!_res.containsKey(id)) {
+            int vid = ZenResManager.getResourceId(id);
+            _res.put(id, vid);
+        }
+        return new ZenViewProxy(_res.get(id), this);
     }
 
     public void goTo(Class activity, boolean addToStack) {

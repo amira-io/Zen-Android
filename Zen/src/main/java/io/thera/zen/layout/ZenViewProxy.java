@@ -1,5 +1,6 @@
 package io.thera.zen.layout;
 
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import java.lang.reflect.Method;
@@ -15,6 +16,7 @@ import io.thera.zen.core.ZenApplication;
  */
 public class ZenViewProxy {
     private int view_id;
+    private FragmentActivity activity;
     private View root;
     private View view;
     private Class view_class;
@@ -23,6 +25,13 @@ public class ZenViewProxy {
     public ZenViewProxy(int id, View rootView) {
         view_id = id;
         root = rootView;
+        view = null;
+    }
+
+    public ZenViewProxy(int id, FragmentActivity a) {
+        view_id = id;
+        activity = a;
+        root = null;
         view = null;
     }
 
@@ -38,7 +47,11 @@ public class ZenViewProxy {
         if (view != null) {
             return;
         }
-        view = root.findViewById(view_id);
+        if (root != null) {
+            view = root.findViewById(view_id);
+        } else {
+            view = activity.findViewById(view_id);
+        }
         view_class = view.getClass();
         _fill_classes();
     }
