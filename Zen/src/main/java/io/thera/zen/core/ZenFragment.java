@@ -43,7 +43,7 @@ public abstract class ZenFragment extends Fragment {
     private View rootView;
 
     //: Zen support to resources (in views)
-    private Map<String, Integer> _res = new HashMap<String, Integer>();
+    private Map<String, Integer> _res;
 
     //: Google maps support vars
     public boolean hasMap = false;
@@ -99,6 +99,7 @@ public abstract class ZenFragment extends Fragment {
             }
             //ZenLog.l(this.layoutId);
             rootView = inflater.inflate(layoutId, container, false);
+            _res = new HashMap<String, Integer>();
             //long d = System.nanoTime();
             //ZenLog.l("TIME to inflate view "+(d-p));
         }
@@ -173,8 +174,8 @@ public abstract class ZenFragment extends Fragment {
     //  : preLoad is called on fragment creation
     public void preLoad() {}
     //  : getElements and buildElements are called consequentially after Zen animations or resume
-    public abstract void getElements();
-    public abstract void buildElements();
+    public void getElements() {};
+    public void buildElements() {};
 
     //: useful shortcuts to send parameters to another Fragment via Zen
     public static void sendParameters(Object o) {
