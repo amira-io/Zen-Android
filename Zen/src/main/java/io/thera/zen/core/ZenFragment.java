@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.thera.zen.geo.ZenMap;
+import io.thera.zen.layout.ZenViewProxy;
 
 
 public abstract class ZenFragment extends Fragment {
@@ -40,6 +41,9 @@ public abstract class ZenFragment extends Fragment {
 
     //: reference to Fragment view, inited looking at layoutId
     private View rootView;
+
+    //: Zen support to resources (in views)
+    private Map<String, Integer> _res = new HashMap<String, Integer>();
 
     //: Google maps support vars
     public boolean hasMap = false;
@@ -127,6 +131,15 @@ public abstract class ZenFragment extends Fragment {
     //: useful shortcut find views in Fragment layout
     public Object findViewById(int id) {
         return rootView.findViewById(id);
+    }
+
+    //: provides access to resources
+    public ZenViewProxy res(String id) {
+        if (!_res.containsKey(id)) {
+            int vid = ZenResManager.getResourceId(id);
+            _res.put(id, vid);
+        }
+        return new ZenViewProxy(_res.get(id), rootView);
     }
 
     //: override of animation on Fragment creation, load helpers if needed
