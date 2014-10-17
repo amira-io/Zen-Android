@@ -20,8 +20,9 @@ public class ZenApplication extends Application {
     private static volatile ZenNavigationManager applicationNavigation = null;
     private static volatile ZenFragmentManager applicationFM = null;
     private static volatile ZenCache applicationCache = null;
-    private static volatile FragmentActivity activity = null;
+    private static volatile ZenActivity activity = null;
     public static volatile ZenLog log = null;
+    public static boolean debug = false;
 
     @Override
     public void onCreate() {
@@ -38,16 +39,16 @@ public class ZenApplication extends Application {
         }
         applicationInited = true;
 
+        log = new ZenLog();
+
         applicationConfig = new ZenSettingsManager();
         applicationFM = new ZenFragmentManager();
         applicationNavigation = new ZenNavigationManager(applicationConfig);
 
         applicationCache = new ZenCache();
-
-        log = new ZenLog();
     }
 
-    public static void registerActivity(FragmentActivity a) {
+    public static void registerActivity(ZenActivity a) {
         activity = a;
     }
 
@@ -55,7 +56,7 @@ public class ZenApplication extends Application {
         activity = null;
     }
 
-    public static FragmentActivity getAppActivity() {
+    public static ZenActivity getAppActivity() {
         return activity;
     }
 

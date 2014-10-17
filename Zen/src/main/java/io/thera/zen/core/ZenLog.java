@@ -15,7 +15,10 @@ public class ZenLog {
 
     public ZenLog() {}
 
-    private boolean isDebuggable() { return ZenApplication.config().isDebug(); }
+    private boolean isDebuggable() {
+        //return ZenApplication.config().isDebug();
+        return ZenApplication.debug;
+    }
 
     private void getMethodNames(StackTraceElement[] sElements){
         className = sElements[2].getFileName();
