@@ -149,7 +149,11 @@ public class ZenGeoUtil {
                 JSONArray comp = object.getJSONArray("address_components");
                 for (int k=0; k< comp.length(); k++) {
                     JSONObject j = comp.getJSONObject(k);
-                    String type = j.getJSONArray("types").getString(0);
+                    JSONArray types = j.getJSONArray("types");
+                    if (types.length() == 0) {
+                        continue;
+                    }
+                    String type = types.getString(0);
                     if (type.equals("country")) {
                         country = j.getString("long_name");
                     }
