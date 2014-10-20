@@ -44,7 +44,9 @@ public abstract class ZenDialog {
     public ZenDialog(String title, String message) {
         this.title = title;
         this.message = message;
-        _type = 2;
+        this.button_OK = _defaults.get("ok");
+        this.button_CANCEL = _defaults.get("cancel");
+        _type = 0;
     }
 
     public void show() {
@@ -61,12 +63,12 @@ public abstract class ZenDialog {
                         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper( a, android.R.style.Theme_Holo_Light_Dialog));
                         builder.setTitle(title);
                         builder.setMessage(message)
-                                .setPositiveButton(_defaults.get("ok"), new DialogInterface.OnClickListener() {
+                                .setPositiveButton(button_OK, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         ok();
                                     }
                                 })
-                                .setNegativeButton(_defaults.get("cancel"), new DialogInterface.OnClickListener() {
+                                .setNegativeButton(button_CANCEL, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         cancel();
                                     }
@@ -83,13 +85,6 @@ public abstract class ZenDialog {
                                         ok();
                                     }
                                 });
-                        builder.create().show();
-                        break;
-                    }
-                    case 2 : {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(a, android.R.style.Theme_Holo_Light_Dialog));
-                        builder.setTitle(title);
-                        builder.setMessage(message);
                         builder.create().show();
                         break;
                     }
