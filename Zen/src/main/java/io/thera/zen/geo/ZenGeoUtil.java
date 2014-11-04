@@ -8,63 +8,52 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.thera.zen.core.ZenApplication;
 import io.thera.zen.json.ZenJson;
 
 public class ZenGeoUtil {
 
-	static String callback;
+    static String callback;
     static Object caller;
     static String format;
 
-	public static synchronized void setLocationManager(FragmentActivity a) {
-		
-		//locationManager = (LocationManager) a.getSystemService(Context.LOCATION_SERVICE);
-		
-	}
-	
-	public static boolean isGpsEnabled (LocationManager locationManager) {
-		
-		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-	}
-	
-	public static boolean isNetworkEnabled(LocationManager locationManager) {
-		
-		return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		
-	}
-	
-	public static boolean isPassiveEnabled (LocationManager locationManager) {
-		
-		return locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
-	}
-
     public static void positionToAddress(double lat, double lon, String callback_name, Object caller_name, String format_name) {
-
-        ZenApplication.log("sono in positiontoaddress");
         callback = callback_name;
         caller = caller_name;
         format = format_name;
 
         String url  = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true";
 
-        //ZenJsonManager.parseJson(url, "getAddress", ZenGeoUtil.class);
         ZenJson.get(url, ZenGeoUtil.class, "getAddress", "getAddress");
     }
 
     public static void findPosition(String address, String callback_name, Object caller_name, String format_name) {
+        findPosition(address, callback_name, caller_name, format_name, null);
+    }
+
+    public static void findPosition(String address, String callback_name, Object caller_name, String format_name, Map<String, String> filters) {
         callback = callback_name;
         caller = caller_name;
         format = format_name;
 
-        //replacing
+        //: convert string format to url compatible
         String formatted_address = address.replace(" ", "+");
 
-        String url  = "http://maps.googleapis.com/maps/api/geocode/json?address="+formatted_address+"&sensor=true";
-        //ZenJsonManager.parseJson(url, "getAddressesList", ZenGeoUtil.class);
-        ZenJson.get(url, ZenGeoUtil.class, "getAddressesList", "getAddressesList");
+        //: add components filtering (if required)
+        String filter_string = "";
+        if (filters != null) {
+            filter_string = "&components=";
+            for (String key : filters.keySet()) {
+                String value = filters.get(key);
+                filter_string += key+":"+value+"%7C";
+            }
+            filter_string = filter_string.substring(0, filter_string.length()-3);
+        }
 
+        String url  = "http://maps.googleapis.com/maps/api/geocode/json?address="+formatted_address+filter_string+"&sensor=true";
+        ZenJson.get(url, ZenGeoUtil.class, "getAddressesList", "getAddressesList");
     }
 
     public static void getAddress(JSONObject json) {
@@ -140,20 +129,33 @@ public class ZenGeoUtil {
                     municipality="<missing>", locality="<missing>", locality_fallback="";
 
             JSONArray a = json.getJSONArray("results");
+
+            List<String> skip_types = new ArrayList<String>(){{add("locality"); add("neighborhood");}};
+            //: cycle among results
             for (int i=0; i<a.length(); i++) {
+                boolean skip = false;
                 JSONObject object =  a.getJSONObject(i);
                 String formatted = object.getString("formatted_address");
                 JSONObject geometry = object.getJSONObject("geometry");
                 lat = geometry.getJSONObject("location").get("lat").toString();
                 lon = geometry.getJSONObject("location").get("lng").toString();
                 JSONArray comp = object.getJSONArray("address_components");
+                //: cycle among components of the result to collect address data
                 for (int k=0; k< comp.length(); k++) {
                     JSONObject j = comp.getJSONObject(k);
                     JSONArray types = j.getJSONArray("types");
+                    //: if google doesn't provide any type, skip the component
                     if (types.length() == 0) {
                         continue;
                     }
                     String type = types.getString(0);
+                    //: if the first component isn't a locality or a 'neighborhood', we should skip it,
+                    //  as it could be a route or something else
+                    if (k == 0 && !skip_types.contains(type)) {
+                        skip = true;
+                        break;
+                    }
+                    //: store location details
                     if (type.equals("country")) {
                         country = j.getString("long_name");
                     }
@@ -173,6 +175,9 @@ public class ZenGeoUtil {
                         locality_fallback = j.getString("long_name");
                     }
                 }
+                if (skip) {
+                    continue;
+                }
                 if (locality.equals("<missing>")) {
                     locality = locality_fallback;
                 }
@@ -186,7 +191,7 @@ public class ZenGeoUtil {
                     val.put("formatted", formatted);
                     val.put("lat", lat);
                     val.put("lon", lon);
-                    json_results.put(i, val);
+                    json_results.put(val);
                 } else {
                     String res = country+":"+region+":"+province+":"+municipality+":"+locality+":"+formatted+":"+lat+":"+lon;
                     results.add(res);
@@ -223,7 +228,4 @@ public class ZenGeoUtil {
             e.printStackTrace();
         }
     }
-	
-	
-	
 }
