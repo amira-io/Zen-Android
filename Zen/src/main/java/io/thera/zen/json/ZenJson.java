@@ -33,7 +33,13 @@ public class ZenJson {
         {
             //gets an entry in the params
             Map.Entry pairs = (Map.Entry)iter.next();
-            holder.put((String) pairs.getKey(), (String) pairs.getValue());
+            Object value;
+            if (pairs.getValue().getClass() == Map.class) {
+                value = buildJsonObjectFromMap((Map) pairs.getValue());
+            } else {
+                value = pairs.getValue();
+            }
+            holder.put(pairs.getKey().toString(), value);
         }
         return holder;
     }
