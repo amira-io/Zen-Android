@@ -1,14 +1,13 @@
 package io.thera.zen.geo;
 
-import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import io.thera.zen.core.ZenApplication;
 import io.thera.zen.json.ZenJson;
@@ -18,15 +17,42 @@ public class ZenGeoUtil {
     static String callback;
     static Object caller;
     static String format;
+    static Stack<Map<String, String>> outValues = new Stack<Map<String, String>>();
+    static Map<String, String> defOutValues = new HashMap<String, String>(){{
+        put("country", "long");
+        put("region", "long");
+        put("province", "long");
+        put("municipality", "long");
+        put("locality", "long");
+    }};
+    static Map<String, String> outValuesRef = new HashMap<String, String>(){{
+        put("short", "short_name");
+        put("long", "long_name");
+    }};
 
     public static void positionToAddress(double lat, double lon, String callback_name, Object caller_name, String format_name) {
+        positionToAddress(lat, lon, callback_name, caller_name, format_name, null);
+    }
+
+    public static void positionToAddress(double lat, double lon, String callback_name, Object caller_name, String format_name, Map<String, String> out_values_format) {
         callback = callback_name;
         caller = caller_name;
         format = format_name;
 
         String url  = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true";
 
-        ZenJson.get(url, ZenGeoUtil.class, "getAddress", "getAddress");
+        //: store outFormats
+        if (out_values_format == null) {
+            out_values_format = new HashMap<String, String>();
+        }
+        for (String k : defOutValues.keySet()) {
+            if (!out_values_format.containsKey(k)) {
+                out_values_format.put(k, defOutValues.get(k));
+            }
+        }
+        outValues.push(out_values_format);
+
+        ZenJson.get(url, ZenGeoUtil.class, "getAddressesList", "getAddressesList");
     }
 
     public static void findPosition(String address, String callback_name, Object caller_name, String format_name) {
@@ -34,6 +60,10 @@ public class ZenGeoUtil {
     }
 
     public static void findPosition(String address, String callback_name, Object caller_name, String format_name, Map<String, String> filters) {
+        findPosition(address, callback_name, caller_name, format_name, filters, null);
+    }
+
+    public static void findPosition(String address, String callback_name, Object caller_name, String format_name, Map<String, String> filters, Map<String, String> out_values_format) {
         callback = callback_name;
         caller = caller_name;
         format = format_name;
@@ -52,74 +82,26 @@ public class ZenGeoUtil {
             filter_string = filter_string.substring(0, filter_string.length()-3);
         }
 
+        //: build apis url
         String url  = "http://maps.googleapis.com/maps/api/geocode/json?address="+formatted_address+filter_string+"&sensor=true";
+
+        //: store outFormats
+        if (out_values_format == null) {
+            out_values_format = new HashMap<String, String>();
+        }
+        for (String k : defOutValues.keySet()) {
+            if (!out_values_format.containsKey(k)) {
+                out_values_format.put(k, defOutValues.get(k));
+            }
+        }
+        outValues.push(out_values_format);
+
         ZenJson.get(url, ZenGeoUtil.class, "getAddressesList", "getAddressesList");
     }
 
-    public static void getAddress(JSONObject json) {
-        try {
-            String country = "", region = "", province ="", locality = "";
-
-            JSONArray a = json.getJSONArray("results");
-            JSONObject object =  a.getJSONObject(0);
-            JSONArray comp = object.getJSONArray("address_components");
-            for (int i=0; i< comp.length(); i++) {
-                JSONObject j = comp.getJSONObject(i);
-                if (j.getJSONArray("types").getString(0).equals("country")) {
-                    country = j.getString("long_name");
-                }
-                if (j.getJSONArray("types").getString(0).equals("administrative_area_level_1")) {
-                    region = j.getString("long_name");
-                }
-                if (j.getJSONArray("types").getString(0).equals("administrative_area_level_2")) {
-                    province = j.getString("long_name");
-                }
-                if (j.getJSONArray("types").getString(0).equals("locality")) {
-                    locality = j.getString("long_name");
-                }
-            }
-            Class[] params;
-            Object[] values;
-
-            if (format.equals("string")) {
-                params = new Class[4];
-                params[0] = String.class;
-                params[1] = String.class;
-                params[2] = String.class;
-                params[3] = String.class;
-
-                values = new Object[4];
-                values[0] = country;
-                values[1] = region;
-                values[2] = province;
-                values[3] = locality;
-            }
-            else {
-                JSONObject val = new JSONObject();
-                val.put("country", country);
-                val.put("region", region);
-                val.put("province", province);
-                val.put("locality", locality);
-
-                params = new Class[1];
-                params[0] = JSONObject.class;
-                values = new Object[1];
-                values[0] = val;
-            }
-
-            if (caller instanceof Class) {
-                ((Class) caller).getMethod(callback, params).invoke(caller,values);
-            }
-            else {
-                caller.getClass().getMethod(callback, params).invoke(caller, values);
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     public static void getAddressesList(JSONObject json) {
+        Map<String, String> out_val_format = outValues.pop();
+
         try {
             ZenApplication.log("TEST inside getaddresses list " + json);
             List<String> results = new ArrayList<String>();
@@ -157,22 +139,22 @@ public class ZenGeoUtil {
                     }
                     //: store location details
                     if (type.equals("country")) {
-                        country = j.getString("long_name");
+                        country = j.getString(outValuesRef.get(out_val_format.get("country")));
                     }
                     if (type.equals("administrative_area_level_1")) {
-                        region = j.getString("long_name");
+                        region = j.getString(outValuesRef.get(out_val_format.get("region")));
                     }
                     if (type.equals("administrative_area_level_2")) {
-                        province = j.getString("long_name");
+                        province = j.getString(outValuesRef.get(out_val_format.get("province")));
                     }
                     if (type.equals("administrative_area_level_3")) {
-                        municipality = j.getString("long_name");
+                        municipality = j.getString(outValuesRef.get(out_val_format.get("municipality")));
                     }
                     if (type.equals("locality")) {
-                        locality = j.getString("long_name");
+                        locality = j.getString(outValuesRef.get(out_val_format.get("locality")));
                     }
                     if (type.equals("neighborhood")) {
-                        locality_fallback = j.getString("long_name");
+                        locality_fallback = j.getString(outValuesRef.get(out_val_format.get("locality")));
                     }
                 }
                 if (skip) {
