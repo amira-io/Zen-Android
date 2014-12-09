@@ -1,77 +1,123 @@
 package io.thera.zen.geo;
 
-import java.lang.reflect.InvocationTargetException;
+/**
+ * Provides methods to gain phone geolocation.
+ *
+ * Crafted by Giovanni Barillari
+ * Copyright © 2013-2014, Amira Technologies
+ */
+
+import java.util.Stack;
 
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
-import android.annotation.TargetApi;
+//import android.os.Build;
+//import android.annotation.TargetApi;
 import android.content.Context;
 
 import io.thera.zen.core.ZenApplication;
 
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+//@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class ZenGeoManager{
+    private static final int DEF_VALIDMINS = 5;
 
     private static LocationManager locationManager;
-
-    private static String callback;
-    private static Object caller;
-
-    private static boolean isListenerSet = false;
-
     private static ZenLocationListener locationListener;
+    private static Criteria criteria;
+    private static String provider;
 
-    public static synchronized void getPosition(String callback_name , Object caller_name) {
+    private static Stack<Object[]> callStack;
 
-        if (!isListenerSet) {
+    private static synchronized void _initManager() {
+        if (locationManager != null) {
+            return;
+        }
+        locationManager = (LocationManager) ZenApplication.context().getSystemService(Context.LOCATION_SERVICE);
+        locationListener   = new ZenLocationListener("_stopListenPosition", ZenGeoManager.class);
+        criteria = new Criteria();
+        _findBestProvider();
+        callStack = new Stack<Object[]>();
+    }
 
-            isListenerSet      = true;
-            callback           = callback_name;
-            caller             = caller_name;
+    private static void _findBestProvider() {
+        //: set best criteria
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
-            locationListener   = new ZenLocationListener("_stopListenPosition",ZenGeoManager.class);
-            locationManager    = (LocationManager) ZenApplication.context().getSystemService(Context.LOCATION_SERVICE);
-
-            Criteria c          =   new Criteria();
-            c.setPowerRequirement(Criteria.POWER_LOW);
-            c.setAccuracy(Criteria.ACCURACY_FINE);
-
-            //: verify provider exists
-            String provider = locationManager.getBestProvider(c , true);
+        //: verify provider exists, lower criteria accuracy
+        provider = locationManager.getBestProvider(criteria , true);
+        if (provider == null) {
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            provider = locationManager.getBestProvider(criteria, true);
             if (provider == null) {
-                ZenApplication.log("No location provider found!");
-                c.setAccuracy(Criteria.ACCURACY_COARSE);
-                provider = locationManager.getBestProvider(c, true);
-                if (provider == null) {
-                    c.setPowerRequirement(Criteria.POWER_HIGH);
-                    provider = locationManager.getBestProvider(c, true);
-                    if (provider == null) {
-                        _stopListenPosition(null);
-                        return;
-                    }
-                }
+                criteria.setPowerRequirement(Criteria.POWER_HIGH);
+                provider = locationManager.getBestProvider(criteria, true);
             }
+        }
+    }
 
-            locationManager.requestSingleUpdate(c, locationListener , null);
+    public static void getPosition(String callback, Object caller) {
+        getPosition(callback, caller, DEF_VALIDMINS);
+    }
+
+    public static void getPosition(String callback , Object caller, int last_valid_minutes) {
+        int timelimit = last_valid_minutes * 1000 * 60;
+
+        //: init static elements
+        _initManager();
+
+        //: store caller data in stack
+        callStack.push(new Object[]{caller, callback});
+
+        //: if location is not available on phone, avoid trying to get it
+        if (provider == null) {
+            _stopListenPosition(null);
+            return;
         }
 
+        //: first we read latest available position
+        Location lastPos = null;
+        if (timelimit != 0) {
+            lastPos = locationManager.getLastKnownLocation(provider);
+            if (lastPos != null) {
+                long dt = System.currentTimeMillis() - lastPos.getTime();
+                ZenApplication.log("DT: "+dt);
+                ZenApplication.log("TL: "+timelimit);
+                ZenApplication.log("Last: "+lastPos.getTime());
+                ZenApplication.log("Now: "+System.currentTimeMillis());
+                ZenApplication.log(dt>timelimit);
+                if (dt > timelimit) {
+                    lastPos = null;
+                }
+            }
+        }
+        if (lastPos != null) {
+            _stopListenPosition(lastPos);
+            return;
+        }
+
+        //: if last position unavailable, request a new one
+        locationManager.requestSingleUpdate(criteria, locationListener, null);
     }
 
 
-    public static synchronized void _stopListenPosition(Location location) {
+    public static void _stopListenPosition(Location location) {
         try {
             locationManager.removeUpdates(locationListener);
         } catch (Exception e) {
-            //: this is not a deal, no need to catch
+            //: this is not a big deal, no need to catch it
         }
 
-        //abbiamo ottenuto la posizione
+        //: get caller data
+        Object[] callData = callStack.pop();
+        Object caller = callData[0];
+        String callback = callData[1].toString();
+
+        //: return position to caller
         Class[] params = new Class[1];
         params[0] = Location.class;
-
         Object[] values = new Object[1];
         values[0] = location;
         try {
@@ -81,16 +127,9 @@ public class ZenGeoManager{
             else {
                 caller.getClass().getMethod(callback, params).invoke(caller, values);
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ZenApplication.log.e(e);
         }
-
-        isListenerSet = false;
-
     }
 
 }
