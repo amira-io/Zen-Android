@@ -12,14 +12,11 @@ import java.util.Stack;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-//import android.os.Build;
-//import android.annotation.TargetApi;
 import android.content.Context;
 
 import io.thera.zen.core.ZenApplication;
 
 
-//@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class ZenGeoManager{
     private static final int DEF_VALIDMINS = 5;
 
@@ -83,11 +80,6 @@ public class ZenGeoManager{
             lastPos = locationManager.getLastKnownLocation(provider);
             if (lastPos != null) {
                 long dt = System.currentTimeMillis() - lastPos.getTime();
-                ZenApplication.log("DT: "+dt);
-                ZenApplication.log("TL: "+timelimit);
-                ZenApplication.log("Last: "+lastPos.getTime());
-                ZenApplication.log("Now: "+System.currentTimeMillis());
-                ZenApplication.log(dt>timelimit);
                 if (dt > timelimit) {
                     lastPos = null;
                 }
