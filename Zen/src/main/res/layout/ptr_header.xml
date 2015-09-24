@@ -5,8 +5,8 @@
         <ProgressBar android:id="@+id/ptr_id_spinner" style="@style/ptr_spinner" />
 
         <LinearLayout android:id="@+id/ptr_id_textwrapper" style="@style/ptr_textwrapper">
-            <io.thera.zen.layout.elements.ZenTextView android:id="@+id/ptr_id_text" style="@style/ptr_text" />
-            <io.thera.zen.layout.elements.ZenTextView android:id="@+id/ptr_id_last_updated" style="@style/ptr_last_updated" />
+            <io.amira.zen.layout.elements.ZenTextView android:id="@+id/ptr_id_text" style="@style/ptr_text" />
+            <io.amira.zen.layout.elements.ZenTextView android:id="@+id/ptr_id_last_updated" style="@style/ptr_last_updated" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
