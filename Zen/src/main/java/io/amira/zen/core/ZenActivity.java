@@ -1,9 +1,9 @@
 package io.amira.zen.core;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.content.*;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +12,10 @@ import io.amira.zen.layout.ZenViewProxy;
 
 /**
  * Created by marcostagni on 03/12/13.
- * Revisited by gi0baro on 14/05/14.
+ * Revisited by gi0baro on 07/10/15.
  */
 
-public abstract class ZenActivity extends FragmentActivity{
+public abstract class ZenActivity extends AppCompatActivity{
 
     //: Zen support to resources (in views)
     private Map<String, Integer> _res;
