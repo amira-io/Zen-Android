@@ -1,8 +1,12 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.drawer;
 
-/**
- * Created by marcostagni on 04/12/13.
- */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

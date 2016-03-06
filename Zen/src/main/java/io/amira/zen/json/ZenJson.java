@@ -1,11 +1,11 @@
-package io.amira.zen.json;
-
-/**
- * ZenHTTP: a friendly JSON requests shortcut for ZenHTTP
+/*
+ * ZenFramework for Android
  *
- * Created by Giovanni Barillari on 27/08/14.
- * Copyright © 2013-2014. Thera Technologies.
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.json;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONException;

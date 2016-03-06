@@ -1,11 +1,11 @@
-package io.amira.zen.core;
-
-/**
- * Created by marcostagni on 26/11/13.
- * Revisited and optimized by Giovanni Barillari on 22/07/2014.
+/*
+ * ZenFramework for Android
  *
- * Copyright © 2013-2014. Thera Technologies.
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.core;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

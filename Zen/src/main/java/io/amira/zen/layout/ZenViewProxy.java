@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout;
 
 import android.support.v4.app.FragmentActivity;
@@ -11,9 +18,6 @@ import java.util.Map;
 
 import io.amira.zen.core.ZenApplication;
 
-/**
- * Created by giovanni on 15/10/14.
- */
 public class ZenViewProxy {
     private int view_id;
     private FragmentActivity activity;

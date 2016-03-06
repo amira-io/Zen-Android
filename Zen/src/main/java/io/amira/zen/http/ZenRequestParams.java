@@ -1,9 +1,13 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.http;
 
 import com.loopj.android.http.RequestParams;
 
-/**
- * Created by giovanni on 28/08/14.
- */
 public class ZenRequestParams extends RequestParams {
 }

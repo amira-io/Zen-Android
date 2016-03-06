@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.cache;
 
 import java.io.Serializable;
@@ -6,9 +13,6 @@ import java.util.Map;
 
 import io.amira.zen.core.ZenApplication;
 
-/**
- * Created by giovanni on 13/06/14.
- */
 public class ZenCache {
 
     private class AsyncReq {

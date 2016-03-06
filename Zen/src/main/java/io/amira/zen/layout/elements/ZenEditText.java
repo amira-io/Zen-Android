@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 import android.content.Context;
@@ -6,9 +13,6 @@ import android.widget.EditText;
 
 import io.amira.zen.core.ZenResManager;
 
-/**
- * Created by marcostagni on 25/04/14.
- */
 public class ZenEditText extends EditText {
 
     @Override

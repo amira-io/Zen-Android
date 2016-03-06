@@ -1,8 +1,11 @@
-package io.amira.zen.core;
-
-/**
- * Created by gi0baro on 14/05/14.
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.core;
 
 import java.lang.reflect.Field;
 import java.util.*;

@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.json;
 
 import org.json.JSONArray;
@@ -6,9 +13,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by giovanni on 14/01/14.
- */
 public class JsonCast {
 
     public static String[] toArray(JSONArray jarr) throws JSONException {

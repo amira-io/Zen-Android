@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 import android.animation.ObjectAnimator;
@@ -5,10 +12,6 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 //import com.nineoldandroids.animation.ObjectAnimator;
 
-
-/**
- * Created by giovanni on 21/03/14.
- */
 public abstract class ZenAnimator {
 
     protected static ObjectAnimator objanim;

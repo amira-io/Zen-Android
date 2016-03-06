@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 //import com.nineoldandroids.animation.*;
@@ -5,10 +12,6 @@ package io.amira.zen.layout.elements;
 import android.animation.ValueAnimator;
 
 import io.amira.zen.core.ZenApplication;
-
-/**
- * Created by marcostagni on 13/05/14.
- */
 
 public class ZenValueAnimator  {
 

@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.utils;
 
 import android.content.Context;
@@ -7,9 +14,6 @@ import android.view.WindowManager;
 
 import io.amira.zen.core.ZenApplication;
 
-/**
- * Created by giovanni on 14/05/14.
- */
 public class Screen {
 
     public static boolean isTablet() {

@@ -1,3 +1,14 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ *
+ * Based on PullToRefresh-ListView
+ *
+ * :copyright: (c) 2012 - Erik Wallentinsen
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 import android.content.Context;

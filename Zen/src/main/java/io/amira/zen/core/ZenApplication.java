@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.core;
 
 import android.app.Application;
@@ -8,9 +15,6 @@ import android.support.v4.app.FragmentActivity;
 
 import io.amira.zen.cache.ZenCache;
 
-/**
- * Created by giovanni on 14/05/14.
- */
 public class ZenApplication extends Application {
 
     public static volatile Context applicationContext = null;

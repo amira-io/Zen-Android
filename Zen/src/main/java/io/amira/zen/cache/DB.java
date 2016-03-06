@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.cache;
 
 import android.content.ContentValues;
@@ -12,9 +19,6 @@ import java.util.Date;
 
 import io.amira.zen.core.ZenApplication;
 
-/**
- * Created by giovanni on 14/06/14.
- */
 public class DB {
 
     private static volatile SQLiteDatabase _db = null;

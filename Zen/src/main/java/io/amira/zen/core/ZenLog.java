@@ -1,12 +1,14 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.core;
 
 import android.util.Log;
 
-/**
- * Created by marcostagni on 26/11/13.
- *
- * Copyright © 2013. Thera Technologies.
- */
 public class ZenLog {
 
     static private String className;

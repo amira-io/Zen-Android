@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.core;
 
 import android.content.Context;
@@ -8,13 +15,6 @@ import android.view.animation.AnimationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by marcostagni on 26/11/13
- * Revisited by gi0baro on 14/05/14.
- *
- * Copyright © 2014. Thera Technologies.
- */
 
 public class ZenResManager {
 

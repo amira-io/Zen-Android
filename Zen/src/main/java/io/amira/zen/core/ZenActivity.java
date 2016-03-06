@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.core;
 
 import android.content.Intent;
@@ -9,11 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.amira.zen.layout.ZenViewProxy;
-
-/**
- * Created by marcostagni on 03/12/13.
- * Revisited by gi0baro on 07/10/15.
- */
 
 public abstract class ZenActivity extends AppCompatActivity{
 

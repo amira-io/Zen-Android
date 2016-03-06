@@ -1,8 +1,12 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
-/**
- * Created by marcostagni on 14/05/14.
- */
 public abstract class ZenTickerRunnable implements Runnable {
     public Object value, to;
 

@@ -1,12 +1,11 @@
-package io.amira.zen.listeners;
-
-/**
- * Copyright © 2013.
+/*
+ * ZenFramework for Android
  *
- * Zen Framework.
- *
- * Marco Stagni.
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.listeners;
 
 import android.view.MotionEvent;
 import android.view.View;

@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 import android.graphics.Bitmap;
@@ -29,9 +36,6 @@ import io.amira.zen.core.ZenResManager;
 import io.amira.zen.utils.Network;
 import io.amira.zen.utils.Utilities;
 
-/**
- * Created by marcostagni on 10/01/14.
- */
 public class ZenImageSlider {
 
     private Map<String,Drawable> thumbImageMap;

@@ -1,12 +1,11 @@
-package io.amira.zen.http;
-
-/**
- * Handler for HTTP json requests
- * Implements caching features using ZenCache.
+/*
+ * ZenFramework for Android
  *
- * Created by Giovanni Barillari on 27/08/14.
- * Copyright © 2013-2014. Thera Technologies.
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.http;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 

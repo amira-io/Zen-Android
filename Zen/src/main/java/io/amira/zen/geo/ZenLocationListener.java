@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.geo;
 
 import android.location.Location;
@@ -6,9 +13,6 @@ import android.os.Bundle;
 
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * Created by marcostagni on 03/12/13.
- */
 public class ZenLocationListener implements LocationListener {
 
     String callback;

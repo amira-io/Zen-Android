@@ -1,3 +1,14 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ *
+ * Based on SlidingMenu
+ *
+ * :copyright: (c) 2012-2014 Jeremy Feinstein
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.slider;
 
 import java.util.ArrayList;
@@ -28,10 +39,6 @@ import android.widget.Scroller;
 import io.amira.zen.core.ZenApplication;
 import io.amira.zen.layout.slider.ZenSlidingMenu.OnClosedListener;
 import io.amira.zen.layout.slider.ZenSlidingMenu.OnOpenedListener;
-
-/**
- * Created by giovanni on 28/12/13.
- */
 
 public class ZenViewAbove extends ViewGroup {
 

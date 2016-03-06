@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.layout.elements;
 
 import android.app.Activity;
@@ -10,9 +17,6 @@ import java.util.Map;
 
 import io.amira.zen.core.ZenApplication;
 
-/**
- * Created by marcostagni on 05/12/13.
- */
 public abstract class ZenDialog {
 
     String message;

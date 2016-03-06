@@ -1,11 +1,11 @@
-package io.amira.zen.geo;
-
-/**
- * Provides methods to gain phone geolocation.
+/*
+ * ZenFramework for Android
  *
- * Crafted by Giovanni Barillari
- * Copyright © 2013-2014, Amira Technologies
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.geo;
 
 import java.util.Stack;
 

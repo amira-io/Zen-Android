@@ -1,12 +1,16 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.core;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
 import java.util.*;
 
-/**
- * Created by marcostagni on 04/12/13.
- */
 public class ZenNavigationManager  {
 
     private List<Object> parameters;

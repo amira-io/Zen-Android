@@ -1,3 +1,10 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.cache;
 
 import android.content.Context;
@@ -6,10 +13,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import io.amira.zen.core.ZenResManager;
-
-/**
- * Created by giovanni on 13/06/14.
- */
 
 public class DBHelper extends SQLiteOpenHelper {
 

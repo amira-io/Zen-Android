@@ -1,10 +1,13 @@
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
+ */
+
 package io.amira.zen.utils;
 
 import java.util.ArrayList;
-
-/**
- * Created by giovanni on 24/12/13.
- */
 
 public class ZenMenu extends ArrayList<ZenMenuItem> {
 

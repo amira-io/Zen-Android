@@ -1,8 +1,11 @@
-package io.amira.zen.geo;
-
-/**
- * Created by giovanni on 10/01/14.
+/*
+ * ZenFramework for Android
+ *
+ * :copyright: (c) 2013-2016 by Marco Stagni, Giovanni Barillari
+ * :license: GPLv3, see LICENSE for more details.
  */
+
+package io.amira.zen.geo;
 
 import java.util.ArrayList;
 import java.util.List;
